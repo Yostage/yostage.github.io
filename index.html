@@ -293,7 +293,7 @@
                 // Find the smallest whole number among results
                 let minWhole = null;
                 results.forEach(val => {
-                    if (typeof val === "number" && Number.isInteger(val)) {
+                    if (typeof val === "number" && Number.isInteger(val) && val >= 1) {
                         if (minWhole === null || val < minWhole) minWhole = val;
                     }
                 });
