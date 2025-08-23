@@ -213,8 +213,6 @@
                     <input type="text" class="output-box" readonly style="padding: 12px; border-radius: 8px; border: 1px solid #aaa; font-size: 1.2rem; background: #f7f7fa;">
                     <input type="text" class="output-box" readonly style="padding: 12px; border-radius: 8px; border: 1px solid #aaa; font-size: 1.2rem; background: #f7f7fa;">
                     <input type="text" class="output-box" readonly style="padding: 12px; border-radius: 8px; border: 1px solid #aaa; font-size: 1.2rem; background: #f7f7fa;">
-                    <input type="text" class="output-box" readonly style="padding: 12px; border-radius: 8px; border: 1px solid #aaa; font-size: 1.2rem; background: #f7f7fa;">
-                    <input type="text" class="output-box" readonly style="padding: 12px; border-radius: 8px; border: 1px solid #aaa; font-size: 1.2rem; background: #f7f7fa;">
                 </div>
             </section>
         </main>
@@ -258,13 +256,43 @@
                 });
             });
 
-            // Numeric core sum logic
+            // Numeric core output logic with all 6 permutations of *, -, /
             function updateOutputs() {
                 const inputs = Array.from(document.querySelectorAll('.core-input'));
-                const values = inputs.map(input => Number(input.value) || 0);
-                const sum = values.reduce((a, b) => a + b, 0);
-                document.querySelectorAll('.output-box').forEach(box => {
-                    box.value = sum;
+                const [A, B, C, D] = inputs.map(input => Number(input.value) || 0);
+
+                // All 6 permutations of ['*', '-', '/']
+                function getPermutations(arr) {
+                    if (arr.length === 1) return [arr];
+                    const perms = [];
+                    for (let i = 0; i < arr.length; i++) {
+                        const rest = arr.slice(0, i).concat(arr.slice(i + 1));
+                        for (const perm of getPermutations(rest)) {
+                            perms.push([arr[i], ...perm]);
+                        }
+                    }
+                    return perms;
+                }
+                const uniqueOpsPerms = getPermutations(['*', '-', '/']); // 6 permutations
+
+                // Build and evaluate each expression
+                const results = uniqueOpsPerms.map(ops => {
+                    const expr = `(((${A} ${ops[0]} ${B}) ${ops[1]} ${C}) ${ops[2]} ${D})`;
+                    try {
+                        const val = Function('"use strict";return (' + expr + ')')();
+                        if (isFinite(val)) {
+                            return val;
+                        } else {
+                            return 'NaN';
+                        }
+                    } catch {
+                        return 'NaN';
+                    }
+                });
+
+                // Set output boxes (first 6 get values, last 2 are blank)
+                document.querySelectorAll('.output-box').forEach((box, i) => {
+                    box.value = results[i] !== undefined ? results[i] : '';
                 });
             }
             document.querySelectorAll('.core-input').forEach(input => {
