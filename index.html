@@ -193,6 +193,10 @@
             <section class="section">
                 <h2>Numeric Cores</h2>
                 <p>Bep Bep </p>
+                <div class="word-input-row" style="display: flex; gap: 20px; margin-bottom: 20px;">
+                    <input type="text" id="word-input" maxlength="4" placeholder="Enter 4-letter word" style="flex:1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1.2rem; text-transform: uppercase;">
+                    <button id="word-submit" style="padding: 12px 24px; border-radius: 8px; border: none; background: #667eea; color: #fff; font-size: 1.1rem; cursor: pointer;">Set</button>
+                </div>
                 <div class="numeric-inputs" style="display: flex; gap: 20px; margin-top: 20px;">
                     <input type="number" class="core-input" style="flex:1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1.2rem;">
                     <input type="number" class="core-input" style="flex:1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1.2rem;">
@@ -268,6 +272,31 @@
                 input.addEventListener('input', updateOutputs);
             });
             updateOutputs();
+
+            // Word input logic
+            function setInputsFromWord() {
+                const word = document.getElementById('word-input').value.trim().toUpperCase();
+                if (word.length !== 4) return;
+                const indices = [];
+                for (let i = 0; i < 4; i++) {
+                    const letter = word[i];
+                    // A=1, B=2, ..., Z=26
+                    if (letter >= 'A' && letter <= 'Z') {
+                        indices.push(letter.charCodeAt(0) - 64);
+                    } else {
+                        indices.push(0); // Or handle non-letters as 0
+                    }
+                }
+                const inputs = document.querySelectorAll('.core-input');
+                inputs.forEach((input, i) => {
+                    input.value = indices[i];
+                });
+                updateOutputs();
+            }
+            document.getElementById('word-submit').addEventListener('click', setInputsFromWord);
+            document.getElementById('word-input').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') setInputsFromWord();
+            });
         });
     </script>
 </body>
