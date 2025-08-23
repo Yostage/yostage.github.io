@@ -195,7 +195,6 @@
                 <p>Bep Bep </p>
                 <div class="word-input-row" style="display: flex; gap: 20px; margin-bottom: 20px;">
                     <input type="text" id="word-input" maxlength="4" placeholder="Enter 4-letter word" style="flex:1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1.2rem; text-transform: uppercase;">
-                    <button id="word-submit" style="padding: 12px 24px; border-radius: 8px; border: none; background: #667eea; color: #fff; font-size: 1.1rem; cursor: pointer;">Set</button>
                 </div>
                 <div class="numeric-inputs" style="display: flex; gap: 20px; margin-top: 20px;">
                     <input type="number" class="core-input" style="flex:1; padding: 12px; border-radius: 8px; border: 1px solid #ccc; font-size: 1.2rem;">
@@ -293,10 +292,7 @@
                 });
                 updateOutputs();
             }
-            document.getElementById('word-submit').addEventListener('click', setInputsFromWord);
-            document.getElementById('word-input').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') setInputsFromWord();
-            });
+            document.getElementById('word-input').addEventListener('input', setInputsFromWord);
         });
     </script>
 </body>
