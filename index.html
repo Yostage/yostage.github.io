@@ -300,13 +300,20 @@
 
                 // Set output boxes and highlight the smallest whole number
                 document.querySelectorAll('.output-box').forEach((box, i) => {
-                    box.value = results[i] !== undefined ? results[i] : '';
-                    box.style.background = (results[i] === minWhole && Number.isInteger(results[i]))
-                        ? "#ffe066"
-                        : "#f7f7fa";
-                    box.style.fontWeight = (results[i] === minWhole && Number.isInteger(results[i]))
-                        ? "bold"
-                        : "normal";
+                    let displayValue = results[i] !== undefined ? results[i] : '';
+                    if (results[i] === minWhole && Number.isInteger(results[i])) {
+                        // If in 1-26, append letter
+                        if (minWhole >= 1 && minWhole <= 26) {
+                            const letter = String.fromCharCode(64 + minWhole);
+                            displayValue = `${minWhole} (${letter})`;
+                        }
+                        box.style.background = "#ffe066";
+                        box.style.fontWeight = "bold";
+                    } else {
+                        box.style.background = "#f7f7fa";
+                        box.style.fontWeight = "normal";
+                    }
+                    box.value = displayValue;
                 });
             }
             document.querySelectorAll('.core-input').forEach(input => {
