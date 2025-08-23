@@ -290,9 +290,23 @@
                     }
                 });
 
-                // Set output boxes (first 6 get values, last 2 are blank)
+                // Find the smallest whole number among results
+                let minWhole = null;
+                results.forEach(val => {
+                    if (typeof val === "number" && Number.isInteger(val)) {
+                        if (minWhole === null || val < minWhole) minWhole = val;
+                    }
+                });
+
+                // Set output boxes and highlight the smallest whole number
                 document.querySelectorAll('.output-box').forEach((box, i) => {
                     box.value = results[i] !== undefined ? results[i] : '';
+                    box.style.background = (results[i] === minWhole && Number.isInteger(results[i]))
+                        ? "#ffe066"
+                        : "#f7f7fa";
+                    box.style.fontWeight = (results[i] === minWhole && Number.isInteger(results[i]))
+                        ? "bold"
+                        : "normal";
                 });
             }
             document.querySelectorAll('.core-input').forEach(input => {
