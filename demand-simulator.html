@@ -117,8 +117,10 @@
           const demand = scaleFactor * gaussian(minute, peakMinute, stdDevMinutes);
 
           // Step 1: Remove timed-out requests from queue
+          let shedThisMinute = 0;
           for (let i = queue.length - 1; i >= 0; i--) {
             if (minute - queue[i].arrivalTime > queueTimeout) {
+              shedThisMinute += queue[i].demand;
               totalShedDemand += queue[i].demand;
               queue.splice(i, 1);
             }
@@ -155,7 +157,7 @@
 
           totalUtilization += actualUsage;
           const queueSize = queue.reduce((sum, item) => sum + item.demand, 0);
-          demandValues.push({ minute, demand, usage: actualUsage, queueSize });
+          demandValues.push({ minute, demand, usage: actualUsage, queueSize, shed: shedThisMinute });
 
           if (minute % 5 === 0) {
             points.push({
@@ -165,6 +167,7 @@
               actualUtilization: actualUsage,
               capacity: machines,
               queuedDemand: queueSize,
+              shedDemand: shedThisMinute,
             });
           }
         }
@@ -281,7 +284,7 @@
           e('div', { style: { background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "28px" } },
             e('div', { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" } },
               e('h3', { style: { fontSize: "11px", fontWeight: 500, letterSpacing: "2px", textTransform: "uppercase", color: "#5a5a6a" } }, "24-Hour Demand Profile"),
-              e('div', { style: { display: "flex", gap: "20px", fontSize: "11px" } },
+              e('div', { style: { display: "flex", gap: "16px", fontSize: "11px", flexWrap: "wrap" } },
                 e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
                   e('span', { style: { width: "12px", height: "8px", background: "linear-gradient(180deg, #6366f1 0%, rgba(99,102,241,0.2) 100%)", display: "inline-block", borderRadius: "2px" } }),
                   e('span', { style: { color: "#9a9aaa" } }, "Actual Utilization")
@@ -293,6 +296,10 @@
                 e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
                   e('span', { style: { width: "12px", height: "2px", background: "#fff", display: "inline-block" } }),
                   e('span', { style: { color: "#9a9aaa" } }, "Capacity")
+                ),
+                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
+                  e('span', { style: { width: "12px", height: "8px", background: "linear-gradient(180deg, #ef4444 0%, rgba(239,68,68,0.2) 100%)", display: "inline-block", borderRadius: "2px" } }),
+                  e('span', { style: { color: "#9a9aaa" } }, "Shed (timeout)")
                 )
               )
             ),
@@ -304,6 +311,10 @@
                     e('linearGradient', { id: "utilizationGradient", x1: "0", y1: "0", x2: "0", y2: "1" },
                       e('stop', { offset: "0%", stopColor: "#6366f1", stopOpacity: 0.6 }),
                       e('stop', { offset: "100%", stopColor: "#6366f1", stopOpacity: 0.05 })
+                    ),
+                    e('linearGradient', { id: "shedGradient", x1: "0", y1: "0", x2: "0", y2: "1" },
+                      e('stop', { offset: "0%", stopColor: "#ef4444", stopOpacity: 0.7 }),
+                      e('stop', { offset: "100%", stopColor: "#ef4444", stopOpacity: 0.1 })
                     )
                   ),
                   e(XAxis, { dataKey: "time", tick: { fill: "#5a5a6a", fontSize: 10 }, axisLine: { stroke: "#2a2a3a" }, tickLine: { stroke: "#2a2a3a" }, interval: 23 }),
@@ -311,11 +322,13 @@
                   e(Tooltip, { contentStyle: { background: "#1a1a24", border: "1px solid #2a2a3a", borderRadius: "8px", fontSize: "12px" }, labelStyle: { color: "#9a9aaa" }, formatter: (value, name) => {
                     if (name === "actualUtilization") return [value.toFixed(1), "Actual"];
                     if (name === "inputDemand") return [value.toFixed(1), "Input"];
+                    if (name === "shedDemand") return [value.toFixed(1), "Shed"];
                     return [value.toFixed(1), name];
                   } }),
                   e(ReferenceLine, { y: machines, stroke: "#ffffff", strokeWidth: 2 }),
                   e(Area, { type: "monotone", dataKey: "inputDemand", stroke: "#818cf8", strokeWidth: 1, fill: "none", strokeOpacity: 0.3, strokeDasharray: "3 3" }),
-                  e(Area, { type: "monotone", dataKey: "actualUtilization", stroke: "#818cf8", strokeWidth: 2, fill: "url(#utilizationGradient)" })
+                  e(Area, { type: "monotone", dataKey: "actualUtilization", stroke: "#818cf8", strokeWidth: 2, fill: "url(#utilizationGradient)" }),
+                  e(Area, { type: "monotone", dataKey: "shedDemand", stroke: "#ef4444", strokeWidth: 1.5, fill: "url(#shedGradient)" })
                 )
               )
             ),
