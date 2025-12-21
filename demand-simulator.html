@@ -161,7 +161,8 @@
             points.push({
               time: `${Math.floor(hour).toString().padStart(2, "0")}:${(minute % 60).toString().padStart(2, "0")}`,
               hour,
-              demand: demand,
+              inputDemand: demand,
+              actualUtilization: actualUsage,
               capacity: machines,
               queuedDemand: queueSize,
             });
@@ -192,7 +193,7 @@
         };
       }, [machines, curveWidth, totalDemand, queueTimeout]);
 
-      const maxDemand = Math.max(...data.map((d) => d.demand));
+      const maxDemand = Math.max(...data.map((d) => d.inputDemand));
       const yMax = Math.max(machines * 1.1, maxDemand * 1.1);
 
       return e('div', { style: { minHeight: "100vh", padding: "32px" } },
@@ -282,16 +283,16 @@
               e('h3', { style: { fontSize: "11px", fontWeight: 500, letterSpacing: "2px", textTransform: "uppercase", color: "#5a5a6a" } }, "24-Hour Demand Profile"),
               e('div', { style: { display: "flex", gap: "20px", fontSize: "11px" } },
                 e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
+                  e('span', { style: { width: "12px", height: "8px", background: "linear-gradient(180deg, #6366f1 0%, rgba(99,102,241,0.2) 100%)", display: "inline-block", borderRadius: "2px" } }),
+                  e('span', { style: { color: "#9a9aaa" } }, "Actual Utilization")
+                ),
+                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
+                  e('span', { style: { width: "12px", height: "2px", background: "#818cf8", display: "inline-block", opacity: 0.4 } }),
+                  e('span', { style: { color: "#9a9aaa" } }, "Input Demand")
+                ),
+                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
                   e('span', { style: { width: "12px", height: "2px", background: "#fff", display: "inline-block" } }),
                   e('span', { style: { color: "#9a9aaa" } }, "Capacity")
-                ),
-                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
-                  e('span', { style: { width: "12px", height: "2px", background: "#fb923c", display: "inline-block" } }),
-                  e('span', { style: { color: "#9a9aaa" } }, "Peak (180min avg)")
-                ),
-                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
-                  e('span', { style: { width: "12px", height: "2px", background: "#4ade80", display: "inline-block" } }),
-                  e('span', { style: { color: "#9a9aaa" } }, "Average")
                 )
               )
             ),
@@ -300,18 +301,21 @@
               e(ResponsiveContainer, { width: "100%", height: "100%" },
                 e(AreaChart, { data: data, margin: { top: 20, right: 30, left: 20, bottom: 20 } },
                   e('defs', null,
-                    e('linearGradient', { id: "demandGradient", x1: "0", y1: "0", x2: "0", y2: "1" },
+                    e('linearGradient', { id: "utilizationGradient", x1: "0", y1: "0", x2: "0", y2: "1" },
                       e('stop', { offset: "0%", stopColor: "#6366f1", stopOpacity: 0.6 }),
                       e('stop', { offset: "100%", stopColor: "#6366f1", stopOpacity: 0.05 })
                     )
                   ),
                   e(XAxis, { dataKey: "time", tick: { fill: "#5a5a6a", fontSize: 10 }, axisLine: { stroke: "#2a2a3a" }, tickLine: { stroke: "#2a2a3a" }, interval: 23 }),
                   e(YAxis, { domain: [0, yMax], tick: { fill: "#5a5a6a", fontSize: 10, fontFamily: "'SF Mono', 'Fira Code', 'Consolas', monospace" }, axisLine: { stroke: "#2a2a3a" }, tickLine: { stroke: "#2a2a3a" }, label: { value: "CIDU", angle: -90, position: "insideLeft", fill: "#5a5a6a", fontSize: 10, dx: -10 }, tickFormatter: (value) => Math.round(value).toString() }),
-                  e(Tooltip, { contentStyle: { background: "#1a1a24", border: "1px solid #2a2a3a", borderRadius: "8px", fontSize: "12px" }, labelStyle: { color: "#9a9aaa" }, formatter: (value) => [value.toFixed(1), "Demand"] }),
+                  e(Tooltip, { contentStyle: { background: "#1a1a24", border: "1px solid #2a2a3a", borderRadius: "8px", fontSize: "12px" }, labelStyle: { color: "#9a9aaa" }, formatter: (value, name) => {
+                    if (name === "actualUtilization") return [value.toFixed(1), "Actual"];
+                    if (name === "inputDemand") return [value.toFixed(1), "Input"];
+                    return [value.toFixed(1), name];
+                  } }),
                   e(ReferenceLine, { y: machines, stroke: "#ffffff", strokeWidth: 2 }),
-                  e(ReferenceLine, { y: parseFloat(metrics.peakUtilization), stroke: "#fb923c", strokeWidth: 1.5, strokeDasharray: "6 4" }),
-                  e(ReferenceLine, { y: parseFloat(metrics.avgUtilization), stroke: "#4ade80", strokeWidth: 1.5, strokeDasharray: "6 4" }),
-                  e(Area, { type: "monotone", dataKey: "demand", stroke: "#818cf8", strokeWidth: 2, fill: "url(#demandGradient)" })
+                  e(Area, { type: "monotone", dataKey: "inputDemand", stroke: "#818cf8", strokeWidth: 1, fill: "none", strokeOpacity: 0.3, strokeDasharray: "3 3" }),
+                  e(Area, { type: "monotone", dataKey: "actualUtilization", stroke: "#818cf8", strokeWidth: 2, fill: "url(#utilizationGradient)" })
                 )
               )
             ),
