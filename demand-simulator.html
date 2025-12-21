@@ -242,9 +242,11 @@
             e('div', { style: { marginBottom: "32px" } },
               e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
                 e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Queue Timeout"),
-                e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, queueTimeout + "min")
+                e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } },
+                  queueTimeout >= 60 ? (queueTimeout / 60).toFixed(1) + "h" : queueTimeout + "min"
+                )
               ),
-              e('input', { type: "range", min: 5, max: 120, step: 5, value: queueTimeout, onChange: (ev) => setQueueTimeout(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #f59e0b 0%, #d97706 100%)" } })
+              e('input', { type: "range", min: 15, max: 720, step: 15, value: queueTimeout, onChange: (ev) => setQueueTimeout(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #f59e0b 0%, #d97706 100%)" } })
             ),
 
             // Metrics
