@@ -76,6 +76,7 @@
           machines: Number(params.get('machines')) || 100,
           curveWidth: Number(params.get('curveWidth')) || 3,
           totalDemand: Number(params.get('totalDemand')) || 50000,
+          queueTimeout: Number(params.get('queueTimeout')) || 30,
         };
       };
 
@@ -83,6 +84,7 @@
       const [machines, setMachines] = useState(initial.machines);
       const [curveWidth, setCurveWidth] = useState(initial.curveWidth);
       const [totalDemand, setTotalDemand] = useState(initial.totalDemand);
+      const [queueTimeout, setQueueTimeout] = useState(initial.queueTimeout);
 
       // Update URL when parameters change
       React.useEffect(() => {
@@ -90,9 +92,10 @@
         params.set('machines', machines);
         params.set('curveWidth', curveWidth);
         params.set('totalDemand', totalDemand);
+        params.set('queueTimeout', queueTimeout);
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         window.history.replaceState({}, '', newUrl);
-      }, [machines, curveWidth, totalDemand]);
+      }, [machines, curveWidth, totalDemand, queueTimeout]);
 
       const peakHour = 15;
 
@@ -106,13 +109,53 @@
 
         let totalUtilization = 0;
         const demandValues = [];
+        const queue = []; // Array of {arrivalTime: number, demand: number}
+        let totalShedDemand = 0;
 
         for (let minute = 0; minute < 1440; minute++) {
           const hour = minute / 60;
           const demand = scaleFactor * gaussian(minute, peakMinute, stdDevMinutes);
-          const actualUsage = Math.min(demand, machines);
+
+          // Step 1: Remove timed-out requests from queue
+          for (let i = queue.length - 1; i >= 0; i--) {
+            if (minute - queue[i].arrivalTime > queueTimeout) {
+              totalShedDemand += queue[i].demand;
+              queue.splice(i, 1);
+            }
+          }
+
+          // Step 2: Serve new demand up to available capacity
+          let availableCapacity = machines;
+          const immediatelyServed = Math.min(demand, availableCapacity);
+          availableCapacity -= immediatelyServed;
+          let actualUsage = immediatelyServed;
+
+          // Step 3: Queue excess demand
+          const excessDemand = demand - immediatelyServed;
+          if (excessDemand > 0) {
+            queue.push({ arrivalTime: minute, demand: excessDemand });
+          }
+
+          // Step 4: Process queued requests (FIFO)
+          let queueIndex = 0;
+          while (availableCapacity > 0 && queueIndex < queue.length) {
+            const queuedItem = queue[queueIndex];
+            const servedFromQueue = Math.min(queuedItem.demand, availableCapacity);
+
+            actualUsage += servedFromQueue;
+            availableCapacity -= servedFromQueue;
+            queuedItem.demand -= servedFromQueue;
+
+            if (queuedItem.demand <= 0) {
+              queue.splice(queueIndex, 1);
+            } else {
+              queueIndex++;
+            }
+          }
+
           totalUtilization += actualUsage;
-          demandValues.push({ minute, demand, usage: actualUsage });
+          const queueSize = queue.reduce((sum, item) => sum + item.demand, 0);
+          demandValues.push({ minute, demand, usage: actualUsage, queueSize });
 
           if (minute % 5 === 0) {
             points.push({
@@ -120,9 +163,15 @@
               hour,
               demand: demand,
               capacity: machines,
+              queuedDemand: queueSize,
             });
           }
         }
+
+        // Step 5: At end of day, shed any remaining queued demand
+        queue.forEach(item => {
+          totalShedDemand += item.demand;
+        });
 
         const sortedDemand = [...demandValues].sort((a, b) => b.usage - a.usage);
         const top180 = sortedDemand.slice(0, 180);
@@ -137,9 +186,11 @@
             avgUtilization: avgUtilization.toFixed(1),
             peakPercent: ((peakUtilization / machines) * 100).toFixed(1),
             avgPercent: ((avgUtilization / machines) * 100).toFixed(1),
+            shedDemand: Math.round(totalShedDemand),
+            shedPercent: ((totalShedDemand / totalDemand) * 100).toFixed(1),
           },
         };
-      }, [machines, curveWidth, totalDemand]);
+      }, [machines, curveWidth, totalDemand, queueTimeout]);
 
       const maxDemand = Math.max(...data.map((d) => d.demand));
       const yMax = Math.max(machines * 1.1, maxDemand * 1.1);
@@ -175,12 +226,21 @@
             ),
 
             // Total Demand Slider
-            e('div', { style: { marginBottom: "32px" } },
+            e('div', { style: { marginBottom: "28px" } },
               e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
                 e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Daily Demand"),
                 e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, (totalDemand / 1000).toFixed(0) + "k")
               ),
               e('input', { type: "range", min: 5000, max: 200000, step: 1000, value: totalDemand, onChange: (ev) => setTotalDemand(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #10b981 0%, #059669 100%)" } })
+            ),
+
+            // Queue Timeout Slider
+            e('div', { style: { marginBottom: "32px" } },
+              e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
+                e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Queue Timeout"),
+                e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, queueTimeout + "min")
+              ),
+              e('input', { type: "range", min: 5, max: 120, step: 5, value: queueTimeout, onChange: (ev) => setQueueTimeout(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #f59e0b 0%, #d97706 100%)" } })
             ),
 
             // Metrics
@@ -206,6 +266,12 @@
                   e('div', { style: { fontSize: "20px", fontWeight: 500, color: "#4ade80" } }, metrics.avgUtilization),
                   e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.avgPercent + "%")
                 )
+              ),
+
+              e('div', { style: { background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "8px", padding: "14px", marginTop: "16px" } },
+                e('div', { style: { fontSize: "10px", color: "#f87171", marginBottom: "4px", letterSpacing: "1px" } }, "SHED"),
+                e('div', { style: { fontSize: "20px", fontWeight: 500, color: "#f87171" } }, (metrics.shedDemand / 1000).toFixed(1) + "k"),
+                e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.shedPercent + "% of demand")
               )
             )
           ),
@@ -251,8 +317,8 @@
             ),
 
             e('div', { style: { marginTop: "20px", padding: "16px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.15)", borderRadius: "8px", fontSize: "12px", color: "#a5a5b5" } },
-              e('strong', { style: { color: "#c4b5fd" } }, "Peak at 15:00"),
-              " — Demand modeled as Gaussian distribution with σ = " + curveWidth + "h. Total daily demand: " + (totalDemand / 1000).toFixed(0) + "k cidu-minutes across " + machines + " machines (" + (machines * 1440 / 1000).toFixed(0) + "k cidu-min capacity)."
+              e('strong', { style: { color: "#c4b5fd" } }, "Queueing Model"),
+              " — Requests exceeding capacity are queued (FIFO). Requests waiting longer than " + queueTimeout + " minutes are dropped. " + (metrics.shedDemand / 1000).toFixed(1) + "k cidu-min shed (" + metrics.shedPercent + "% of total demand)."
             )
           )
         )
