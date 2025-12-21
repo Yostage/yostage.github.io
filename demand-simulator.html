@@ -219,7 +219,7 @@
                     )
                   ),
                   e(XAxis, { dataKey: "time", tick: { fill: "#5a5a6a", fontSize: 10 }, axisLine: { stroke: "#2a2a3a" }, tickLine: { stroke: "#2a2a3a" }, interval: 23 }),
-                  e(YAxis, { domain: [0, yMax], tick: { fill: "#5a5a6a", fontSize: 10 }, axisLine: { stroke: "#2a2a3a" }, tickLine: { stroke: "#2a2a3a" }, label: { value: "CIDU", angle: -90, position: "insideLeft", fill: "#5a5a6a", fontSize: 10, dx: -10 } }),
+                  e(YAxis, { domain: [0, yMax], tick: { fill: "#5a5a6a", fontSize: 10, fontFamily: "'SF Mono', 'Fira Code', 'Consolas', monospace" }, axisLine: { stroke: "#2a2a3a" }, tickLine: { stroke: "#2a2a3a" }, label: { value: "CIDU", angle: -90, position: "insideLeft", fill: "#5a5a6a", fontSize: 10, dx: -10 }, tickFormatter: (value) => Math.round(value).toString() }),
                   e(Tooltip, { contentStyle: { background: "#1a1a24", border: "1px solid #2a2a3a", borderRadius: "8px", fontSize: "12px" }, labelStyle: { color: "#9a9aaa" }, formatter: (value) => [value.toFixed(1), "Demand"] }),
                   e(ReferenceLine, { y: machines, stroke: "#ffffff", strokeWidth: 2 }),
                   e(ReferenceLine, { y: parseFloat(metrics.peakUtilization), stroke: "#fb923c", strokeWidth: 1.5, strokeDasharray: "6 4" }),
