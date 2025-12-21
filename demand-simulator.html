@@ -69,9 +69,30 @@
     };
 
     function DemandCapacityViz() {
-      const [machines, setMachines] = useState(100);
-      const [curveWidth, setCurveWidth] = useState(3);
-      const [totalDemand, setTotalDemand] = useState(50000);
+      // Read initial values from URL
+      const getInitialParams = () => {
+        const params = new URLSearchParams(window.location.search);
+        return {
+          machines: Number(params.get('machines')) || 100,
+          curveWidth: Number(params.get('curveWidth')) || 3,
+          totalDemand: Number(params.get('totalDemand')) || 50000,
+        };
+      };
+
+      const initial = getInitialParams();
+      const [machines, setMachines] = useState(initial.machines);
+      const [curveWidth, setCurveWidth] = useState(initial.curveWidth);
+      const [totalDemand, setTotalDemand] = useState(initial.totalDemand);
+
+      // Update URL when parameters change
+      React.useEffect(() => {
+        const params = new URLSearchParams();
+        params.set('machines', machines);
+        params.set('curveWidth', curveWidth);
+        params.set('totalDemand', totalDemand);
+        const newUrl = `${window.location.pathname}?${params.toString()}`;
+        window.history.replaceState({}, '', newUrl);
+      }, [machines, curveWidth, totalDemand]);
 
       const peakHour = 15;
 
