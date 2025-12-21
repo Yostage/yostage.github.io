@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demand Capacity Simulation</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+      background: linear-gradient(135deg, #0a0a0f 0%, #12121a 50%, #0d0d14 100%);
+      color: #e8e8ed;
+      min-height: 100vh;
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      border-radius: 2px;
+      cursor: pointer;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "react": "https://esm.sh/react@18.2.0",
+      "react-dom/client": "https://esm.sh/react-dom@18.2.0/client",
+      "recharts": "https://esm.sh/recharts@2.10.3?deps=react@18.2.0,react-dom@18.2.0"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import React, { useState, useMemo } from 'react';
+    import { createRoot } from 'react-dom/client';
+    import { AreaChart, Area, XAxis, YAxis, ReferenceLine, ResponsiveContainer, Tooltip } from 'recharts';
+
+    const e = React.createElement;
+
+    // Gaussian function for bell curve
+    const gaussian = (x, mean, stdDev) => {
+      const exponent = -0.5 * Math.pow((x - mean) / stdDev, 2);
+      return Math.exp(exponent);
+    };
+
+    function DemandCapacityViz() {
+      const [machines, setMachines] = useState(100);
+      const [curveWidth, setCurveWidth] = useState(3);
+      const [totalDemand, setTotalDemand] = useState(50000);
+
+      const peakHour = 15;
+
+      const { data, metrics } = useMemo(() => {
+        const points = [];
+        const stdDevMinutes = curveWidth * 60;
+        const peakMinute = peakHour * 60;
+
+        const gaussianIntegral = stdDevMinutes * Math.sqrt(2 * Math.PI);
+        const scaleFactor = totalDemand / gaussianIntegral;
+
+        let totalUtilization = 0;
+        const demandValues = [];
+
+        for (let minute = 0; minute < 1440; minute++) {
+          const hour = minute / 60;
+          const demand = scaleFactor * gaussian(minute, peakMinute, stdDevMinutes);
+          const actualUsage = Math.min(demand, machines);
+          totalUtilization += actualUsage;
+          demandValues.push({ minute, demand, usage: actualUsage });
+
+          if (minute % 5 === 0) {
+            points.push({
+              time: `${Math.floor(hour).toString().padStart(2, "0")}:${(minute % 60).toString().padStart(2, "0")}`,
+              hour,
+              demand: demand,
+              capacity: machines,
+            });
+          }
+        }
+
+        const sortedDemand = [...demandValues].sort((a, b) => b.usage - a.usage);
+        const top180 = sortedDemand.slice(0, 180);
+        const peakUtilization = top180.reduce((sum, d) => sum + d.usage, 0) / 180;
+        const avgUtilization = totalUtilization / 1440;
+
+        return {
+          data: points,
+          metrics: {
+            totalUtilization: Math.round(totalUtilization),
+            peakUtilization: peakUtilization.toFixed(1),
+            avgUtilization: avgUtilization.toFixed(1),
+            peakPercent: ((peakUtilization / machines) * 100).toFixed(1),
+            avgPercent: ((avgUtilization / machines) * 100).toFixed(1),
+          },
+        };
+      }, [machines, curveWidth, totalDemand]);
+
+      const maxDemand = Math.max(...data.map((d) => d.demand));
+      const yMax = Math.max(machines * 1.1, maxDemand * 1.1);
+
+      return e('div', { style: { minHeight: "100vh", padding: "32px" } },
+        // Header
+        e('div', { style: { marginBottom: "40px" } },
+          e('h1', { style: { fontSize: "14px", fontWeight: 400, letterSpacing: "4px", textTransform: "uppercase", color: "#6b6b7b", marginBottom: "8px" } }, "Capacity Planning"),
+          e('h2', { style: { fontSize: "32px", fontWeight: 300, letterSpacing: "-0.5px", margin: 0, background: "linear-gradient(90deg, #fff 0%, #a8a8b8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" } }, "Demand Simulation")
+        ),
+
+        e('div', { style: { display: "grid", gridTemplateColumns: "320px 1fr", gap: "40px" } },
+          // Controls Panel
+          e('div', { style: { background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "28px" } },
+            e('h3', { style: { fontSize: "11px", fontWeight: 500, letterSpacing: "2px", textTransform: "uppercase", color: "#5a5a6a", marginBottom: "24px" } }, "Parameters"),
+
+            // Machines Slider
+            e('div', { style: { marginBottom: "28px" } },
+              e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
+                e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Machines"),
+                e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, machines)
+              ),
+              e('input', { type: "range", min: 10, max: 500, value: machines, onChange: (ev) => setMachines(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%)" } })
+            ),
+
+            // Curve Width Slider
+            e('div', { style: { marginBottom: "28px" } },
+              e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
+                e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Curve Width (σ hours)"),
+                e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, curveWidth + "h")
+              ),
+              e('input', { type: "range", min: 0.5, max: 6, step: 0.25, value: curveWidth, onChange: (ev) => setCurveWidth(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #8b5cf6 0%, #6d28d9 100%)" } })
+            ),
+
+            // Total Demand Slider
+            e('div', { style: { marginBottom: "32px" } },
+              e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
+                e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Daily Demand"),
+                e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, (totalDemand / 1000).toFixed(0) + "k")
+              ),
+              e('input', { type: "range", min: 5000, max: 200000, step: 1000, value: totalDemand, onChange: (ev) => setTotalDemand(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #10b981 0%, #059669 100%)" } })
+            ),
+
+            // Metrics
+            e('div', { style: { borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "24px" } },
+              e('h3', { style: { fontSize: "11px", fontWeight: 500, letterSpacing: "2px", textTransform: "uppercase", color: "#5a5a6a", marginBottom: "20px" } }, "Metrics"),
+
+              e('div', { style: { marginBottom: "20px" } },
+                e('div', { style: { fontSize: "11px", color: "#6b6b7b", marginBottom: "4px" } }, "Total Utilization"),
+                e('div', { style: { fontSize: "24px", fontWeight: 300, color: "#fff" } },
+                  (metrics.totalUtilization / 1000).toFixed(1) + "k",
+                  e('span', { style: { fontSize: "13px", color: "#6b6b7b", marginLeft: "6px" } }, "cidu-min")
+                )
+              ),
+
+              e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" } },
+                e('div', { style: { background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: "8px", padding: "14px" } },
+                  e('div', { style: { fontSize: "10px", color: "#fb923c", marginBottom: "4px", letterSpacing: "1px" } }, "PEAK"),
+                  e('div', { style: { fontSize: "20px", fontWeight: 500, color: "#fb923c" } }, metrics.peakUtilization),
+                  e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.peakPercent + "%")
+                ),
+                e('div', { style: { background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: "8px", padding: "14px" } },
+                  e('div', { style: { fontSize: "10px", color: "#4ade80", marginBottom: "4px", letterSpacing: "1px" } }, "AVG"),
+                  e('div', { style: { fontSize: "20px", fontWeight: 500, color: "#4ade80" } }, metrics.avgUtilization),
+                  e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.avgPercent + "%")
+                )
+              )
+            )
+          ),
+
+          // Chart Area
+          e('div', { style: { background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "12px", padding: "28px" } },
+            e('div', { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" } },
+              e('h3', { style: { fontSize: "11px", fontWeight: 500, letterSpacing: "2px", textTransform: "uppercase", color: "#5a5a6a" } }, "24-Hour Demand Profile"),
+              e('div', { style: { display: "flex", gap: "20px", fontSize: "11px" } },
+                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
+                  e('span', { style: { width: "12px", height: "2px", background: "#fff", display: "inline-block" } }),
+                  e('span', { style: { color: "#9a9aaa" } }, "Capacity")
+                ),
+                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
+                  e('span', { style: { width: "12px", height: "2px", background: "#fb923c", display: "inline-block" } }),
+                  e('span', { style: { color: "#9a9aaa" } }, "Peak (180min avg)")
+                ),
+                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
+                  e('span', { style: { width: "12px", height: "2px", background: "#4ade80", display: "inline-block" } }),
+                  e('span', { style: { color: "#9a9aaa" } }, "Average")
+                )
+              )
+            ),
+
+            e('div', { style: { height: "400px" } },
+              e(ResponsiveContainer, { width: "100%", height: "100%" },
+                e(AreaChart, { data: data, margin: { top: 20, right: 30, left: 20, bottom: 20 } },
+                  e('defs', null,
+                    e('linearGradient', { id: "demandGradient", x1: "0", y1: "0", x2: "0", y2: "1" },
+                      e('stop', { offset: "0%", stopColor: "#6366f1", stopOpacity: 0.6 }),
+                      e('stop', { offset: "100%", stopColor: "#6366f1", stopOpacity: 0.05 })
+                    )
+                  ),
+                  e(XAxis, { dataKey: "time", tick: { fill: "#5a5a6a", fontSize: 10 }, axisLine: { stroke: "#2a2a3a" }, tickLine: { stroke: "#2a2a3a" }, interval: 23 }),
+                  e(YAxis, { domain: [0, yMax], tick: { fill: "#5a5a6a", fontSize: 10 }, axisLine: { stroke: "#2a2a3a" }, tickLine: { stroke: "#2a2a3a" }, label: { value: "CIDU", angle: -90, position: "insideLeft", fill: "#5a5a6a", fontSize: 10, dx: -10 } }),
+                  e(Tooltip, { contentStyle: { background: "#1a1a24", border: "1px solid #2a2a3a", borderRadius: "8px", fontSize: "12px" }, labelStyle: { color: "#9a9aaa" }, formatter: (value) => [value.toFixed(1), "Demand"] }),
+                  e(ReferenceLine, { y: machines, stroke: "#ffffff", strokeWidth: 2 }),
+                  e(ReferenceLine, { y: parseFloat(metrics.peakUtilization), stroke: "#fb923c", strokeWidth: 1.5, strokeDasharray: "6 4" }),
+                  e(ReferenceLine, { y: parseFloat(metrics.avgUtilization), stroke: "#4ade80", strokeWidth: 1.5, strokeDasharray: "6 4" }),
+                  e(Area, { type: "monotone", dataKey: "demand", stroke: "#818cf8", strokeWidth: 2, fill: "url(#demandGradient)" })
+                )
+              )
+            ),
+
+            e('div', { style: { marginTop: "20px", padding: "16px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.15)", borderRadius: "8px", fontSize: "12px", color: "#a5a5b5" } },
+              e('strong', { style: { color: "#c4b5fd" } }, "Peak at 15:00"),
+              " — Demand modeled as Gaussian distribution with σ = " + curveWidth + "h. Total daily demand: " + (totalDemand / 1000).toFixed(0) + "k cidu-minutes across " + machines + " machines (" + (machines * 1440 / 1000).toFixed(0) + "k cidu-min capacity)."
+            )
+          )
+        )
+      );
+    }
+
+    const root = createRoot(document.getElementById('root'));
+    root.render(e(DemandCapacityViz));
+  </script>
+</body>
+</html>
