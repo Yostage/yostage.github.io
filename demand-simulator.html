@@ -309,7 +309,20 @@
                 },
                   // Curve header with remove button
                   e('div', { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" } },
-                    e('h4', { style: { fontSize: "13px", fontWeight: 600, color: curveItem.color, margin: 0 } }, `Curve ${index + 1}`),
+                    e('div', { style: { display: "flex", alignItems: "center", gap: "8px" } },
+                      e('h4', { style: { fontSize: "13px", fontWeight: 600, color: curveItem.color, margin: 0 } }, `Curve ${index + 1}`),
+                      e('span', {
+                        style: {
+                          fontSize: "10px",
+                          fontWeight: 600,
+                          padding: "2px 6px",
+                          borderRadius: "3px",
+                          background: `${curveItem.color}33`,
+                          color: curveItem.color,
+                          border: `1px solid ${curveItem.color}66`
+                        }
+                      }, `P${curveItem.priority}`)
+                    ),
                     curves.length > 1 && e('button', {
                       onClick: () => removeCurve(index),
                       style: {
@@ -358,6 +371,32 @@
                           fontWeight: curveItem.type === 'linear' ? 600 : 400
                         }
                       }, "Linear")
+                    )
+                  ),
+
+                  // Priority Selector
+                  e('div', { style: { marginBottom: "16px" } },
+                    e('div', { style: { marginBottom: "8px" } },
+                      e('label', { style: { fontSize: "12px", color: "#9a9aaa" } }, "Priority")
+                    ),
+                    e('div', { style: { display: "flex", gap: "6px" } },
+                      [1, 2, 3].map(p =>
+                        e('button', {
+                          key: p,
+                          onClick: () => updateCurve(index, {priority: p}),
+                          style: {
+                            flex: 1,
+                            padding: "8px",
+                            borderRadius: "4px",
+                            border: curveItem.priority === p ? `2px solid ${curveItem.color}` : "1px solid rgba(255,255,255,0.1)",
+                            background: curveItem.priority === p ? `${curveItem.color}33` : "rgba(255,255,255,0.05)",
+                            color: curveItem.priority === p ? curveItem.color : "#9a9aaa",
+                            cursor: "pointer",
+                            fontSize: "12px",
+                            fontWeight: curveItem.priority === p ? 600 : 400
+                          }
+                        }, p === 1 ? "High" : p === 2 ? "Med" : "Low")
+                      )
                     )
                   ),
 
