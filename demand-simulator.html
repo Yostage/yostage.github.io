@@ -560,6 +560,44 @@
                 e('div', { style: { fontSize: "10px", color: "#f87171", marginBottom: "4px", letterSpacing: "1px" } }, "SHED"),
                 e('div', { style: { fontSize: "20px", fontWeight: 500, color: "#f87171" } }, (metrics.shedDemand / 1000).toFixed(1) + "k"),
                 e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.shedPercent + "% of demand")
+              ),
+
+              // Per-curve metrics breakdown
+              curves.length > 1 && e('div', { style: { marginTop: "24px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.06)" } },
+                e('h4', { style: { fontSize: "10px", fontWeight: 500, letterSpacing: "2px", textTransform: "uppercase", color: "#5a5a6a", marginBottom: "16px" } }, "Per-Curve Breakdown"),
+
+                ...curves.map((curve, index) => {
+                  const curveMetrics = metrics.byCurve[curve.id];
+                  return e('div', {
+                    key: `metrics-${curve.id}`,
+                    style: {
+                      marginBottom: "16px",
+                      padding: "12px",
+                      background: `${curve.color}11`,
+                      border: `1px solid ${curve.color}33`,
+                      borderRadius: "6px"
+                    }
+                  },
+                    e('div', { style: { display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" } },
+                      e('span', { style: { fontSize: "11px", fontWeight: 600, color: curve.color } }, `Curve ${index + 1}`),
+                      e('span', { style: { fontSize: "9px", padding: "1px 4px", background: `${curve.color}33`, color: curve.color, borderRadius: "2px" } }, `P${curve.priority}`)
+                    ),
+                    e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", fontSize: "10px" } },
+                      e('div', null,
+                        e('div', { style: { color: "#6b6b7b", marginBottom: "2px" } }, "Peak"),
+                        e('div', { style: { fontSize: "14px", fontWeight: 500, color: "#fff" } }, curveMetrics.peakUtilization)
+                      ),
+                      e('div', null,
+                        e('div', { style: { color: "#6b6b7b", marginBottom: "2px" } }, "Avg"),
+                        e('div', { style: { fontSize: "14px", fontWeight: 500, color: "#fff" } }, curveMetrics.avgUtilization)
+                      ),
+                      e('div', null,
+                        e('div', { style: { color: "#6b6b7b", marginBottom: "2px" } }, "Shed"),
+                        e('div', { style: { fontSize: "14px", fontWeight: 500, color: "#f87171" } }, curveMetrics.shedPercent + "%")
+                      )
+                    )
+                  );
+                })
               )
             )
           ),
