@@ -171,7 +171,12 @@
 
         let totalUtilization = 0;
         const demandValues = [];
-        const queue = []; // Array of {arrivalTime: number, demand: number}
+
+        // Per-curve queues: {curveId: [{arrivalTime, demand, curveId}]}
+        const queuesByCurve = {};
+        curves.forEach(curve => {
+          queuesByCurve[curve.id] = [];
+        });
         let totalShedDemand = 0;
 
         for (let minute = 0; minute < 1440; minute++) {
@@ -180,47 +185,71 @@
           // Sum demand across all curves for this minute
           const demand = curves.reduce((sum, curve) => sum + demandByCurve[curve.id][minute], 0);
 
-          // Step 1: Remove timed-out requests from queue
+          // Step 1: Remove timed-out requests from all queues
           let shedThisMinute = 0;
-          for (let i = queue.length - 1; i >= 0; i--) {
-            if (minute - queue[i].arrivalTime > queueTimeout) {
-              shedThisMinute += queue[i].demand;
-              totalShedDemand += queue[i].demand;
-              queue.splice(i, 1);
+          curves.forEach(curve => {
+            const queue = queuesByCurve[curve.id];
+            for (let i = queue.length - 1; i >= 0; i--) {
+              if (minute - queue[i].arrivalTime > queueTimeout) {
+                shedThisMinute += queue[i].demand;
+                totalShedDemand += queue[i].demand;
+                queue.splice(i, 1);
+              }
             }
-          }
+          });
 
-          // Step 2: Serve new demand up to available capacity
+          // Step 2: Serve new demand from each curve up to available capacity
           let availableCapacity = machines;
-          const immediatelyServed = Math.min(demand, availableCapacity);
-          availableCapacity -= immediatelyServed;
-          let actualUsage = immediatelyServed;
+          let actualUsage = 0;
 
-          // Step 3: Queue excess demand
-          const excessDemand = demand - immediatelyServed;
-          if (excessDemand > 0) {
-            queue.push({ arrivalTime: minute, demand: excessDemand });
-          }
+          curves.forEach(curve => {
+            const curveDemand = demandByCurve[curve.id][minute];
+            const immediatelyServed = Math.min(curveDemand, availableCapacity);
+            availableCapacity -= immediatelyServed;
+            actualUsage += immediatelyServed;
 
-          // Step 4: Process queued requests (FIFO)
-          let queueIndex = 0;
-          while (availableCapacity > 0 && queueIndex < queue.length) {
-            const queuedItem = queue[queueIndex];
-            const servedFromQueue = Math.min(queuedItem.demand, availableCapacity);
-
-            actualUsage += servedFromQueue;
-            availableCapacity -= servedFromQueue;
-            queuedItem.demand -= servedFromQueue;
-
-            if (queuedItem.demand <= 0) {
-              queue.splice(queueIndex, 1);
-            } else {
-              queueIndex++;
+            // Step 3: Queue excess demand for this curve
+            const excessDemand = curveDemand - immediatelyServed;
+            if (excessDemand > 0) {
+              queuesByCurve[curve.id].push({
+                arrivalTime: minute,
+                demand: excessDemand,
+                curveId: curve.id
+              });
             }
-          }
+          });
+
+          // Step 4: Process queued requests from all curves (FIFO across all queues)
+          // Flatten all queues into single array, maintaining FIFO order by arrival time
+          const allQueuedItems = [];
+          curves.forEach(curve => {
+            queuesByCurve[curve.id].forEach(item => {
+              allQueuedItems.push(item);
+            });
+          });
+          allQueuedItems.sort((a, b) => a.arrivalTime - b.arrivalTime);
+
+          allQueuedItems.forEach(item => {
+            if (availableCapacity > 0) {
+              const servedFromQueue = Math.min(item.demand, availableCapacity);
+              actualUsage += servedFromQueue;
+              availableCapacity -= servedFromQueue;
+              item.demand -= servedFromQueue;
+            }
+          });
+
+          // Remove fully served items from their queues
+          curves.forEach(curve => {
+            queuesByCurve[curve.id] = queuesByCurve[curve.id].filter(item => item.demand > 0);
+          });
 
           totalUtilization += actualUsage;
-          const queueSize = queue.reduce((sum, item) => sum + item.demand, 0);
+
+          // Calculate total queued demand across all curves
+          const queueSize = curves.reduce((sum, curve) => {
+            return sum + queuesByCurve[curve.id].reduce((qSum, item) => qSum + item.demand, 0);
+          }, 0);
+
           demandValues.push({ minute, demand, usage: actualUsage, queueSize, shed: shedThisMinute });
 
           if (minute % 5 === 0) {
@@ -236,9 +265,11 @@
           }
         }
 
-        // Step 5: At end of day, shed any remaining queued demand
-        queue.forEach(item => {
-          totalShedDemand += item.demand;
+        // Step 5: At end of day, shed any remaining queued demand from all curves
+        curves.forEach(curve => {
+          queuesByCurve[curve.id].forEach(item => {
+            totalShedDemand += item.demand;
+          });
         });
 
         const sortedDemand = [...demandValues].sort((a, b) => b.usage - a.usage);
