@@ -148,21 +148,26 @@
 
       const { data, metrics } = useMemo(() => {
         const points = [];
-        const curve = curves[0]; // Use first curve for now
 
-        // Calculate demand based on curve type
-        let getDemand;
-        if (curve.type === 'linear') {
-          const constantDemand = curve.totalDemand / 1440;
-          getDemand = () => constantDemand;
-        } else {
-          // Gaussian
-          const stdDevMinutes = curve.curveWidth * 60;
-          const peakMinute = curve.peakHour * 60;
-          const gaussianIntegral = stdDevMinutes * Math.sqrt(2 * Math.PI);
-          const scaleFactor = curve.totalDemand / gaussianIntegral;
-          getDemand = (minute) => scaleFactor * gaussian(minute, peakMinute, stdDevMinutes);
-        }
+        // Generate demand arrays for each curve
+        const demandByCurve = {};
+        curves.forEach(curve => {
+          let getDemand;
+          if (curve.type === 'linear') {
+            const constantDemand = curve.totalDemand / 1440;
+            getDemand = () => constantDemand;
+          } else {
+            // Gaussian
+            const stdDevMinutes = curve.curveWidth * 60;
+            const peakMinute = curve.peakHour * 60;
+            const gaussianIntegral = stdDevMinutes * Math.sqrt(2 * Math.PI);
+            const scaleFactor = curve.totalDemand / gaussianIntegral;
+            getDemand = (minute) => scaleFactor * gaussian(minute, peakMinute, stdDevMinutes);
+          }
+
+          // Generate 1440-minute demand array for this curve
+          demandByCurve[curve.id] = Array.from({ length: 1440 }, (_, minute) => getDemand(minute));
+        });
 
         let totalUtilization = 0;
         const demandValues = [];
@@ -171,7 +176,9 @@
 
         for (let minute = 0; minute < 1440; minute++) {
           const hour = minute / 60;
-          const demand = getDemand(minute);
+
+          // Sum demand across all curves for this minute
+          const demand = curves.reduce((sum, curve) => sum + demandByCurve[curve.id][minute], 0);
 
           // Step 1: Remove timed-out requests from queue
           let shedThisMinute = 0;
@@ -239,6 +246,9 @@
         const peakUtilization = top180.reduce((sum, d) => sum + d.usage, 0) / 180;
         const avgUtilization = totalUtilization / 1440;
 
+        // Calculate aggregate total demand across all curves
+        const aggregateTotalDemand = curves.reduce((sum, curve) => sum + curve.totalDemand, 0);
+
         return {
           data: points,
           metrics: {
@@ -248,7 +258,7 @@
             peakPercent: ((peakUtilization / machines) * 100).toFixed(1),
             avgPercent: ((avgUtilization / machines) * 100).toFixed(1),
             shedDemand: Math.round(totalShedDemand),
-            shedPercent: ((totalShedDemand / curve.totalDemand) * 100).toFixed(1),
+            shedPercent: ((totalShedDemand / aggregateTotalDemand) * 100).toFixed(1),
           },
         };
       }, [machines, curves, queueTimeout]);
