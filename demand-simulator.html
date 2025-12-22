@@ -76,7 +76,7 @@
         const queueTimeout = Number(params.get('queueTimeout')) || 30;
         const curve = {
           id: 'curve-1',
-          type: 'gaussian',
+          type: params.get('type') || 'gaussian',
           peakHour: Number(params.get('peakHour')) || 15,
           curveWidth: Number(params.get('curveWidth')) || 3,
           totalDemand: Number(params.get('totalDemand')) || 50000,
@@ -95,6 +95,7 @@
       React.useEffect(() => {
         const params = new URLSearchParams();
         params.set('machines', machines);
+        params.set('type', curve.type);
         params.set('peakHour', curve.peakHour);
         params.set('curveWidth', curve.curveWidth);
         params.set('totalDemand', curve.totalDemand);
@@ -105,11 +106,20 @@
 
       const { data, metrics } = useMemo(() => {
         const points = [];
-        const stdDevMinutes = curve.curveWidth * 60;
-        const peakMinute = curve.peakHour * 60;
 
-        const gaussianIntegral = stdDevMinutes * Math.sqrt(2 * Math.PI);
-        const scaleFactor = curve.totalDemand / gaussianIntegral;
+        // Calculate demand based on curve type
+        let getDemand;
+        if (curve.type === 'linear') {
+          const constantDemand = curve.totalDemand / 1440;
+          getDemand = () => constantDemand;
+        } else {
+          // Gaussian
+          const stdDevMinutes = curve.curveWidth * 60;
+          const peakMinute = curve.peakHour * 60;
+          const gaussianIntegral = stdDevMinutes * Math.sqrt(2 * Math.PI);
+          const scaleFactor = curve.totalDemand / gaussianIntegral;
+          getDemand = (minute) => scaleFactor * gaussian(minute, peakMinute, stdDevMinutes);
+        }
 
         let totalUtilization = 0;
         const demandValues = [];
@@ -118,7 +128,7 @@
 
         for (let minute = 0; minute < 1440; minute++) {
           const hour = minute / 60;
-          const demand = scaleFactor * gaussian(minute, peakMinute, stdDevMinutes);
+          const demand = getDemand(minute);
 
           // Step 1: Remove timed-out requests from queue
           let shedThisMinute = 0;
@@ -227,8 +237,45 @@
               e('input', { type: "range", min: 10, max: 500, value: machines, onChange: (ev) => setMachines(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%)" } })
             ),
 
-            // Peak Hour Slider
+            // Demand Type Selector
             e('div', { style: { marginBottom: "28px" } },
+              e('div', { style: { marginBottom: "12px" } },
+                e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Demand Type")
+              ),
+              e('div', { style: { display: "flex", gap: "8px" } },
+                e('button', {
+                  onClick: () => setCurve({...curve, type: 'gaussian'}),
+                  style: {
+                    flex: 1,
+                    padding: "10px",
+                    borderRadius: "6px",
+                    border: curve.type === 'gaussian' ? "2px solid #8b5cf6" : "1px solid rgba(255,255,255,0.1)",
+                    background: curve.type === 'gaussian' ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0.05)",
+                    color: curve.type === 'gaussian' ? "#c4b5fd" : "#9a9aaa",
+                    cursor: "pointer",
+                    fontSize: "13px",
+                    fontWeight: curve.type === 'gaussian' ? 600 : 400
+                  }
+                }, "Gaussian"),
+                e('button', {
+                  onClick: () => setCurve({...curve, type: 'linear'}),
+                  style: {
+                    flex: 1,
+                    padding: "10px",
+                    borderRadius: "6px",
+                    border: curve.type === 'linear' ? "2px solid #8b5cf6" : "1px solid rgba(255,255,255,0.1)",
+                    background: curve.type === 'linear' ? "rgba(139,92,246,0.2)" : "rgba(255,255,255,0.05)",
+                    color: curve.type === 'linear' ? "#c4b5fd" : "#9a9aaa",
+                    cursor: "pointer",
+                    fontSize: "13px",
+                    fontWeight: curve.type === 'linear' ? 600 : 400
+                  }
+                }, "Linear")
+              )
+            ),
+
+            // Peak Hour Slider (only for Gaussian)
+            curve.type === 'gaussian' && e('div', { style: { marginBottom: "28px" } },
               e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
                 e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Peak Hour"),
                 e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, curve.peakHour + ":00")
@@ -236,8 +283,8 @@
               e('input', { type: "range", min: 0, max: 23, value: curve.peakHour, onChange: (ev) => setCurve({...curve, peakHour: Number(ev.target.value)}), style: { background: "linear-gradient(90deg, #ec4899 0%, #be185d 100%)" } })
             ),
 
-            // Curve Width Slider
-            e('div', { style: { marginBottom: "28px" } },
+            // Curve Width Slider (only for Gaussian)
+            curve.type === 'gaussian' && e('div', { style: { marginBottom: "28px" } },
               e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
                 e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Curve Width (σ hours)"),
                 e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, curve.curveWidth + "h")
