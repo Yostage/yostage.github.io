@@ -174,8 +174,15 @@
 
         // Per-curve queues: {curveId: [{arrivalTime, demand, curveId}]}
         const queuesByCurve = {};
+        const utilizationByCurve = {};
+        const shedByCurve = {};
+        const usageValuesByCurve = {};
+
         curves.forEach(curve => {
           queuesByCurve[curve.id] = [];
+          utilizationByCurve[curve.id] = 0;
+          shedByCurve[curve.id] = 0;
+          usageValuesByCurve[curve.id] = [];
         });
         let totalShedDemand = 0;
 
@@ -191,8 +198,10 @@
             const queue = queuesByCurve[curve.id];
             for (let i = queue.length - 1; i >= 0; i--) {
               if (minute - queue[i].arrivalTime > queueTimeout) {
-                shedThisMinute += queue[i].demand;
-                totalShedDemand += queue[i].demand;
+                const shedAmount = queue[i].demand;
+                shedThisMinute += shedAmount;
+                totalShedDemand += shedAmount;
+                shedByCurve[curve.id] += shedAmount; // Track per-curve shed
                 queue.splice(i, 1);
               }
             }
@@ -207,11 +216,14 @@
 
           // Process each priority level in order
           sortedCurves.forEach(curve => {
+            let curveUsageThisMinute = 0;
+
             // Step 2a: Serve new demand from this curve
             const curveDemand = demandByCurve[curve.id][minute];
             const immediatelyServed = Math.min(curveDemand, availableCapacity);
             availableCapacity -= immediatelyServed;
             actualUsage += immediatelyServed;
+            curveUsageThisMinute += immediatelyServed;
 
             // Step 2b: Queue excess demand for this curve
             const excessDemand = curveDemand - immediatelyServed;
@@ -234,11 +246,16 @@
               const servedFromQueue = Math.min(item.demand, availableCapacity);
               actualUsage += servedFromQueue;
               availableCapacity -= servedFromQueue;
+              curveUsageThisMinute += servedFromQueue;
               item.demand -= servedFromQueue;
             }
 
             // Remove fully served items from queue
             queuesByCurve[curve.id] = queuesByCurve[curve.id].filter(item => item.demand > 0);
+
+            // Track per-curve utilization
+            utilizationByCurve[curve.id] += curveUsageThisMinute;
+            usageValuesByCurve[curve.id].push({ minute, usage: curveUsageThisMinute });
           });
 
           totalUtilization += actualUsage;
@@ -273,7 +290,9 @@
         // Step 5: At end of day, shed any remaining queued demand from all curves
         curves.forEach(curve => {
           queuesByCurve[curve.id].forEach(item => {
-            totalShedDemand += item.demand;
+            const shedAmount = item.demand;
+            totalShedDemand += shedAmount;
+            shedByCurve[curve.id] += shedAmount;
           });
         });
 
@@ -285,6 +304,24 @@
         // Calculate aggregate total demand across all curves
         const aggregateTotalDemand = curves.reduce((sum, curve) => sum + curve.totalDemand, 0);
 
+        // Calculate per-curve metrics
+        const metricsByCurve = {};
+        curves.forEach(curve => {
+          const curveUsageValues = usageValuesByCurve[curve.id];
+          const sortedCurveUsage = [...curveUsageValues].sort((a, b) => b.usage - a.usage);
+          const top180Curve = sortedCurveUsage.slice(0, 180);
+          const peakCurveUtilization = top180Curve.reduce((sum, d) => sum + d.usage, 0) / 180;
+          const avgCurveUtilization = utilizationByCurve[curve.id] / 1440;
+
+          metricsByCurve[curve.id] = {
+            totalUtilization: Math.round(utilizationByCurve[curve.id]),
+            peakUtilization: peakCurveUtilization.toFixed(1),
+            avgUtilization: avgCurveUtilization.toFixed(1),
+            shedDemand: Math.round(shedByCurve[curve.id]),
+            shedPercent: ((shedByCurve[curve.id] / curve.totalDemand) * 100).toFixed(1),
+          };
+        });
+
         return {
           data: points,
           metrics: {
@@ -295,6 +332,7 @@
             avgPercent: ((avgUtilization / machines) * 100).toFixed(1),
             shedDemand: Math.round(totalShedDemand),
             shedPercent: ((totalShedDemand / aggregateTotalDemand) * 100).toFixed(1),
+            byCurve: metricsByCurve,
           },
         };
       }, [machines, curves, queueTimeout]);
