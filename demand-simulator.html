@@ -198,48 +198,46 @@
             }
           });
 
-          // Step 2: Serve new demand from each curve up to available capacity
+          // Step 2 & 3 & 4: Priority-based processing
+          // Sort curves by priority (1 = highest priority first)
+          const sortedCurves = [...curves].sort((a, b) => a.priority - b.priority);
+
           let availableCapacity = machines;
           let actualUsage = 0;
 
-          curves.forEach(curve => {
+          // Process each priority level in order
+          sortedCurves.forEach(curve => {
+            // Step 2a: Serve new demand from this curve
             const curveDemand = demandByCurve[curve.id][minute];
             const immediatelyServed = Math.min(curveDemand, availableCapacity);
             availableCapacity -= immediatelyServed;
             actualUsage += immediatelyServed;
 
-            // Step 3: Queue excess demand for this curve
+            // Step 2b: Queue excess demand for this curve
             const excessDemand = curveDemand - immediatelyServed;
             if (excessDemand > 0) {
               queuesByCurve[curve.id].push({
                 arrivalTime: minute,
                 demand: excessDemand,
-                curveId: curve.id
+                curveId: curve.id,
+                priority: curve.priority
               });
             }
-          });
 
-          // Step 4: Process queued requests from all curves (FIFO across all queues)
-          // Flatten all queues into single array, maintaining FIFO order by arrival time
-          const allQueuedItems = [];
-          curves.forEach(curve => {
-            queuesByCurve[curve.id].forEach(item => {
-              allQueuedItems.push(item);
-            });
-          });
-          allQueuedItems.sort((a, b) => a.arrivalTime - b.arrivalTime);
+            // Step 3: Process queued requests for this curve (FIFO within same priority)
+            // Sort queue by arrival time to maintain FIFO
+            queuesByCurve[curve.id].sort((a, b) => a.arrivalTime - b.arrivalTime);
 
-          allQueuedItems.forEach(item => {
-            if (availableCapacity > 0) {
+            const queue = queuesByCurve[curve.id];
+            for (let i = 0; i < queue.length && availableCapacity > 0; i++) {
+              const item = queue[i];
               const servedFromQueue = Math.min(item.demand, availableCapacity);
               actualUsage += servedFromQueue;
               availableCapacity -= servedFromQueue;
               item.demand -= servedFromQueue;
             }
-          });
 
-          // Remove fully served items from their queues
-          curves.forEach(curve => {
+            // Remove fully served items from queue
             queuesByCurve[curve.id] = queuesByCurve[curve.id].filter(item => item.demand > 0);
           });
 
