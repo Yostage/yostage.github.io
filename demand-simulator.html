@@ -74,35 +74,57 @@
         const params = new URLSearchParams(window.location.search);
         const machines = Number(params.get('machines')) || 100;
         const queueTimeout = Number(params.get('queueTimeout')) || 30;
-        const curve = {
-          id: 'curve-1',
-          type: params.get('type') || 'gaussian',
-          peakHour: Number(params.get('peakHour')) || 15,
-          curveWidth: Number(params.get('curveWidth')) || 3,
-          totalDemand: Number(params.get('totalDemand')) || 50000,
-          priority: 1,
-          color: '#818cf8'
-        };
-        return { machines, queueTimeout, curve };
+
+        // Try to parse curves array from URL, fallback to single curve for backward compatibility
+        const curvesParam = params.get('curves');
+        let curves;
+        if (curvesParam) {
+          try {
+            curves = JSON.parse(decodeURIComponent(curvesParam));
+          } catch (e) {
+            curves = null;
+          }
+        }
+
+        // Backward compatibility: if no curves param, build from old params
+        if (!curves) {
+          curves = [{
+            id: 'curve-1',
+            type: params.get('type') || 'gaussian',
+            peakHour: Number(params.get('peakHour')) || 15,
+            curveWidth: Number(params.get('curveWidth')) || 3,
+            totalDemand: Number(params.get('totalDemand')) || 50000,
+            priority: 1,
+            color: '#818cf8'
+          }];
+        }
+
+        return { machines, queueTimeout, curves };
       };
 
       const initial = getInitialParams();
       const [machines, setMachines] = useState(initial.machines);
       const [queueTimeout, setQueueTimeout] = useState(initial.queueTimeout);
-      const [curve, setCurve] = useState(initial.curve);
+      const [curves, setCurves] = useState(initial.curves);
+
+      // Helper to update a specific curve
+      const updateCurve = (index, updates) => {
+        const newCurves = [...curves];
+        newCurves[index] = { ...newCurves[index], ...updates };
+        setCurves(newCurves);
+      };
+
+      const curve = curves[0]; // For now, just use first curve
 
       // Update URL when parameters change
       React.useEffect(() => {
         const params = new URLSearchParams();
         params.set('machines', machines);
-        params.set('type', curve.type);
-        params.set('peakHour', curve.peakHour);
-        params.set('curveWidth', curve.curveWidth);
-        params.set('totalDemand', curve.totalDemand);
         params.set('queueTimeout', queueTimeout);
+        params.set('curves', encodeURIComponent(JSON.stringify(curves)));
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         window.history.replaceState({}, '', newUrl);
-      }, [machines, curve, queueTimeout]);
+      }, [machines, curves, queueTimeout]);
 
       const { data, metrics } = useMemo(() => {
         const points = [];
@@ -244,7 +266,7 @@
               ),
               e('div', { style: { display: "flex", gap: "8px" } },
                 e('button', {
-                  onClick: () => setCurve({...curve, type: 'gaussian'}),
+                  onClick: () => updateCurve(0, {type: 'gaussian'}),
                   style: {
                     flex: 1,
                     padding: "10px",
@@ -258,7 +280,7 @@
                   }
                 }, "Gaussian"),
                 e('button', {
-                  onClick: () => setCurve({...curve, type: 'linear'}),
+                  onClick: () => updateCurve(0, {type: 'linear'}),
                   style: {
                     flex: 1,
                     padding: "10px",
@@ -280,7 +302,7 @@
                 e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Peak Hour"),
                 e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, curve.peakHour + ":00")
               ),
-              e('input', { type: "range", min: 0, max: 23, value: curve.peakHour, onChange: (ev) => setCurve({...curve, peakHour: Number(ev.target.value)}), style: { background: "linear-gradient(90deg, #ec4899 0%, #be185d 100%)" } })
+              e('input', { type: "range", min: 0, max: 23, value: curve.peakHour, onChange: (ev) => updateCurve(0, {peakHour: Number(ev.target.value)}), style: { background: "linear-gradient(90deg, #ec4899 0%, #be185d 100%)" } })
             ),
 
             // Curve Width Slider (only for Gaussian)
@@ -289,7 +311,7 @@
                 e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Curve Width (σ hours)"),
                 e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, curve.curveWidth + "h")
               ),
-              e('input', { type: "range", min: 0.5, max: 6, step: 0.25, value: curve.curveWidth, onChange: (ev) => setCurve({...curve, curveWidth: Number(ev.target.value)}), style: { background: "linear-gradient(90deg, #8b5cf6 0%, #6d28d9 100%)" } })
+              e('input', { type: "range", min: 0.5, max: 6, step: 0.25, value: curve.curveWidth, onChange: (ev) => updateCurve(0, {curveWidth: Number(ev.target.value)}), style: { background: "linear-gradient(90deg, #8b5cf6 0%, #6d28d9 100%)" } })
             ),
 
             // Total Demand Slider
@@ -298,7 +320,7 @@
                 e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Daily Demand"),
                 e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, (curve.totalDemand / 1000).toFixed(0) + "k")
               ),
-              e('input', { type: "range", min: 5000, max: 200000, step: 1000, value: curve.totalDemand, onChange: (ev) => setCurve({...curve, totalDemand: Number(ev.target.value)}), style: { background: "linear-gradient(90deg, #10b981 0%, #059669 100%)" } })
+              e('input', { type: "range", min: 5000, max: 200000, step: 1000, value: curve.totalDemand, onChange: (ev) => updateCurve(0, {totalDemand: Number(ev.target.value)}), style: { background: "linear-gradient(90deg, #10b981 0%, #059669 100%)" } })
             ),
 
             // Queue Timeout Slider
