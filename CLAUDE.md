@@ -99,10 +99,10 @@ demand-simulator.html?machines=200&curveWidth=4&totalDemand=80000&queueTimeout=6
 ## Common Scenarios
 
 ### Adjusting Demand Distribution
-Modify the Gaussian parameters or replace with alternative distribution function at [demand-simulator.html:117](demand-simulator.html#L117).
+Each curve can be Gaussian or Linear. Demand generation happens at lines 152-170. Gaussian uses peak hour and curve width; Linear uses constant demand = totalDemand / 1440.
 
 ### Changing Queueing Behavior
-The queue logic spans lines 119-156. To modify timeout behavior, adjust the expiration check at [demand-simulator.html:122](demand-simulator.html#L122).
+Priority-based queue processing at lines 217-259. Curves sorted by priority (1 first), then each processes new arrivals + queued items with remaining capacity. Timeout checking at lines 195-208.
 
 ### Updating Visual Theme
 All colors use inline styles with gradient definitions. Primary color scheme uses indigo (`#6366f1`), with red for shed demand (`#ef4444`) and green for utilization metrics (`#4ade80`).
@@ -111,9 +111,22 @@ All colors use inline styles with gradient definitions. Primary color scheme use
 
 This repository uses Sapling (`.sl` directory), which is Git-compatible. Standard Git commands will work for version control operations.
 
-## TODO:
-- Add multiple demand sources.
-- Add prioritization between them.
-- Permit demand sources to be linear instead of gaussian
-- consider timeshifting the day to start at peak for easier analysis, or else have two days on screen.
+## Recent Updates
+
+### Multiple Demand Curves (Completed)
+The simulator now supports up to 3 independent demand curves with:
+- **Multiple demand sources**: Each curve has configurable demand type (Gaussian or Linear), peak hour, curve width, and total demand
+- **Priority-based processing**: Curves have priority levels (1-3) where priority 1 gets capacity first, then 2, then 3
+- **Per-curve queuing**: Each curve maintains its own queue with timeout-based shedding
+- **Per-curve metrics**: Individual peak/avg/shed metrics calculated for each curve
+- **Visual differentiation**: Each curve shown in unique color on chart with per-curve controls
+
+### Implementation Details
+- Demand curves stored as JSON array in URL for state persistence
+- Priority processing: sorted curves processed in order with remaining capacity
+- FIFO ordering maintained within each priority level
+- Backward compatible with old single-curve URL params
+
+## Future Enhancements
+- consider timeshifting the day to start at peak for easier analysis, or else have two days on screen
 - consider modeling the queueing/shedding SLIs
