@@ -251,7 +251,7 @@
           demandValues.push({ minute, demand, usage: actualUsage, queueSize, shed: shedThisMinute });
 
           if (minute % 5 === 0) {
-            points.push({
+            const point = {
               time: `${Math.floor(hour).toString().padStart(2, "0")}:${(minute % 60).toString().padStart(2, "0")}`,
               hour,
               inputDemand: demand,
@@ -259,7 +259,14 @@
               capacity: machines,
               queuedDemand: queueSize,
               shedDemand: shedThisMinute,
+            };
+
+            // Add per-curve demands
+            curves.forEach(curve => {
+              point[`demand_${curve.id}`] = demandByCurve[curve.id][minute];
             });
+
+            points.push(point);
           }
         }
 
@@ -528,10 +535,18 @@
                   e('span', { style: { width: "12px", height: "8px", background: "linear-gradient(180deg, #6366f1 0%, rgba(99,102,241,0.2) 100%)", display: "inline-block", borderRadius: "2px" } }),
                   e('span', { style: { color: "#9a9aaa" } }, "Actual Utilization")
                 ),
-                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
-                  e('span', { style: { width: "12px", height: "2px", background: "#818cf8", display: "inline-block", opacity: 0.4 } }),
-                  e('span', { style: { color: "#9a9aaa" } }, "Input Demand")
+
+                // Per-curve demand legend items
+                ...curves.map((curve, index) =>
+                  e('span', {
+                    key: `legend-${curve.id}`,
+                    style: { display: "flex", alignItems: "center", gap: "6px" }
+                  },
+                    e('span', { style: { width: "12px", height: "2px", background: curve.color, display: "inline-block", opacity: 0.6 } }),
+                    e('span', { style: { color: "#9a9aaa" } }, `Curve ${index + 1}`)
+                  )
                 ),
+
                 e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
                   e('span', { style: { width: "12px", height: "2px", background: "#fff", display: "inline-block" } }),
                   e('span', { style: { color: "#9a9aaa" } }, "Capacity")
@@ -573,7 +588,23 @@
                     return [value.toFixed(1), name];
                   } }),
                   e(ReferenceLine, { y: machines, stroke: "#ffffff", strokeWidth: 2 }),
-                  e(Area, { type: "monotone", dataKey: "inputDemand", stroke: "#818cf8", strokeWidth: 1, fill: "none", strokeOpacity: 0.3, strokeDasharray: "3 3" }),
+
+                  // Per-curve input demand lines (dashed)
+                  ...curves.map(curve =>
+                    e(Area, {
+                      key: `demand-${curve.id}`,
+                      type: "monotone",
+                      dataKey: `demand_${curve.id}`,
+                      stroke: curve.color,
+                      strokeWidth: 1.5,
+                      fill: "none",
+                      strokeOpacity: 0.6,
+                      strokeDasharray: "4 4"
+                    })
+                  ),
+
+                  // Aggregate input demand line (lighter, for reference)
+                  e(Area, { type: "monotone", dataKey: "inputDemand", stroke: "#818cf8", strokeWidth: 1, fill: "none", strokeOpacity: 0.2, strokeDasharray: "2 2" }),
                   e(Area, { type: "monotone", dataKey: "queuedDemand", stroke: "#f59e0b", strokeWidth: 1.5, fill: "url(#queueGradient)" }),
                   e(Area, { type: "monotone", dataKey: "actualUtilization", stroke: "#818cf8", strokeWidth: 2, fill: "url(#utilizationGradient)" }),
                   e(Area, { type: "monotone", dataKey: "shedDemand", stroke: "#ef4444", strokeWidth: 1.5, fill: "url(#shedGradient)" })
