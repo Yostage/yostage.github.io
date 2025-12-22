@@ -215,7 +215,10 @@
             e('div', { style: { marginBottom: "28px" } },
               e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
                 e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Machines"),
-                e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, machines)
+                e('div', { style: { textAlign: "right" } },
+                  e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, machines),
+                  e('span', { style: { fontSize: "11px", color: "#6b6b7b", marginLeft: "8px" } }, "(" + (machines * 1440 / 1000).toFixed(0) + "k cidu-min)")
+                )
               ),
               e('input', { type: "range", min: 10, max: 500, value: machines, onChange: (ev) => setMachines(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%)" } })
             ),
@@ -300,6 +303,10 @@
                   e('span', { style: { color: "#9a9aaa" } }, "Capacity")
                 ),
                 e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
+                  e('span', { style: { width: "12px", height: "8px", background: "linear-gradient(180deg, #f59e0b 0%, rgba(245,158,11,0.2) 100%)", display: "inline-block", borderRadius: "2px" } }),
+                  e('span', { style: { color: "#9a9aaa" } }, "Queue Depth")
+                ),
+                e('span', { style: { display: "flex", alignItems: "center", gap: "6px" } },
                   e('span', { style: { width: "12px", height: "8px", background: "linear-gradient(180deg, #ef4444 0%, rgba(239,68,68,0.2) 100%)", display: "inline-block", borderRadius: "2px" } }),
                   e('span', { style: { color: "#9a9aaa" } }, "Shed (timeout)")
                 )
@@ -313,6 +320,10 @@
                     e('linearGradient', { id: "utilizationGradient", x1: "0", y1: "0", x2: "0", y2: "1" },
                       e('stop', { offset: "0%", stopColor: "#6366f1", stopOpacity: 0.6 }),
                       e('stop', { offset: "100%", stopColor: "#6366f1", stopOpacity: 0.05 })
+                    ),
+                    e('linearGradient', { id: "queueGradient", x1: "0", y1: "0", x2: "0", y2: "1" },
+                      e('stop', { offset: "0%", stopColor: "#f59e0b", stopOpacity: 0.5 }),
+                      e('stop', { offset: "100%", stopColor: "#f59e0b", stopOpacity: 0.05 })
                     ),
                     e('linearGradient', { id: "shedGradient", x1: "0", y1: "0", x2: "0", y2: "1" },
                       e('stop', { offset: "0%", stopColor: "#ef4444", stopOpacity: 0.7 }),
@@ -329,6 +340,7 @@
                   } }),
                   e(ReferenceLine, { y: machines, stroke: "#ffffff", strokeWidth: 2 }),
                   e(Area, { type: "monotone", dataKey: "inputDemand", stroke: "#818cf8", strokeWidth: 1, fill: "none", strokeOpacity: 0.3, strokeDasharray: "3 3" }),
+                  e(Area, { type: "monotone", dataKey: "queuedDemand", stroke: "#f59e0b", strokeWidth: 1.5, fill: "url(#queueGradient)" }),
                   e(Area, { type: "monotone", dataKey: "actualUtilization", stroke: "#818cf8", strokeWidth: 2, fill: "url(#utilizationGradient)" }),
                   e(Area, { type: "monotone", dataKey: "shedDemand", stroke: "#ef4444", strokeWidth: 1.5, fill: "url(#shedGradient)" })
                 )
@@ -337,7 +349,7 @@
 
             e('div', { style: { marginTop: "20px", padding: "16px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.15)", borderRadius: "8px", fontSize: "12px", color: "#a5a5b5" } },
               e('strong', { style: { color: "#c4b5fd" } }, "Queueing Model"),
-              " — Requests exceeding capacity are queued (FIFO). Requests waiting longer than " + queueTimeout + " minutes are dropped. " + (metrics.shedDemand / 1000).toFixed(1) + "k cidu-min shed (" + metrics.shedPercent + "% of total demand)."
+              " — Requests exceeding capacity are queued (amber area, FIFO). Requests waiting longer than " + queueTimeout + " minutes are dropped. " + (metrics.shedDemand / 1000).toFixed(1) + "k cidu-min shed (" + metrics.shedPercent + "% of total demand)."
             )
           )
         )
