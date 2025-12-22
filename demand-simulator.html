@@ -529,77 +529,70 @@
                   cursor: curves.length >= 3 ? "not-allowed" : "pointer"
                 }
               }, curves.length >= 3 ? "Maximum 3 curves" : "+ Add Demand Curve")
-            ),
-
-            // Metrics
-            e('div', { style: { borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "24px" } },
-              e('h3', { style: { fontSize: "11px", fontWeight: 500, letterSpacing: "2px", textTransform: "uppercase", color: "#5a5a6a", marginBottom: "20px" } }, "Metrics"),
-
-              e('div', { style: { marginBottom: "20px" } },
-                e('div', { style: { fontSize: "11px", color: "#6b6b7b", marginBottom: "4px" } }, "Total Utilization"),
-                e('div', { style: { fontSize: "24px", fontWeight: 300, color: "#fff" } },
-                  (metrics.totalUtilization / 1000).toFixed(1) + "k",
-                  e('span', { style: { fontSize: "13px", color: "#6b6b7b", marginLeft: "6px" } }, "cidu-min")
-                )
-              ),
-
-              e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" } },
-                e('div', { style: { background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: "8px", padding: "14px" } },
-                  e('div', { style: { fontSize: "10px", color: "#fb923c", marginBottom: "4px", letterSpacing: "1px" } }, "PEAK"),
-                  e('div', { style: { fontSize: "20px", fontWeight: 500, color: "#fb923c" } }, metrics.peakUtilization),
-                  e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.peakPercent + "%")
-                ),
-                e('div', { style: { background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: "8px", padding: "14px" } },
-                  e('div', { style: { fontSize: "10px", color: "#4ade80", marginBottom: "4px", letterSpacing: "1px" } }, "AVG"),
-                  e('div', { style: { fontSize: "20px", fontWeight: 500, color: "#4ade80" } }, metrics.avgUtilization),
-                  e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.avgPercent + "%")
-                )
-              ),
-
-              e('div', { style: { background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "8px", padding: "14px", marginTop: "16px" } },
-                e('div', { style: { fontSize: "10px", color: "#f87171", marginBottom: "4px", letterSpacing: "1px" } }, "SHED"),
-                e('div', { style: { fontSize: "20px", fontWeight: 500, color: "#f87171" } }, (metrics.shedDemand / 1000).toFixed(1) + "k"),
-                e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.shedPercent + "% of demand")
-              ),
-
-              // Per-curve metrics breakdown
-              curves.length > 1 && e('div', { style: { marginTop: "24px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.06)" } },
-                e('h4', { style: { fontSize: "10px", fontWeight: 500, letterSpacing: "2px", textTransform: "uppercase", color: "#5a5a6a", marginBottom: "16px" } }, "Per-Curve Breakdown"),
-
-                ...curves.map((curve, index) => {
-                  const curveMetrics = metrics.byCurve[curve.id];
-                  return e('div', {
-                    key: `metrics-${curve.id}`,
-                    style: {
-                      marginBottom: "16px",
-                      padding: "12px",
-                      background: `${curve.color}11`,
-                      border: `1px solid ${curve.color}33`,
-                      borderRadius: "6px"
-                    }
-                  },
-                    e('div', { style: { display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px" } },
-                      e('span', { style: { fontSize: "11px", fontWeight: 600, color: curve.color } }, `Curve ${index + 1}`),
-                      e('span', { style: { fontSize: "9px", padding: "1px 4px", background: `${curve.color}33`, color: curve.color, borderRadius: "2px" } }, `P${curve.priority}`)
-                    ),
-                    e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "8px", fontSize: "10px" } },
-                      e('div', null,
-                        e('div', { style: { color: "#6b6b7b", marginBottom: "2px" } }, "Peak"),
-                        e('div', { style: { fontSize: "14px", fontWeight: 500, color: "#fff" } }, curveMetrics.peakUtilization)
-                      ),
-                      e('div', null,
-                        e('div', { style: { color: "#6b6b7b", marginBottom: "2px" } }, "Avg"),
-                        e('div', { style: { fontSize: "14px", fontWeight: 500, color: "#fff" } }, curveMetrics.avgUtilization)
-                      ),
-                      e('div', null,
-                        e('div', { style: { color: "#6b6b7b", marginBottom: "2px" } }, "Shed"),
-                        e('div', { style: { fontSize: "14px", fontWeight: 500, color: "#f87171" } }, curveMetrics.shedPercent + "%")
-                      )
-                    )
-                  );
-                })
-              )
             )
+          ),
+
+          // Right column: Metrics + Chart
+          e('div', { style: { display: "flex", flexDirection: "column", gap: "24px" } },
+            // Metrics Row
+          e('div', { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" } },
+            e('div', { style: { background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "8px", padding: "20px" } },
+              e('div', { style: { fontSize: "10px", color: "#6b6b7b", marginBottom: "4px", letterSpacing: "1px", textTransform: "uppercase" } }, "Total Utilization"),
+              e('div', { style: { fontSize: "24px", fontWeight: 300, color: "#fff" } },
+                (metrics.totalUtilization / 1000).toFixed(1) + "k",
+                e('span', { style: { fontSize: "13px", color: "#6b6b7b", marginLeft: "6px" } }, "cidu-min")
+              )
+            ),
+            e('div', { style: { background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: "8px", padding: "20px" } },
+              e('div', { style: { fontSize: "10px", color: "#fb923c", marginBottom: "4px", letterSpacing: "1px", textTransform: "uppercase" } }, "Peak Utilization"),
+              e('div', { style: { fontSize: "24px", fontWeight: 500, color: "#fb923c" } }, metrics.peakUtilization),
+              e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.peakPercent + "%")
+            ),
+            e('div', { style: { background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.2)", borderRadius: "8px", padding: "20px" } },
+              e('div', { style: { fontSize: "10px", color: "#4ade80", marginBottom: "4px", letterSpacing: "1px", textTransform: "uppercase" } }, "Avg Utilization"),
+              e('div', { style: { fontSize: "24px", fontWeight: 500, color: "#4ade80" } }, metrics.avgUtilization),
+              e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.avgPercent + "%")
+            ),
+            e('div', { style: { background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: "8px", padding: "20px" } },
+              e('div', { style: { fontSize: "10px", color: "#f87171", marginBottom: "4px", letterSpacing: "1px", textTransform: "uppercase" } }, "Shed Demand"),
+              e('div', { style: { fontSize: "24px", fontWeight: 500, color: "#f87171" } }, (metrics.shedDemand / 1000).toFixed(1) + "k"),
+              e('div', { style: { fontSize: "11px", color: "#9a9aaa" } }, metrics.shedPercent + "% of demand")
+            )
+          ),
+
+          // Per-curve metrics breakdown
+          curves.length > 1 && e('div', { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "16px" } },
+            ...curves.map((curve, index) => {
+              const curveMetrics = metrics.byCurve[curve.id];
+              return e('div', {
+                key: `metrics-${curve.id}`,
+                style: {
+                  padding: "16px",
+                  background: `${curve.color}11`,
+                  border: `1px solid ${curve.color}33`,
+                  borderRadius: "8px"
+                }
+              },
+                e('div', { style: { display: "flex", alignItems: "center", gap: "8px", marginBottom: "12px" } },
+                  e('span', { style: { fontSize: "12px", fontWeight: 600, color: curve.color } }, `Curve ${index + 1}`),
+                  e('span', { style: { fontSize: "9px", padding: "2px 6px", background: `${curve.color}33`, color: curve.color, borderRadius: "3px" } }, `P${curve.priority}`)
+                ),
+                e('div', { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "12px", fontSize: "11px" } },
+                  e('div', null,
+                    e('div', { style: { color: "#6b6b7b", marginBottom: "4px" } }, "Peak"),
+                    e('div', { style: { fontSize: "18px", fontWeight: 500, color: "#fff" } }, curveMetrics.peakUtilization)
+                  ),
+                  e('div', null,
+                    e('div', { style: { color: "#6b6b7b", marginBottom: "4px" } }, "Avg"),
+                    e('div', { style: { fontSize: "18px", fontWeight: 500, color: "#fff" } }, curveMetrics.avgUtilization)
+                  ),
+                  e('div', null,
+                    e('div', { style: { color: "#6b6b7b", marginBottom: "4px" } }, "Shed"),
+                    e('div', { style: { fontSize: "18px", fontWeight: 500, color: "#f87171" } }, curveMetrics.shedPercent + "%")
+                  )
+                )
+              );
+            })
           ),
 
           // Chart Area
@@ -694,6 +687,7 @@
                 ? " — Each demand curve can have Gaussian (peak-based) or Linear (constant) distribution. Priority determines processing order: Priority 1 curves get capacity first, then Priority 2, then Priority 3. Within each priority, FIFO ordering applies. Requests exceeding capacity are queued (amber area). Requests waiting longer than " + queueTimeout + " minutes are shed. " + (metrics.shedDemand / 1000).toFixed(1) + "k cidu-min shed (" + metrics.shedPercent + "% of total demand)."
                 : " — Requests exceeding capacity are queued (amber area, FIFO). Requests waiting longer than " + queueTimeout + " minutes are dropped. " + (metrics.shedDemand / 1000).toFixed(1) + "k cidu-min shed (" + metrics.shedPercent + "% of total demand)."
             )
+          )
           )
         )
       );
