@@ -74,6 +74,7 @@
         const params = new URLSearchParams(window.location.search);
         return {
           machines: Number(params.get('machines')) || 100,
+          peakHour: Number(params.get('peakHour')) || 15,
           curveWidth: Number(params.get('curveWidth')) || 3,
           totalDemand: Number(params.get('totalDemand')) || 50000,
           queueTimeout: Number(params.get('queueTimeout')) || 30,
@@ -82,6 +83,7 @@
 
       const initial = getInitialParams();
       const [machines, setMachines] = useState(initial.machines);
+      const [peakHour, setPeakHour] = useState(initial.peakHour);
       const [curveWidth, setCurveWidth] = useState(initial.curveWidth);
       const [totalDemand, setTotalDemand] = useState(initial.totalDemand);
       const [queueTimeout, setQueueTimeout] = useState(initial.queueTimeout);
@@ -90,14 +92,13 @@
       React.useEffect(() => {
         const params = new URLSearchParams();
         params.set('machines', machines);
+        params.set('peakHour', peakHour);
         params.set('curveWidth', curveWidth);
         params.set('totalDemand', totalDemand);
         params.set('queueTimeout', queueTimeout);
         const newUrl = `${window.location.pathname}?${params.toString()}`;
         window.history.replaceState({}, '', newUrl);
-      }, [machines, curveWidth, totalDemand, queueTimeout]);
-
-      const peakHour = 15;
+      }, [machines, peakHour, curveWidth, totalDemand, queueTimeout]);
 
       const { data, metrics } = useMemo(() => {
         const points = [];
@@ -194,7 +195,7 @@
             shedPercent: ((totalShedDemand / totalDemand) * 100).toFixed(1),
           },
         };
-      }, [machines, curveWidth, totalDemand, queueTimeout]);
+      }, [machines, peakHour, curveWidth, totalDemand, queueTimeout]);
 
       const maxDemand = Math.max(...data.map((d) => d.inputDemand));
       const yMax = Math.max(machines * 1.1, maxDemand * 1.1);
@@ -221,6 +222,15 @@
                 )
               ),
               e('input', { type: "range", min: 10, max: 500, value: machines, onChange: (ev) => setMachines(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%)" } })
+            ),
+
+            // Peak Hour Slider
+            e('div', { style: { marginBottom: "28px" } },
+              e('div', { style: { display: "flex", justifyContent: "space-between", marginBottom: "12px" } },
+                e('label', { style: { fontSize: "13px", color: "#9a9aaa" } }, "Peak Hour"),
+                e('span', { style: { fontSize: "15px", fontWeight: 600, color: "#fff" } }, peakHour + ":00")
+              ),
+              e('input', { type: "range", min: 0, max: 23, value: peakHour, onChange: (ev) => setPeakHour(Number(ev.target.value)), style: { background: "linear-gradient(90deg, #ec4899 0%, #be185d 100%)" } })
             ),
 
             // Curve Width Slider
