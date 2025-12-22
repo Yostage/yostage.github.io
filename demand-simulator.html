@@ -690,7 +690,9 @@
 
             e('div', { style: { marginTop: "20px", padding: "16px", background: "rgba(99,102,241,0.08)", border: "1px solid rgba(99,102,241,0.15)", borderRadius: "8px", fontSize: "12px", color: "#a5a5b5" } },
               e('strong', { style: { color: "#c4b5fd" } }, "Queueing Model"),
-              " — Requests exceeding capacity are queued (amber area, FIFO). Requests waiting longer than " + queueTimeout + " minutes are dropped. " + (metrics.shedDemand / 1000).toFixed(1) + "k cidu-min shed (" + metrics.shedPercent + "% of total demand)."
+              curves.length > 1
+                ? " — Each demand curve can have Gaussian (peak-based) or Linear (constant) distribution. Priority determines processing order: Priority 1 curves get capacity first, then Priority 2, then Priority 3. Within each priority, FIFO ordering applies. Requests exceeding capacity are queued (amber area). Requests waiting longer than " + queueTimeout + " minutes are shed. " + (metrics.shedDemand / 1000).toFixed(1) + "k cidu-min shed (" + metrics.shedPercent + "% of total demand)."
+                : " — Requests exceeding capacity are queued (amber area, FIFO). Requests waiting longer than " + queueTimeout + " minutes are dropped. " + (metrics.shedDemand / 1000).toFixed(1) + "k cidu-min shed (" + metrics.shedPercent + "% of total demand)."
             )
           )
         )
