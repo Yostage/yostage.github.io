@@ -55,6 +55,25 @@ header a {
     margin-bottom: 10px;
 }
 
+.chart-controls {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.chart-controls label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.chart-controls input[type="range"] {
+    flex: 1;
+    max-width: 400px;
+}
+
 section {
     background: #fff;
     border-radius: 8px;

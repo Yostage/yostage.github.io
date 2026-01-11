@@ -1,42 +1,54 @@
 {
-  "generated": "2026-01-10T17:07:19.390249",
-  "description": "Backblaze hard drive statistics - quarterly snapshots",
+  "generated": "2026-01-10T22:12:04.383442",
+  "description": "Backblaze hard drive statistics - quarterly snapshots with AFR",
   "source": "https://www.backblaze.com/cloud-storage/resources/hard-drive-test-data",
   "quarters": [
     {
-      "date": "2013-07-01",
-      "label": "2013 Q3",
+      "date": "2013-04-01",
+      "label": "2013 Q2",
       "summary": {
         "drive_count": 23310,
         "total_pb": 62.77,
         "avg_drive_tb": 2.69,
-        "failures": 0
+        "median_drive_tb": 3.0,
+        "failures": 243,
+        "drive_days": 1820184
       },
       "manufacturers": [
         {
           "name": "Other",
           "drives": 12860,
-          "pb": 36.33
+          "pb": 36.33,
+          "drive_days": 1027287,
+          "failures": 31
         },
         {
           "name": "Seagate",
           "drives": 9139,
-          "pb": 23.65
+          "pb": 23.65,
+          "drive_days": 681903,
+          "failures": 199
         },
         {
           "name": "Western Digital",
           "drives": 1220,
-          "pb": 2.48
+          "pb": 2.48,
+          "drive_days": 103693,
+          "failures": 11
         },
         {
           "name": "Toshiba",
           "drives": 47,
-          "pb": 0.14
+          "pb": 0.14,
+          "drive_days": 3686,
+          "failures": 1
         },
         {
           "name": "HGST",
           "drives": 44,
-          "pb": 0.18
+          "pb": 0.18,
+          "drive_days": 3615,
+          "failures": 1
         }
       ],
       "top_models": [
@@ -93,24 +105,30 @@
       ]
     },
     {
-      "date": "2013-10-01",
-      "label": "2013 Q4",
+      "date": "2013-07-01",
+      "label": "2013 Q3",
       "summary": {
         "drive_count": 900,
         "total_pb": 3.38,
         "avg_drive_tb": 3.75,
-        "failures": 0
+        "median_drive_tb": 4.0,
+        "failures": 157,
+        "drive_days": 1209274
       },
       "manufacturers": [
         {
           "name": "Seagate",
           "drives": 758,
-          "pb": 2.94
+          "pb": 2.94,
+          "drive_days": 494356,
+          "failures": 130
         },
         {
           "name": "Other",
           "drives": 142,
-          "pb": 0.43
+          "pb": 0.43,
+          "drive_days": 649329,
+          "failures": 22
         }
       ],
       "top_models": [
@@ -147,45 +165,57 @@
       ]
     },
     {
-      "date": "2014-01-01",
-      "label": "2014 Q1",
+      "date": "2013-10-01",
+      "label": "2013 Q4",
       "summary": {
         "drive_count": 27223,
-        "total_pb": 79.79,
+        "total_pb": 79.67,
         "avg_drive_tb": 2.93,
-        "failures": 3
+        "median_drive_tb": 3.0,
+        "failures": 324,
+        "drive_days": 2062043
       },
       "manufacturers": [
         {
           "name": "Other",
           "drives": 12973,
-          "pb": 36.72
+          "pb": 36.72,
+          "drive_days": 1013203,
+          "failures": 31
         },
         {
           "name": "Seagate",
-          "drives": 12763,
-          "pb": 39.68
+          "drives": 12761,
+          "pb": 39.57,
+          "drive_days": 934467,
+          "failures": 277
         },
         {
           "name": "Western Digital",
-          "drives": 1340,
-          "pb": 2.85
+          "drives": 1342,
+          "pb": 2.85,
+          "drive_days": 102907,
+          "failures": 16
         },
         {
           "name": "HGST",
           "drives": 89,
-          "pb": 0.36
+          "pb": 0.36,
+          "drive_days": 6942,
+          "failures": 0
         },
         {
           "name": "Toshiba",
           "drives": 58,
-          "pb": 0.17
+          "pb": 0.17,
+          "drive_days": 4524,
+          "failures": 0
         }
       ],
       "top_models": [
         {
           "model": "ST4000DM000",
-          "count": 5246,
+          "count": 5200,
           "size_tb": 4.0
         },
         {
@@ -200,7 +230,7 @@
         },
         {
           "model": "ST3000DM001",
-          "count": 4248,
+          "count": 4247,
           "size_tb": 3.0
         },
         {
@@ -210,7 +240,7 @@
         },
         {
           "model": "ST31500541AS",
-          "count": 1887,
+          "count": 1929,
           "size_tb": 1.5
         },
         {
@@ -220,7 +250,7 @@
         },
         {
           "model": "ST31500341AS",
-          "count": 536,
+          "count": 539,
           "size_tb": 1.5
         },
         {
@@ -230,51 +260,63 @@
         },
         {
           "model": "WDC WD30EZRX",
-          "count": 387,
+          "count": 388,
           "size_tb": 3.0
         }
       ]
     },
     {
-      "date": "2014-04-01",
-      "label": "2014 Q2",
+      "date": "2014-01-01",
+      "label": "2014 Q1",
       "summary": {
-        "drive_count": 31400,
-        "total_pb": 94.91,
+        "drive_count": 31404,
+        "total_pb": 94.93,
         "avg_drive_tb": 3.02,
-        "failures": 23
+        "median_drive_tb": 3.0,
+        "failures": 434,
+        "drive_days": 2617973
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 16090,
-          "pb": 52.82
+          "drives": 16094,
+          "pb": 52.84,
+          "drive_days": 1298200,
+          "failures": 369
         },
         {
           "name": "Other",
           "drives": 12931,
-          "pb": 36.65
+          "pb": 36.65,
+          "drive_days": 1166080,
+          "failures": 32
         },
         {
           "name": "Western Digital",
           "drives": 1738,
-          "pb": 2.93
+          "pb": 2.93,
+          "drive_days": 138889,
+          "failures": 32
         },
         {
           "name": "HGST",
           "drives": 583,
-          "pb": 2.33
+          "pb": 2.33,
+          "drive_days": 9584,
+          "failures": 1
         },
         {
           "name": "Toshiba",
           "drives": 58,
-          "pb": 0.17
+          "pb": 0.17,
+          "drive_days": 5220,
+          "failures": 0
         }
       ],
       "top_models": [
         {
           "model": "ST4000DM000",
-          "count": 8797,
+          "count": 8800,
           "size_tb": 4.0
         },
         {
@@ -289,7 +331,7 @@
         },
         {
           "model": "ST3000DM001",
-          "count": 4073,
+          "count": 4074,
           "size_tb": 3.0
         },
         {
@@ -325,45 +367,57 @@
       ]
     },
     {
-      "date": "2014-07-01",
-      "label": "2014 Q3",
+      "date": "2014-04-01",
+      "label": "2014 Q2",
       "summary": {
-        "drive_count": 35228,
-        "total_pb": 110.74,
+        "drive_count": 35175,
+        "total_pb": 110.54,
         "avg_drive_tb": 3.14,
-        "failures": 15
+        "median_drive_tb": 3.0,
+        "failures": 498,
+        "drive_days": 2996584
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 16353,
-          "pb": 54.48
+          "drives": 16305,
+          "pb": 54.29,
+          "drive_days": 1479870,
+          "failures": 437
         },
         {
           "name": "Other",
           "drives": 12883,
-          "pb": 36.47
+          "pb": 36.47,
+          "drive_days": 1150934,
+          "failures": 24
         },
         {
           "name": "HGST",
           "drives": 4096,
-          "pb": 16.39
+          "pb": 16.39,
+          "drive_days": 204572,
+          "failures": 6
         },
         {
           "name": "Western Digital",
-          "drives": 1838,
-          "pb": 3.23
+          "drives": 1833,
+          "pb": 3.22,
+          "drive_days": 155962,
+          "failures": 31
         },
         {
           "name": "Toshiba",
           "drives": 58,
-          "pb": 0.17
+          "pb": 0.17,
+          "drive_days": 5246,
+          "failures": 0
         }
       ],
       "top_models": [
         {
           "model": "ST4000DM000",
-          "count": 9478,
+          "count": 9429,
           "size_tb": 4.0
         },
         {
@@ -408,45 +462,57 @@
         },
         {
           "model": "WDC WD30EFRX",
-          "count": 782,
+          "count": 778,
           "size_tb": 3.0
         }
       ]
     },
     {
-      "date": "2014-10-01",
-      "label": "2014 Q4",
+      "date": "2014-07-01",
+      "label": "2014 Q3",
       "summary": {
-        "drive_count": 36838,
-        "total_pb": 119.3,
-        "avg_drive_tb": 3.24,
-        "failures": 14
+        "drive_count": 36791,
+        "total_pb": 118.98,
+        "avg_drive_tb": 3.23,
+        "median_drive_tb": 4.0,
+        "failures": 854,
+        "drive_days": 3338425
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 14842,
-          "pb": 50.2
+          "drives": 14971,
+          "pb": 50.59,
+          "drive_days": 1449092,
+          "failures": 800
         },
         {
           "name": "Other",
           "drives": 12878,
-          "pb": 36.46
+          "pb": 36.46,
+          "drive_days": 1185006,
+          "failures": 26
         },
         {
           "name": "HGST",
-          "drives": 7378,
-          "pb": 29.52
+          "drives": 7198,
+          "pb": 28.8,
+          "drive_days": 531966,
+          "failures": 15
         },
         {
           "name": "Western Digital",
-          "drives": 1689,
-          "pb": 2.97
+          "drives": 1692,
+          "pb": 2.98,
+          "drive_days": 167295,
+          "failures": 12
         },
         {
           "name": "Toshiba",
-          "drives": 51,
-          "pb": 0.15
+          "drives": 52,
+          "pb": 0.16,
+          "drive_days": 5066,
+          "failures": 1
         }
       ],
       "top_models": [
@@ -467,7 +533,7 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 4541,
+          "count": 4361,
           "size_tb": 4.0
         },
         {
@@ -482,7 +548,7 @@
         },
         {
           "model": "ST3000DM001",
-          "count": 2243,
+          "count": 2375,
           "size_tb": 3.0
         },
         {
@@ -497,45 +563,57 @@
         },
         {
           "model": "WDC WD30EFRX",
-          "count": 601,
+          "count": 602,
           "size_tb": 3.0
         }
       ]
     },
     {
-      "date": "2015-01-01",
-      "label": "2015 Q1",
+      "date": "2014-10-01",
+      "label": "2014 Q4",
       "summary": {
-        "drive_count": 41212,
+        "drive_count": 41213,
         "total_pb": 138.85,
         "avg_drive_tb": 3.37,
-        "failures": 1
+        "median_drive_tb": 4.0,
+        "failures": 419,
+        "drive_days": 3629432
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 16132,
-          "pb": 56.72
+          "drives": 16133,
+          "pb": 56.72,
+          "drive_days": 1418393,
+          "failures": 327
         },
         {
           "name": "Other",
           "drives": 12872,
-          "pb": 36.57
+          "pb": 36.57,
+          "drive_days": 1170280,
+          "failures": 43
         },
         {
           "name": "HGST",
           "drives": 10100,
-          "pb": 40.41
+          "pb": 40.41,
+          "drive_days": 878561,
+          "failures": 23
         },
         {
           "name": "Western Digital",
           "drives": 2061,
-          "pb": 5.02
+          "pb": 5.02,
+          "drive_days": 157898,
+          "failures": 25
         },
         {
           "name": "Toshiba",
           "drives": 47,
-          "pb": 0.14
+          "pb": 0.14,
+          "drive_days": 4300,
+          "failures": 1
         }
       ],
       "top_models": [
@@ -592,39 +670,51 @@
       ]
     },
     {
-      "date": "2015-04-01",
-      "label": "2015 Q2",
+      "date": "2015-01-01",
+      "label": "2015 Q1",
       "summary": {
         "drive_count": 44252,
         "total_pb": 153.13,
         "avg_drive_tb": 3.46,
-        "failures": 6
+        "median_drive_tb": 4.0,
+        "failures": 354,
+        "drive_days": 3877265
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 18574,
-          "pb": 68.05
+          "drives": 18571,
+          "pb": 68.05,
+          "drive_days": 1586424,
+          "failures": 237
         },
         {
           "name": "Other",
-          "drives": 12946,
-          "pb": 36.83
+          "drives": 12948,
+          "pb": 36.83,
+          "drive_days": 1161925,
+          "failures": 41
         },
         {
           "name": "HGST",
-          "drives": 10222,
-          "pb": 41.08
+          "drives": 10221,
+          "pb": 41.07,
+          "drive_days": 920883,
+          "failures": 18
         },
         {
           "name": "Western Digital",
-          "drives": 2373,
-          "pb": 6.63
+          "drives": 2375,
+          "pb": 6.63,
+          "drive_days": 201361,
+          "failures": 58
         },
         {
           "name": "Toshiba",
           "drives": 137,
-          "pb": 0.55
+          "pb": 0.55,
+          "drive_days": 6672,
+          "failures": 0
         }
       ],
       "top_models": [
@@ -640,7 +730,7 @@
         },
         {
           "model": "Hitachi HDS722020ALA330",
-          "count": 4663,
+          "count": 4664,
           "size_tb": 2.0
         },
         {
@@ -655,7 +745,7 @@
         },
         {
           "model": "Hitachi HDS5C4040ALE630",
-          "count": 2652,
+          "count": 2653,
           "size_tb": 4.0
         },
         {
@@ -681,39 +771,51 @@
       ]
     },
     {
-      "date": "2015-07-01",
-      "label": "2015 Q3",
+      "date": "2015-04-01",
+      "label": "2015 Q2",
       "summary": {
-        "drive_count": 47793,
-        "total_pb": 172.1,
-        "avg_drive_tb": 3.6,
-        "failures": 3
+        "drive_count": 48113,
+        "total_pb": 172.57,
+        "avg_drive_tb": 3.59,
+        "median_drive_tb": 4.0,
+        "failures": 465,
+        "drive_days": 4253279
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 21869,
-          "pb": 86.1
+          "drives": 22183,
+          "pb": 86.57,
+          "drive_days": 1900193,
+          "failures": 287
         },
         {
           "name": "Other",
-          "drives": 12864,
-          "pb": 36.63
+          "drives": 12866,
+          "pb": 36.63,
+          "drive_days": 1174074,
+          "failures": 87
         },
         {
           "name": "HGST",
           "drives": 10314,
-          "pb": 41.44
+          "pb": 41.44,
+          "drive_days": 937640,
+          "failures": 27
         },
         {
           "name": "Western Digital",
-          "drives": 2506,
-          "pb": 6.98
+          "drives": 2510,
+          "pb": 6.97,
+          "drive_days": 224624,
+          "failures": 61
         },
         {
           "name": "Toshiba",
           "drives": 240,
-          "pb": 0.96
+          "pb": 0.96,
+          "drive_days": 16748,
+          "failures": 3
         }
       ],
       "top_models": [
@@ -729,12 +831,12 @@
         },
         {
           "model": "Hitachi HDS722020ALA330",
-          "count": 4609,
+          "count": 4610,
           "size_tb": 2.0
         },
         {
           "model": "Hitachi HDS5C3030ALA630",
-          "count": 4577,
+          "count": 4578,
           "size_tb": 3.0
         },
         {
@@ -753,56 +855,68 @@
           "size_tb": 6.0
         },
         {
+          "model": "ST31500541AS",
+          "count": 1238,
+          "size_tb": 1.5
+        },
+        {
           "model": "WDC WD30EFRX",
-          "count": 1105,
+          "count": 1104,
           "size_tb": 3.0
         },
         {
           "model": "Hitachi HDS723030ALA640",
           "count": 1006,
           "size_tb": 3.0
-        },
-        {
-          "model": "ST31500541AS",
-          "count": 952,
-          "size_tb": 1.5
         }
       ]
     },
     {
-      "date": "2015-10-01",
-      "label": "2015 Q4",
+      "date": "2015-07-01",
+      "label": "2015 Q3",
       "summary": {
         "drive_count": 50277,
-        "total_pb": 183.47,
+        "total_pb": 183.46,
         "avg_drive_tb": 3.65,
-        "failures": 7
+        "median_drive_tb": 4.0,
+        "failures": 327,
+        "drive_days": 4497107
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 24517,
-          "pb": 97.72
+          "drives": 24520,
+          "pb": 97.73,
+          "drive_days": 2120348,
+          "failures": 224
         },
         {
           "name": "Other",
           "drives": 12815,
-          "pb": 36.5
+          "pb": 36.5,
+          "drive_days": 1181542,
+          "failures": 49
         },
         {
           "name": "HGST",
           "drives": 10319,
-          "pb": 41.46
+          "pb": 41.46,
+          "drive_days": 949095,
+          "failures": 9
         },
         {
           "name": "Western Digital",
-          "drives": 2390,
-          "pb": 6.84
+          "drives": 2387,
+          "pb": 6.83,
+          "drive_days": 224204,
+          "failures": 43
         },
         {
           "name": "Toshiba",
           "drives": 236,
-          "pb": 0.94
+          "pb": 0.94,
+          "drive_days": 21918,
+          "failures": 2
         }
       ],
       "top_models": [
@@ -843,7 +957,7 @@
         },
         {
           "model": "WDC WD30EFRX",
-          "count": 1089,
+          "count": 1085,
           "size_tb": 3.0
         },
         {
@@ -859,39 +973,51 @@
       ]
     },
     {
-      "date": "2016-01-01",
-      "label": "2016 Q1",
+      "date": "2015-10-01",
+      "label": "2015 Q4",
       "summary": {
         "drive_count": 57545,
         "total_pb": 214.13,
         "avg_drive_tb": 3.72,
-        "failures": 4
+        "median_drive_tb": 4.0,
+        "failures": 271,
+        "drive_days": 4881600
       },
       "manufacturers": [
         {
           "name": "Seagate",
           "drives": 32136,
-          "pb": 128.93
+          "pb": 128.93,
+          "drive_days": 2574691,
+          "failures": 208
         },
         {
           "name": "Other",
           "drives": 12708,
-          "pb": 36.27
+          "pb": 36.27,
+          "drive_days": 1149960,
+          "failures": 20
         },
         {
           "name": "HGST",
           "drives": 10321,
-          "pb": 41.47
+          "pb": 41.47,
+          "drive_days": 933528,
+          "failures": 8
         },
         {
           "name": "Western Digital",
           "drives": 2143,
-          "pb": 6.51
+          "pb": 6.51,
+          "drive_days": 201976,
+          "failures": 35
         },
         {
           "name": "Toshiba",
           "drives": 237,
-          "pb": 0.95
+          "pb": 0.95,
+          "drive_days": 21445,
+          "failures": 0
         }
       ],
       "top_models": [
@@ -948,39 +1074,51 @@
       ]
     },
     {
-      "date": "2016-04-01",
-      "label": "2016 Q2",
+      "date": "2016-01-01",
+      "label": "2016 Q1",
       "summary": {
         "drive_count": 62952,
         "total_pb": 236.29,
         "avg_drive_tb": 3.75,
-        "failures": 6
+        "median_drive_tb": 4.0,
+        "failures": 336,
+        "drive_days": 5467888
       },
       "manufacturers": [
         {
           "name": "Seagate",
           "drives": 37754,
-          "pb": 151.53
+          "pb": 151.53,
+          "drive_days": 3155389,
+          "failures": 244
         },
         {
           "name": "Other",
           "drives": 12466,
-          "pb": 35.77
+          "pb": 35.77,
+          "drive_days": 1151012,
+          "failures": 37
         },
         {
           "name": "HGST",
           "drives": 10325,
-          "pb": 41.49
+          "pb": 41.49,
+          "drive_days": 939403,
+          "failures": 10
         },
         {
           "name": "Western Digital",
           "drives": 2169,
-          "pb": 6.55
+          "pb": 6.55,
+          "drive_days": 200458,
+          "failures": 44
         },
         {
           "name": "Toshiba",
           "drives": 238,
-          "pb": 0.95
+          "pb": 0.95,
+          "drive_days": 21626,
+          "failures": 1
         }
       ],
       "top_models": [
@@ -1037,45 +1175,57 @@
       ]
     },
     {
-      "date": "2016-07-01",
-      "label": "2016 Q3",
+      "date": "2016-04-01",
+      "label": "2016 Q2",
       "summary": {
-        "drive_count": 70450,
-        "total_pb": 278.12,
+        "drive_count": 70403,
+        "total_pb": 277.94,
         "avg_drive_tb": 3.95,
-        "failures": 5
+        "median_drive_tb": 4.0,
+        "failures": 385,
+        "drive_days": 5971169
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 40547,
-          "pb": 173.3
+          "drives": 40500,
+          "pb": 173.11,
+          "drive_days": 3439125,
+          "failures": 289
         },
         {
           "name": "HGST",
           "drives": 15706,
-          "pb": 63.02
+          "pb": 63.02,
+          "drive_days": 1206134,
+          "failures": 10
         },
         {
           "name": "Other",
           "drives": 11722,
-          "pb": 34.21
+          "pb": 34.21,
+          "drive_days": 1105329,
+          "failures": 40
         },
         {
           "name": "Western Digital",
           "drives": 2215,
-          "pb": 6.64
+          "pb": 6.64,
+          "drive_days": 199091,
+          "failures": 44
         },
         {
           "name": "Toshiba",
           "drives": 260,
-          "pb": 0.96
+          "pb": 0.96,
+          "drive_days": 21490,
+          "failures": 2
         }
       ],
       "top_models": [
         {
           "model": "ST4000DM000",
-          "count": 34739,
+          "count": 34693,
           "size_tb": 4.0
         },
         {
@@ -1126,39 +1276,51 @@
       ]
     },
     {
-      "date": "2016-10-01",
-      "label": "2016 Q4",
+      "date": "2016-07-01",
+      "label": "2016 Q3",
       "summary": {
         "drive_count": 69302,
         "total_pb": 290.28,
         "avg_drive_tb": 4.19,
-        "failures": 3
+        "median_drive_tb": 4.0,
+        "failures": 358,
+        "drive_days": 6443112
       },
       "manufacturers": [
         {
           "name": "Seagate",
           "drives": 42926,
-          "pb": 192.57
+          "pb": 192.57,
+          "drive_days": 3844997,
+          "failures": 305
         },
         {
           "name": "HGST",
           "drives": 15708,
-          "pb": 63.02
+          "pb": 63.02,
+          "drive_days": 1465885,
+          "failures": 19
         },
         {
           "name": "Other",
           "drives": 8302,
-          "pb": 27.36
+          "pb": 27.36,
+          "drive_days": 907429,
+          "failures": 12
         },
         {
           "name": "Western Digital",
           "drives": 2088,
-          "pb": 6.36
+          "pb": 6.36,
+          "drive_days": 199515,
+          "failures": 22
         },
         {
           "name": "Toshiba",
           "drives": 278,
-          "pb": 0.97
+          "pb": 0.97,
+          "drive_days": 25286,
+          "failures": 0
         }
       ],
       "top_models": [
@@ -1215,39 +1377,51 @@
       ]
     },
     {
-      "date": "2017-01-01",
-      "label": "2017 Q1",
+      "date": "2016-10-01",
+      "label": "2016 Q4",
       "summary": {
         "drive_count": 73653,
         "total_pb": 322.06,
         "avg_drive_tb": 4.37,
-        "failures": 1
+        "median_drive_tb": 4.0,
+        "failures": 349,
+        "drive_days": 6589448
       },
       "manufacturers": [
         {
           "name": "Seagate",
           "drives": 46531,
-          "pb": 221.36
+          "pb": 221.36,
+          "drive_days": 4143140,
+          "failures": 283
         },
         {
           "name": "HGST",
           "drives": 16536,
-          "pb": 66.34
+          "pb": 66.34,
+          "drive_days": 1472246,
+          "failures": 23
         },
         {
           "name": "Other",
           "drives": 8099,
-          "pb": 26.92
+          "pb": 26.92,
+          "drive_days": 751239,
+          "failures": 26
         },
         {
           "name": "Western Digital",
           "drives": 2151,
-          "pb": 6.43
+          "pb": 6.43,
+          "drive_days": 194204,
+          "failures": 17
         },
         {
           "name": "Toshiba",
           "drives": 336,
-          "pb": 1.0
+          "pb": 1.0,
+          "drive_days": 28619,
+          "failures": 0
         }
       ],
       "top_models": [
@@ -1304,50 +1478,62 @@
       ]
     },
     {
-      "date": "2017-04-01",
-      "label": "2017 Q2",
+      "date": "2017-01-01",
+      "label": "2017 Q1",
       "summary": {
         "drive_count": 84469,
         "total_pb": 379.36,
         "avg_drive_tb": 4.49,
-        "failures": 8
+        "median_drive_tb": 4.0,
+        "failures": 380,
+        "drive_days": 6632104
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 49920,
-          "pb": 249.33
+          "drives": 49922,
+          "pb": 249.34,
+          "drive_days": 4098269,
+          "failures": 309
         },
         {
           "name": "HGST",
-          "drives": 23996,
-          "pb": 96.18
+          "drives": 23994,
+          "pb": 96.17,
+          "drive_days": 1618633,
+          "failures": 43
         },
         {
           "name": "Other",
           "drives": 7995,
-          "pb": 26.61
+          "pb": 26.61,
+          "drive_days": 697738,
+          "failures": 15
         },
         {
           "name": "Western Digital",
           "drives": 2038,
-          "pb": 6.15
+          "pb": 6.15,
+          "drive_days": 183671,
+          "failures": 8
         },
         {
           "name": "Toshiba",
           "drives": 520,
-          "pb": 1.09
+          "pb": 1.09,
+          "drive_days": 33793,
+          "failures": 5
         }
       ],
       "top_models": [
         {
           "model": "ST4000DM000",
-          "count": 34538,
+          "count": 34540,
           "size_tb": 4.0
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 15341,
+          "count": 15339,
           "size_tb": 4.0
         },
         {
@@ -1393,39 +1579,51 @@
       ]
     },
     {
-      "date": "2017-07-01",
-      "label": "2017 Q3",
+      "date": "2017-04-01",
+      "label": "2017 Q2",
       "summary": {
-        "drive_count": 85092,
-        "total_pb": 400.46,
+        "drive_count": 85117,
+        "total_pb": 400.56,
         "avg_drive_tb": 4.71,
-        "failures": 3
+        "median_drive_tb": 4.0,
+        "failures": 393,
+        "drive_days": 7568630
       },
       "manufacturers": [
         {
           "name": "Seagate",
           "drives": 53740,
-          "pb": 279.18
+          "pb": 279.18,
+          "drive_days": 4643429,
+          "failures": 350
         },
         {
           "name": "HGST",
-          "drives": 24911,
-          "pb": 99.84
+          "drives": 24936,
+          "pb": 99.94,
+          "drive_days": 2198629,
+          "failures": 30
         },
         {
           "name": "Other",
           "drives": 4371,
-          "pb": 15.74
+          "pb": 15.74,
+          "drive_days": 526993,
+          "failures": 4
         },
         {
           "name": "Western Digital",
           "drives": 1490,
-          "pb": 4.6
+          "pb": 4.6,
+          "drive_days": 151138,
+          "failures": 8
         },
         {
           "name": "Toshiba",
           "drives": 580,
-          "pb": 1.1
+          "pb": 1.1,
+          "drive_days": 48441,
+          "failures": 1
         }
       ],
       "top_models": [
@@ -1436,7 +1634,7 @@
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 16144,
+          "count": 16168,
           "size_tb": 4.0
         },
         {
@@ -1482,55 +1680,67 @@
       ]
     },
     {
-      "date": "2017-10-01",
-      "label": "2017 Q4",
+      "date": "2017-07-01",
+      "label": "2017 Q3",
       "summary": {
-        "drive_count": 88157,
-        "total_pb": 455.73,
+        "drive_count": 88388,
+        "total_pb": 456.63,
         "avg_drive_tb": 5.17,
-        "failures": 5
+        "median_drive_tb": 4.0,
+        "failures": 392,
+        "drive_days": 8004840
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 62123,
-          "pb": 353.93
+          "drives": 62350,
+          "pb": 354.82,
+          "drive_days": 5366618,
+          "failures": 362
         },
         {
           "name": "HGST",
-          "drives": 21851,
-          "pb": 87.6
+          "drives": 21854,
+          "pb": 87.61,
+          "drive_days": 2158535,
+          "failures": 23
         },
         {
           "name": "Other",
           "drives": 2394,
-          "pb": 9.57
+          "pb": 9.57,
+          "drive_days": 304233,
+          "failures": 3
         },
         {
           "name": "Western Digital",
-          "drives": 1123,
-          "pb": 3.58
+          "drives": 1124,
+          "pb": 3.58,
+          "drive_days": 118602,
+          "failures": 3
         },
         {
           "name": "Toshiba",
           "drives": 666,
-          "pb": 1.05
+          "pb": 1.05,
+          "drive_days": 56852,
+          "failures": 1
         }
       ],
       "top_models": [
         {
           "model": "ST4000DM000",
-          "count": 33287,
+          "count": 33510,
           "size_tb": 4.0
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 15047,
+          "count": 15051,
           "size_tb": 4.0
         },
         {
           "model": "ST8000NM0055",
-          "count": 14404,
+          "count": 14405,
           "size_tb": 8.0
         },
         {
@@ -1540,7 +1750,7 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 6629,
+          "count": 6628,
           "size_tb": 4.0
         },
         {
@@ -1560,7 +1770,7 @@
         },
         {
           "model": "ST500LM012 HN",
-          "count": 707,
+          "count": 709,
           "size_tb": 0.5
         },
         {
@@ -1571,39 +1781,51 @@
       ]
     },
     {
-      "date": "2018-01-01",
-      "label": "2018 Q1",
+      "date": "2017-10-01",
+      "label": "2017 Q4",
       "summary": {
-        "drive_count": 94186,
-        "total_pb": 540.86,
-        "avg_drive_tb": 5.74,
-        "failures": 2
+        "drive_count": 92966,
+        "total_pb": 532.05,
+        "avg_drive_tb": 5.72,
+        "median_drive_tb": 4.0,
+        "failures": 382,
+        "drive_days": 8266213
       },
       "manufacturers": [
         {
           "name": "Seagate",
           "drives": 67765,
-          "pb": 434.05
+          "pb": 434.05,
+          "drive_days": 5905634,
+          "failures": 350
         },
         {
           "name": "HGST",
-          "drives": 22202,
-          "pb": 93.01
+          "drives": 21002,
+          "pb": 84.2,
+          "drive_days": 1973664,
+          "failures": 20
         },
         {
           "name": "Other",
           "drives": 2318,
-          "pb": 9.14
+          "pb": 9.14,
+          "drive_days": 219981,
+          "failures": 2
         },
         {
           "name": "Western Digital",
           "drives": 1105,
-          "pb": 3.54
+          "pb": 3.54,
+          "drive_days": 101767,
+          "failures": 5
         },
         {
           "name": "Toshiba",
-          "drives": 796,
-          "pb": 1.12
+          "drives": 776,
+          "pb": 1.11,
+          "drive_days": 65167,
+          "failures": 5
         }
       ],
       "top_models": [
@@ -1614,7 +1836,7 @@
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 14989,
+          "count": 14797,
           "size_tb": 4.0
         },
         {
@@ -1634,7 +1856,7 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 6041,
+          "count": 6033,
           "size_tb": 4.0
         },
         {
@@ -1653,52 +1875,64 @@
           "size_tb": 10.0
         },
         {
-          "model": "HGST HUH728080ALE600",
-          "count": 1045,
-          "size_tb": 8.0
+          "model": "ST500LM012 HN",
+          "count": 685,
+          "size_tb": 0.5
         }
       ]
     },
     {
-      "date": "2018-04-01",
-      "label": "2018 Q2",
+      "date": "2018-01-01",
+      "label": "2018 Q1",
       "summary": {
-        "drive_count": 100050,
-        "total_pb": 641.19,
+        "drive_count": 100110,
+        "total_pb": 641.43,
         "avg_drive_tb": 6.41,
-        "failures": 1
+        "median_drive_tb": 4.0,
+        "failures": 333,
+        "drive_days": 8949492
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 75962,
-          "pb": 543.93
+          "drives": 75963,
+          "pb": 543.93,
+          "drive_days": 6678464,
+          "failures": 274
         },
         {
           "name": "HGST",
-          "drives": 22005,
-          "pb": 92.22
+          "drives": 22063,
+          "pb": 92.45,
+          "drive_days": 1972551,
+          "failures": 28
         },
         {
           "name": "Western Digital",
           "drives": 1078,
-          "pb": 3.54
+          "pb": 3.54,
+          "drive_days": 98239,
+          "failures": 6
         },
         {
           "name": "Toshiba",
-          "drives": 967,
-          "pb": 1.35
+          "drives": 968,
+          "pb": 1.35,
+          "drive_days": 81408,
+          "failures": 9
         },
         {
           "name": "Other",
           "drives": 38,
-          "pb": 0.15
+          "pb": 0.15,
+          "drive_days": 118830,
+          "failures": 16
         }
       ],
       "top_models": [
         {
           "model": "ST4000DM000",
-          "count": 30940,
+          "count": 30941,
           "size_tb": 4.0
         },
         {
@@ -1708,7 +1942,7 @@
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 15279,
+          "count": 15339,
           "size_tb": 4.0
         },
         {
@@ -1723,7 +1957,7 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 5580,
+          "count": 5578,
           "size_tb": 4.0
         },
         {
@@ -1749,50 +1983,62 @@
       ]
     },
     {
-      "date": "2018-07-01",
-      "label": "2018 Q3",
+      "date": "2018-04-01",
+      "label": "2018 Q2",
       "summary": {
-        "drive_count": 100252,
-        "total_pb": 680.42,
+        "drive_count": 100254,
+        "total_pb": 680.44,
         "avg_drive_tb": 6.79,
-        "failures": 2
+        "median_drive_tb": 6.0,
+        "failures": 292,
+        "drive_days": 9144206
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 77152,
-          "pb": 587.09
+          "drives": 77157,
+          "pb": 587.13,
+          "drive_days": 7022816,
+          "failures": 257
         },
         {
           "name": "HGST",
-          "drives": 20957,
-          "pb": 88.02
+          "drives": 20954,
+          "pb": 88.01,
+          "drive_days": 1928970,
+          "failures": 19
         },
         {
           "name": "Toshiba",
           "drives": 1073,
-          "pb": 1.71
+          "pb": 1.71,
+          "drive_days": 93662,
+          "failures": 12
         },
         {
           "name": "Western Digital",
           "drives": 1051,
-          "pb": 3.51
+          "pb": 3.51,
+          "drive_days": 96590,
+          "failures": 4
         },
         {
           "name": "Other",
           "drives": 19,
-          "pb": 0.08
+          "pb": 0.08,
+          "drive_days": 2168,
+          "failures": 0
         }
       ],
       "top_models": [
         {
           "model": "ST4000DM000",
-          "count": 27473,
+          "count": 27476,
           "size_tb": 4.0
         },
         {
           "model": "ST12000NM0007",
-          "count": 21578,
+          "count": 21580,
           "size_tb": 12.0
         },
         {
@@ -1812,7 +2058,7 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 4776,
+          "count": 4773,
           "size_tb": 4.0
         },
         {
@@ -1838,39 +2084,51 @@
       ]
     },
     {
-      "date": "2018-10-01",
-      "label": "2018 Q4",
+      "date": "2018-07-01",
+      "label": "2018 Q3",
       "summary": {
         "drive_count": 99636,
         "total_pb": 706.35,
         "avg_drive_tb": 7.09,
-        "failures": 7
+        "median_drive_tb": 8.0,
+        "failures": 351,
+        "drive_days": 9249199
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 77154,
-          "pb": 614.79
+          "drives": 77155,
+          "pb": 614.79,
+          "drive_days": 7150568,
+          "failures": 303
         },
         {
           "name": "HGST",
-          "drives": 20569,
-          "pb": 87.1
+          "drives": 20568,
+          "pb": 87.1,
+          "drive_days": 1911101,
+          "failures": 15
         },
         {
           "name": "Toshiba",
           "drives": 1108,
-          "pb": 1.74
+          "pb": 1.74,
+          "drive_days": 101052,
+          "failures": 18
         },
         {
           "name": "Western Digital",
           "drives": 789,
-          "pb": 2.65
+          "pb": 2.65,
+          "drive_days": 84905,
+          "failures": 15
         },
         {
           "name": "Other",
           "drives": 16,
-          "pb": 0.06
+          "pb": 0.06,
+          "drive_days": 1573,
+          "failures": 0
         }
       ],
       "top_models": [
@@ -1881,7 +2139,7 @@
         },
         {
           "model": "ST4000DM000",
-          "count": 24307,
+          "count": 24308,
           "size_tb": 4.0
         },
         {
@@ -1901,7 +2159,7 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 4707,
+          "count": 4706,
           "size_tb": 4.0
         },
         {
@@ -1927,45 +2185,57 @@
       ]
     },
     {
-      "date": "2019-01-01",
-      "label": "2019 Q1",
+      "date": "2018-10-01",
+      "label": "2018 Q4",
       "summary": {
-        "drive_count": 106918,
+        "drive_count": 106916,
         "total_pb": 804.89,
         "avg_drive_tb": 7.53,
-        "failures": 4
+        "median_drive_tb": 8.0,
+        "failures": 389,
+        "drive_days": 9357609
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 82198,
-          "pb": 682.99
+          "drives": 82197,
+          "pb": 682.97,
+          "drive_days": 7151678,
+          "failures": 339
         },
         {
           "name": "HGST",
-          "drives": 21640,
-          "pb": 101.04
+          "drives": 21638,
+          "pb": 101.03,
+          "drive_days": 1929277,
+          "failures": 25
         },
         {
           "name": "Toshiba",
-          "drives": 2306,
-          "pb": 18.32
+          "drives": 2307,
+          "pb": 18.34,
+          "drive_days": 206129,
+          "failures": 20
         },
         {
           "name": "Western Digital",
           "drives": 745,
-          "pb": 2.47
+          "pb": 2.47,
+          "drive_days": 68637,
+          "failures": 5
         },
         {
           "name": "Other",
           "drives": 29,
-          "pb": 0.07
+          "pb": 0.07,
+          "drive_days": 1888,
+          "failures": 0
         }
       ],
       "top_models": [
         {
           "model": "ST12000NM0007",
-          "count": 31147,
+          "count": 31146,
           "size_tb": 12.0
         },
         {
@@ -1990,7 +2260,7 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 4678,
+          "count": 4676,
           "size_tb": 4.0
         },
         {
@@ -2010,56 +2280,68 @@
         },
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 1204,
+          "count": 1205,
           "size_tb": 14.0
         }
       ]
     },
     {
-      "date": "2019-04-01",
-      "label": "2019 Q2",
+      "date": "2019-01-01",
+      "label": "2019 Q1",
       "summary": {
-        "drive_count": 106236,
-        "total_pb": 862.07,
+        "drive_count": 106238,
+        "total_pb": 862.09,
         "avg_drive_tb": 8.11,
-        "failures": 12
+        "median_drive_tb": 8.0,
+        "failures": 428,
+        "drive_days": 9577046
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 81770,
-          "pb": 708.67
+          "drives": 81774,
+          "pb": 708.7,
+          "drive_days": 7446132,
+          "failures": 386
         },
         {
           "name": "HGST",
-          "drives": 21777,
-          "pb": 134.36
+          "drives": 21775,
+          "pb": 134.36,
+          "drive_days": 1860644,
+          "failures": 21
         },
         {
           "name": "Toshiba",
           "drives": 2281,
-          "pb": 18.34
+          "pb": 18.34,
+          "drive_days": 208341,
+          "failures": 16
         },
         {
           "name": "Western Digital",
           "drives": 366,
-          "pb": 0.67
+          "pb": 0.67,
+          "drive_days": 58905,
+          "failures": 5
         },
         {
           "name": "Other",
           "drives": 42,
-          "pb": 0.03
+          "pb": 0.03,
+          "drive_days": 3024,
+          "failures": 0
         }
       ],
       "top_models": [
         {
           "model": "ST12000NM0007",
-          "count": 34706,
+          "count": 34708,
           "size_tb": 12.0
         },
         {
           "model": "ST4000DM000",
-          "count": 19783,
+          "count": 19785,
           "size_tb": 4.0
         },
         {
@@ -2069,7 +2351,7 @@
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 12752,
+          "count": 12753,
           "size_tb": 4.0
         },
         {
@@ -2084,7 +2366,7 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 2560,
+          "count": 2557,
           "size_tb": 4.0
         },
         {
@@ -2105,50 +2387,62 @@
       ]
     },
     {
-      "date": "2019-07-01",
-      "label": "2019 Q3",
+      "date": "2019-04-01",
+      "label": "2019 Q2",
       "summary": {
-        "drive_count": 110638,
-        "total_pb": 916.84,
+        "drive_count": 110640,
+        "total_pb": 916.86,
         "avg_drive_tb": 8.29,
-        "failures": 8
+        "median_drive_tb": 8.0,
+        "failures": 500,
+        "drive_days": 9831138
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 81463,
-          "pb": 707.0
+          "drives": 81465,
+          "pb": 707.01,
+          "drive_days": 7411591,
+          "failures": 447
         },
         {
           "name": "HGST",
           "drives": 26596,
-          "pb": 191.56
+          "pb": 191.56,
+          "drive_days": 2186347,
+          "failures": 28
         },
         {
           "name": "Toshiba",
           "drives": 2220,
-          "pb": 18.1
+          "pb": 18.1,
+          "drive_days": 202713,
+          "failures": 23
         },
         {
           "name": "Western Digital",
           "drives": 280,
-          "pb": 0.16
+          "pb": 0.16,
+          "drive_days": 25490,
+          "failures": 2
         },
         {
           "name": "Other",
           "drives": 79,
-          "pb": 0.04
+          "pb": 0.04,
+          "drive_days": 4997,
+          "failures": 0
         }
       ],
       "top_models": [
         {
           "model": "ST12000NM0007",
-          "count": 34709,
+          "count": 34710,
           "size_tb": 12.0
         },
         {
           "model": "ST4000DM000",
-          "count": 19568,
+          "count": 19569,
           "size_tb": 4.0
         },
         {
@@ -2194,39 +2488,51 @@
       ]
     },
     {
-      "date": "2019-10-01",
-      "label": "2019 Q4",
+      "date": "2019-07-01",
+      "label": "2019 Q3",
       "summary": {
-        "drive_count": 115259,
-        "total_pb": 972.3,
+        "drive_count": 115150,
+        "total_pb": 971.98,
         "avg_drive_tb": 8.44,
-        "failures": 9
+        "median_drive_tb": 8.0,
+        "failures": 622,
+        "drive_days": 10338153
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 83646,
-          "pb": 734.86
+          "drives": 83645,
+          "pb": 734.92,
+          "drive_days": 7509879,
+          "failures": 547
         },
         {
           "name": "HGST",
-          "drives": 28940,
-          "pb": 219.12
+          "drives": 28833,
+          "pb": 218.73,
+          "drive_days": 2586954,
+          "failures": 42
         },
         {
           "name": "Toshiba",
-          "drives": 2208,
-          "pb": 18.09
+          "drives": 2207,
+          "pb": 18.09,
+          "drive_days": 203710,
+          "failures": 32
         },
         {
           "name": "Western Digital",
           "drives": 281,
-          "pb": 0.16
+          "pb": 0.16,
+          "drive_days": 25975,
+          "failures": 1
         },
         {
           "name": "Other",
           "drives": 184,
-          "pb": 0.07
+          "pb": 0.07,
+          "drive_days": 11635,
+          "failures": 0
         }
       ],
       "top_models": [
@@ -2237,17 +2543,17 @@
         },
         {
           "model": "ST4000DM000",
-          "count": 19329,
+          "count": 19290,
           "size_tb": 4.0
         },
         {
           "model": "ST8000NM0055",
-          "count": 14388,
+          "count": 14416,
           "size_tb": 8.0
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 12736,
+          "count": 12641,
           "size_tb": 4.0
         },
         {
@@ -2262,7 +2568,7 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 2707,
+          "count": 2704,
           "size_tb": 4.0
         },
         {
@@ -2283,45 +2589,57 @@
       ]
     },
     {
-      "date": "2020-01-01",
-      "label": "2020 Q1",
+      "date": "2019-10-01",
+      "label": "2019 Q4",
       "summary": {
-        "drive_count": 124955,
-        "total_pb": 1092.03,
-        "avg_drive_tb": 8.74,
-        "failures": 6
+        "drive_count": 124956,
+        "total_pb": 1090.32,
+        "avg_drive_tb": 8.73,
+        "median_drive_tb": 8.0,
+        "failures": 676,
+        "drive_days": 10991209
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 90658,
-          "pb": 820.32
+          "drives": 90659,
+          "pb": 819.21,
+          "drive_days": 7958524,
+          "failures": 605
         },
         {
           "name": "HGST",
-          "drives": 29065,
-          "pb": 219.74
+          "drives": 29066,
+          "pb": 219.16,
+          "drive_days": 2660717,
+          "failures": 25
         },
         {
           "name": "Toshiba",
-          "drives": 4609,
-          "pb": 51.7
+          "drives": 4608,
+          "pb": 51.68,
+          "drive_days": 322770,
+          "failures": 40
         },
         {
           "name": "Other",
           "drives": 348,
-          "pb": 0.12
+          "pb": 0.12,
+          "drive_days": 23895,
+          "failures": 0
         },
         {
           "name": "Western Digital",
           "drives": 275,
-          "pb": 0.15
+          "pb": 0.15,
+          "drive_days": 25303,
+          "failures": 6
         }
       ],
       "top_models": [
         {
           "model": "ST12000NM0007",
-          "count": 37004,
+          "count": 36910,
           "size_tb": 12.0
         },
         {
@@ -2331,37 +2649,37 @@
         },
         {
           "model": "ST8000NM0055",
-          "count": 14448,
+          "count": 14447,
           "size_tb": 8.0
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 12746,
+          "count": 12642,
           "size_tb": 4.0
         },
         {
           "model": "HGST HUH721212ALN604",
-          "count": 10858,
+          "count": 10859,
           "size_tb": 12.0
         },
         {
           "model": "ST8000DM002",
-          "count": 9808,
+          "count": 9809,
           "size_tb": 8.0
         },
         {
           "model": "ST12000NM0008",
-          "count": 7214,
+          "count": 7215,
           "size_tb": 12.0
         },
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 3620,
+          "count": 3619,
           "size_tb": 14.0
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 2826,
+          "count": 2783,
           "size_tb": 4.0
         },
         {
@@ -2372,45 +2690,57 @@
       ]
     },
     {
-      "date": "2020-04-01",
-      "label": "2020 Q2",
+      "date": "2020-01-01",
+      "label": "2020 Q1",
       "summary": {
-        "drive_count": 132340,
-        "total_pb": 1185.75,
-        "avg_drive_tb": 8.96,
-        "failures": 3
+        "drive_count": 132339,
+        "total_pb": 1186.43,
+        "avg_drive_tb": 8.97,
+        "median_drive_tb": 12.0,
+        "failures": 409,
+        "drive_days": 11602907
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 94245,
-          "pb": 863.64
+          "drives": 94244,
+          "pb": 864.22,
+          "drive_days": 8342126,
+          "failures": 313
         },
         {
           "name": "HGST",
           "drives": 29122,
-          "pb": 219.87
+          "pb": 219.88,
+          "drive_days": 2647888,
+          "failures": 27
         },
         {
           "name": "Toshiba",
           "drives": 8163,
-          "pb": 101.92
+          "pb": 102.02,
+          "drive_days": 548942,
+          "failures": 64
         },
         {
           "name": "Other",
           "drives": 540,
-          "pb": 0.17
+          "pb": 0.17,
+          "drive_days": 39127,
+          "failures": 0
         },
         {
           "name": "Western Digital",
           "drives": 270,
-          "pb": 0.15
+          "pb": 0.15,
+          "drive_days": 24824,
+          "failures": 5
         }
       ],
       "top_models": [
         {
           "model": "ST12000NM0007",
-          "count": 36998,
+          "count": 36997,
           "size_tb": 12.0
         },
         {
@@ -2429,13 +2759,13 @@
           "size_tb": 4.0
         },
         {
-          "model": "HGST HUH721212ALN604",
-          "count": 10846,
+          "model": "ST12000NM0008",
+          "count": 10876,
           "size_tb": 12.0
         },
         {
-          "model": "ST12000NM0008",
-          "count": 10828,
+          "model": "HGST HUH721212ALN604",
+          "count": 10847,
           "size_tb": 12.0
         },
         {
@@ -2445,12 +2775,12 @@
         },
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 7186,
+          "count": 7193,
           "size_tb": 14.0
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 2897,
+          "count": 2896,
           "size_tb": 4.0
         },
         {
@@ -2461,45 +2791,57 @@
       ]
     },
     {
-      "date": "2020-07-01",
-      "label": "2020 Q3",
+      "date": "2020-04-01",
+      "label": "2020 Q2",
       "summary": {
-        "drive_count": 142507,
-        "total_pb": 1308.93,
+        "drive_count": 142630,
+        "total_pb": 1310.77,
         "avg_drive_tb": 9.19,
-        "failures": 2
+        "median_drive_tb": 12.0,
+        "failures": 314,
+        "drive_days": 12498547
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 101562,
-          "pb": 952.61
+          "drives": 101741,
+          "pb": 954.77,
+          "drive_days": 8953926,
+          "failures": 231
         },
         {
           "name": "HGST",
-          "drives": 30212,
-          "pb": 232.44
+          "drives": 30211,
+          "pb": 232.55,
+          "drive_days": 2710303,
+          "failures": 33
         },
         {
           "name": "Toshiba",
-          "drives": 9686,
-          "pb": 123.49
+          "drives": 9632,
+          "pb": 123.07,
+          "drive_days": 749955,
+          "failures": 46
         },
         {
           "name": "Other",
-          "drives": 781,
-          "pb": 0.24
+          "drives": 780,
+          "pb": 0.24,
+          "drive_days": 59998,
+          "failures": 0
         },
         {
           "name": "Western Digital",
           "drives": 266,
-          "pb": 0.15
+          "pb": 0.15,
+          "drive_days": 24365,
+          "failures": 4
         }
       ],
       "top_models": [
         {
           "model": "ST12000NM0007",
-          "count": 34917,
+          "count": 35095,
           "size_tb": 12.0
         },
         {
@@ -2509,106 +2851,118 @@
         },
         {
           "model": "ST12000NM0008",
-          "count": 15542,
+          "count": 15543,
           "size_tb": 12.0
         },
         {
           "model": "ST8000NM0055",
-          "count": 14461,
+          "count": 14462,
           "size_tb": 8.0
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 12724,
+          "count": 12739,
           "size_tb": 4.0
         },
         {
           "model": "HGST HUH721212ALN604",
-          "count": 10847,
+          "count": 10846,
           "size_tb": 12.0
         },
         {
           "model": "ST8000DM002",
-          "count": 9796,
+          "count": 9795,
           "size_tb": 8.0
         },
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 8730,
+          "count": 8699,
           "size_tb": 14.0
         },
         {
           "model": "ST12000NM001G",
-          "count": 4798,
+          "count": 4799,
           "size_tb": 12.0
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 2938,
+          "count": 2952,
           "size_tb": 4.0
         }
       ]
     },
     {
-      "date": "2020-10-01",
-      "label": "2020 Q4",
+      "date": "2020-07-01",
+      "label": "2020 Q3",
       "summary": {
-        "drive_count": 153725,
-        "total_pb": 1463.85,
-        "avg_drive_tb": 9.52,
-        "failures": 5
+        "drive_count": 153727,
+        "total_pb": 1464.28,
+        "avg_drive_tb": 9.53,
+        "median_drive_tb": 12.0,
+        "failures": 368,
+        "drive_days": 13553809
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 102009,
-          "pb": 963.87
+          "drives": 102012,
+          "pb": 963.91,
+          "drive_days": 9327166,
+          "failures": 281
         },
         {
           "name": "HGST",
-          "drives": 32214,
-          "pb": 255.8
+          "drives": 32213,
+          "pb": 255.89,
+          "drive_days": 2849842,
+          "failures": 23
         },
         {
           "name": "Toshiba",
-          "drives": 18235,
-          "pb": 243.73
+          "drives": 18236,
+          "pb": 244.03,
+          "drive_days": 1271713,
+          "failures": 60
         },
         {
           "name": "Other",
-          "drives": 1003,
-          "pb": 0.3
+          "drives": 1002,
+          "pb": 0.3,
+          "drive_days": 80756,
+          "failures": 2
         },
         {
           "name": "Western Digital",
           "drives": 264,
-          "pb": 0.15
+          "pb": 0.15,
+          "drive_days": 24332,
+          "failures": 2
         }
       ],
       "top_models": [
         {
           "model": "ST12000NM0007",
-          "count": 28866,
+          "count": 28867,
           "size_tb": 12.0
         },
         {
           "model": "ST4000DM000",
-          "count": 19022,
+          "count": 19024,
           "size_tb": 4.0
         },
         {
           "model": "ST12000NM0008",
-          "count": 18340,
+          "count": 18339,
           "size_tb": 12.0
         },
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 17298,
+          "count": 17318,
           "size_tb": 14.0
         },
         {
           "model": "ST8000NM0055",
-          "count": 14421,
+          "count": 14425,
           "size_tb": 8.0
         },
         {
@@ -2633,45 +2987,57 @@
         },
         {
           "model": "HGST HMS5C4040ALE640",
-          "count": 3024,
+          "count": 3023,
           "size_tb": 4.0
         }
       ]
     },
     {
-      "date": "2021-01-01",
-      "label": "2021 Q1",
+      "date": "2020-10-01",
+      "label": "2020 Q4",
       "summary": {
-        "drive_count": 165512,
-        "total_pb": 1634.85,
+        "drive_count": 165530,
+        "total_pb": 1635.0,
         "avg_drive_tb": 9.88,
-        "failures": 4
+        "median_drive_tb": 12.0,
+        "failures": 404,
+        "drive_days": 14631135
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 101960,
-          "pb": 972.23
+          "drives": 101962,
+          "pb": 972.14,
+          "drive_days": 9354766,
+          "failures": 315
         },
         {
           "name": "HGST",
-          "drives": 32933,
-          "pb": 263.67
+          "drives": 32929,
+          "pb": 263.63,
+          "drive_days": 3002526,
+          "failures": 29
         },
         {
           "name": "Toshiba",
-          "drives": 23096,
-          "pb": 314.4
+          "drives": 23116,
+          "pb": 314.68,
+          "drive_days": 1913023,
+          "failures": 58
         },
         {
           "name": "Western Digital",
           "drives": 6266,
-          "pb": 84.18
+          "pb": 84.18,
+          "drive_days": 257921,
+          "failures": 1
         },
         {
           "name": "Other",
           "drives": 1257,
-          "pb": 0.36
+          "pb": 0.36,
+          "drive_days": 102899,
+          "failures": 1
         }
       ],
       "top_models": [
@@ -2682,7 +3048,7 @@
         },
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 21027,
+          "count": 21046,
           "size_tb": 14.0
         },
         {
@@ -2692,7 +3058,7 @@
         },
         {
           "model": "ST4000DM000",
-          "count": 18939,
+          "count": 18912,
           "size_tb": 4.0
         },
         {
@@ -2712,7 +3078,7 @@
         },
         {
           "model": "ST8000DM002",
-          "count": 9770,
+          "count": 9772,
           "size_tb": 8.0
         },
         {
@@ -2728,65 +3094,77 @@
       ]
     },
     {
-      "date": "2021-04-01",
-      "label": "2021 Q2",
+      "date": "2021-01-01",
+      "label": "2021 Q1",
       "summary": {
-        "drive_count": 175626,
-        "total_pb": 1784.42,
-        "avg_drive_tb": 10.16,
-        "failures": 8
+        "drive_count": 175443,
+        "total_pb": 1781.59,
+        "avg_drive_tb": 10.15,
+        "median_drive_tb": 12.0,
+        "failures": 399,
+        "drive_days": 15287372
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 98848,
-          "pb": 947.42
+          "drives": 98968,
+          "pb": 948.53,
+          "drive_days": 9075065,
+          "failures": 277
         },
         {
           "name": "HGST",
-          "drives": 36341,
-          "pb": 303.33
+          "drives": 36162,
+          "pb": 301.51,
+          "drive_days": 3048988,
+          "failures": 39
         },
         {
           "name": "Toshiba",
-          "drives": 29736,
-          "pb": 407.17
+          "drives": 29610,
+          "pb": 405.04,
+          "drive_days": 2368734,
+          "failures": 68
         },
         {
           "name": "Western Digital",
           "drives": 9182,
-          "pb": 126.07
+          "pb": 126.07,
+          "drive_days": 669089,
+          "failures": 11
         },
         {
           "name": "Other",
-          "drives": 1519,
-          "pb": 0.43
+          "drives": 1521,
+          "pb": 0.44,
+          "drive_days": 125496,
+          "failures": 4
         }
       ],
       "top_models": [
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 27408,
+          "count": 27257,
           "size_tb": 14.0
         },
         {
           "model": "ST12000NM0008",
-          "count": 20088,
+          "count": 20085,
           "size_tb": 12.0
         },
         {
           "model": "ST4000DM000",
-          "count": 18881,
+          "count": 18882,
           "size_tb": 4.0
         },
         {
           "model": "ST8000NM0055",
-          "count": 14418,
+          "count": 14419,
           "size_tb": 8.0
         },
         {
           "model": "ST12000NM0007",
-          "count": 13522,
+          "count": 13702,
           "size_tb": 12.0
         },
         {
@@ -2806,91 +3184,103 @@
         },
         {
           "model": "ST12000NM001G",
-          "count": 9062,
+          "count": 8976,
           "size_tb": 12.0
         },
         {
           "model": "WDC WUH721414ALE6L4",
-          "count": 8261,
+          "count": 8260,
           "size_tb": 14.0
         }
       ]
     },
     {
-      "date": "2021-07-01",
-      "label": "2021 Q3",
+      "date": "2021-04-01",
+      "label": "2021 Q2",
       "summary": {
-        "drive_count": 182264,
-        "total_pb": 1890.32,
+        "drive_count": 181609,
+        "total_pb": 1882.85,
         "avg_drive_tb": 10.37,
-        "failures": 0
+        "median_drive_tb": 12.0,
+        "failures": 507,
+        "drive_days": 16226492
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 95366,
-          "pb": 921.21
+          "drives": 94894,
+          "pb": 915.49,
+          "drive_days": 8720719,
+          "failures": 350
         },
         {
           "name": "HGST",
-          "drives": 41208,
-          "pb": 362.48
+          "drives": 41157,
+          "pb": 362.01,
+          "drive_days": 3564593,
+          "failures": 37
         },
         {
           "name": "Toshiba",
-          "drives": 34697,
-          "pb": 478.39
+          "drives": 34575,
+          "pb": 477.11,
+          "drive_days": 2957531,
+          "failures": 103
         },
         {
           "name": "Western Digital",
           "drives": 9286,
-          "pb": 127.74
+          "pb": 127.74,
+          "drive_days": 838003,
+          "failures": 11
         },
         {
           "name": "Other",
-          "drives": 1707,
-          "pb": 0.5
+          "drives": 1697,
+          "pb": 0.49,
+          "drive_days": 145646,
+          "failures": 6
         }
       ],
       "top_models": [
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 32004,
+          "count": 31913,
           "size_tb": 14.0
         },
         {
           "model": "ST12000NM0008",
-          "count": 20328,
+          "count": 19970,
           "size_tb": 12.0
         },
         {
           "model": "ST4000DM000",
-          "count": 18792,
+          "count": 18795,
           "size_tb": 4.0
         },
         {
           "model": "ST8000NM0055",
-          "count": 14401,
+          "count": 14404,
           "size_tb": 8.0
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 12583,
+          "count": 12610,
           "size_tb": 4.0
         },
         {
           "model": "HGST HUH721212ALN604",
-          "count": 10833,
+          "count": 10831,
           "size_tb": 12.0
         },
         {
           "model": "HGST HUH721212ALE604",
-          "count": 10754,
+          "count": 10709,
           "size_tb": 12.0
         },
         {
           "model": "ST12000NM001G",
-          "count": 10736,
+          "count": 10557,
           "size_tb": 12.0
         },
         {
@@ -2906,70 +3296,82 @@
       ]
     },
     {
-      "date": "2021-10-01",
-      "label": "2021 Q4",
+      "date": "2021-07-01",
+      "label": "2021 Q3",
       "summary": {
-        "drive_count": 194812,
-        "total_pb": 2067.22,
+        "drive_count": 194749,
+        "total_pb": 2067.18,
         "avg_drive_tb": 10.61,
-        "failures": 7
+        "median_drive_tb": 12.0,
+        "failures": 580,
+        "drive_days": 17395221
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 98057,
-          "pb": 962.97
+          "drives": 97995,
+          "pb": 963.11,
+          "drive_days": 8972333,
+          "failures": 396
         },
         {
           "name": "HGST",
-          "drives": 42637,
-          "pb": 377.88
+          "drives": 42638,
+          "pb": 378.13,
+          "drive_days": 3851325,
+          "failures": 33
         },
         {
           "name": "Toshiba",
-          "drives": 42430,
-          "pb": 591.37
+          "drives": 42429,
+          "pb": 590.95,
+          "drive_days": 3521688,
+          "failures": 126
         },
         {
           "name": "Western Digital",
           "drives": 9701,
-          "pb": 134.42
+          "pb": 134.42,
+          "drive_days": 878910,
+          "failures": 11
         },
         {
           "name": "Other",
-          "drives": 1987,
-          "pb": 0.58
+          "drives": 1986,
+          "pb": 0.58,
+          "drive_days": 170965,
+          "failures": 14
         }
       ],
       "top_models": [
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 37968,
+          "count": 37938,
           "size_tb": 14.0
         },
         {
           "model": "ST12000NM0008",
-          "count": 20268,
+          "count": 20269,
           "size_tb": 12.0
         },
         {
           "model": "ST4000DM000",
-          "count": 18704,
+          "count": 18691,
           "size_tb": 4.0
         },
         {
           "model": "ST8000NM0055",
-          "count": 14342,
+          "count": 14367,
           "size_tb": 8.0
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 12677,
+          "count": 12735,
           "size_tb": 4.0
         },
         {
           "model": "ST12000NM001G",
-          "count": 11997,
+          "count": 11996,
           "size_tb": 12.0
         },
         {
@@ -2979,7 +3381,7 @@
         },
         {
           "model": "HGST HUH721212ALN604",
-          "count": 10827,
+          "count": 10829,
           "size_tb": 12.0
         },
         {
@@ -2989,56 +3391,68 @@
         },
         {
           "model": "ST8000DM002",
-          "count": 9730,
+          "count": 9731,
           "size_tb": 8.0
         }
       ]
     },
     {
-      "date": "2022-01-01",
-      "label": "2022 Q1",
+      "date": "2021-10-01",
+      "label": "2021 Q4",
       "summary": {
-        "drive_count": 206954,
-        "total_pb": 2254.31,
+        "drive_count": 206928,
+        "total_pb": 2254.16,
         "avg_drive_tb": 10.89,
-        "failures": 3
+        "median_drive_tb": 12.0,
+        "failures": 672,
+        "drive_days": 18385255
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 102572,
-          "pb": 1037.96
+          "drives": 102576,
+          "pb": 1038.31,
+          "drive_days": 9152327,
+          "failures": 383
         },
         {
           "name": "Toshiba",
-          "drives": 47772,
-          "pb": 676.73
+          "drives": 47775,
+          "pb": 676.36,
+          "drive_days": 4113252,
+          "failures": 133
         },
         {
           "name": "HGST",
-          "drives": 43932,
-          "pb": 392.84
+          "drives": 43899,
+          "pb": 392.7,
+          "drive_days": 3999831,
+          "failures": 41
         },
         {
           "name": "Western Digital",
           "drives": 10472,
-          "pb": 146.15
+          "pb": 146.15,
+          "drive_days": 928274,
+          "failures": 8
         },
         {
           "name": "Other",
           "drives": 2206,
-          "pb": 0.64
+          "pb": 0.64,
+          "drive_days": 191571,
+          "failures": 107
         }
       ],
       "top_models": [
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 38211,
+          "count": 38186,
           "size_tb": 14.0
         },
         {
           "model": "ST12000NM0008",
-          "count": 20174,
+          "count": 20201,
           "size_tb": 12.0
         },
         {
@@ -3048,17 +3462,17 @@
         },
         {
           "model": "ST8000NM0055",
-          "count": 14332,
+          "count": 14334,
           "size_tb": 8.0
         },
         {
           "model": "HGST HUH721212ALE604",
-          "count": 13137,
+          "count": 13138,
           "size_tb": 12.0
         },
         {
           "model": "HGST HMS5C4040BLE640",
-          "count": 12733,
+          "count": 12703,
           "size_tb": 4.0
         },
         {
@@ -3084,55 +3498,67 @@
       ]
     },
     {
-      "date": "2022-04-01",
-      "label": "2022 Q2",
+      "date": "2022-01-01",
+      "label": "2022 Q1",
       "summary": {
-        "drive_count": 211735,
-        "total_pb": 2329.26,
+        "drive_count": 211732,
+        "total_pb": 2329.22,
         "avg_drive_tb": 11.0,
-        "failures": 2
+        "median_drive_tb": 12.0,
+        "failures": 664,
+        "drive_days": 18845260
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 104828,
-          "pb": 1075.96
+          "drives": 104827,
+          "pb": 1075.93,
+          "drive_days": 9341211,
+          "failures": 442
         },
         {
           "name": "Toshiba",
-          "drives": 47972,
-          "pb": 680.28
+          "drives": 47971,
+          "pb": 680.27,
+          "drive_days": 4307266,
+          "failures": 137
         },
         {
           "name": "HGST",
-          "drives": 44091,
-          "pb": 393.69
+          "drives": 44090,
+          "pb": 393.68,
+          "drive_days": 3961278,
+          "failures": 77
         },
         {
           "name": "Western Digital",
           "drives": 12507,
-          "pb": 178.66
+          "pb": 178.66,
+          "drive_days": 1030806,
+          "failures": 2
         },
         {
           "name": "Other",
           "drives": 2337,
-          "pb": 0.68
+          "pb": 0.68,
+          "drive_days": 204699,
+          "failures": 6
         }
       ],
       "top_models": [
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 38211,
+          "count": 38210,
           "size_tb": 14.0
         },
         {
           "model": "ST12000NM0008",
-          "count": 20138,
+          "count": 20139,
           "size_tb": 12.0
         },
         {
           "model": "ST4000DM000",
-          "count": 18494,
+          "count": 18495,
           "size_tb": 4.0
         },
         {
@@ -3142,7 +3568,7 @@
         },
         {
           "model": "ST16000NM001G",
-          "count": 13261,
+          "count": 13259,
           "size_tb": 16.0
         },
         {
@@ -3173,421 +3599,77 @@
       ]
     },
     {
-      "date": "2022-07-01",
-      "label": "2022 Q3",
-      "summary": {
-        "drive_count": 219443,
-        "total_pb": 2449.74,
-        "avg_drive_tb": 11.16,
-        "failures": 11
-      },
-      "manufacturers": [
-        {
-          "name": "Seagate",
-          "drives": 108262,
-          "pb": 1132.7
-        },
-        {
-          "name": "Toshiba",
-          "drives": 51828,
-          "pb": 741.81
-        },
-        {
-          "name": "HGST",
-          "drives": 44223,
-          "pb": 394.19
-        },
-        {
-          "name": "Western Digital",
-          "drives": 12607,
-          "pb": 180.29
-        },
-        {
-          "name": "Other",
-          "drives": 2523,
-          "pb": 0.74
-        }
-      ],
-      "top_models": [
-        {
-          "model": "TOSHIBA MG07ACA14TA",
-          "count": 38205,
-          "size_tb": 14.0
-        },
-        {
-          "model": "ST12000NM0008",
-          "count": 20033,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST4000DM000",
-          "count": 18359,
-          "size_tb": 4.0
-        },
-        {
-          "model": "ST16000NM001G",
-          "count": 16860,
-          "size_tb": 16.0
-        },
-        {
-          "model": "ST8000NM0055",
-          "count": 14370,
-          "size_tb": 8.0
-        },
-        {
-          "model": "HGST HUH721212ALE604",
-          "count": 13137,
-          "size_tb": 12.0
-        },
-        {
-          "model": "HGST HMS5C4040BLE640",
-          "count": 12728,
-          "size_tb": 4.0
-        },
-        {
-          "model": "ST12000NM001G",
-          "count": 12390,
-          "size_tb": 12.0
-        },
-        {
-          "model": "HGST HUH721212ALN604",
-          "count": 10802,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST14000NM001G",
-          "count": 10728,
-          "size_tb": 14.0
-        }
-      ]
-    },
-    {
-      "date": "2022-10-01",
-      "label": "2022 Q4",
-      "summary": {
-        "drive_count": 230896,
-        "total_pb": 2630.2,
-        "avg_drive_tb": 11.39,
-        "failures": 7
-      },
-      "manufacturers": [
-        {
-          "name": "Seagate",
-          "drives": 111976,
-          "pb": 1193.42
-        },
-        {
-          "name": "Toshiba",
-          "drives": 53304,
-          "pb": 766.2
-        },
-        {
-          "name": "HGST",
-          "drives": 44327,
-          "pb": 394.43
-        },
-        {
-          "name": "Western Digital",
-          "drives": 18589,
-          "pb": 275.34
-        },
-        {
-          "name": "Other",
-          "drives": 2700,
-          "pb": 0.79
-        }
-      ],
-      "top_models": [
-        {
-          "model": "TOSHIBA MG07ACA14TA",
-          "count": 38202,
-          "size_tb": 14.0
-        },
-        {
-          "model": "ST16000NM001G",
-          "count": 20403,
-          "size_tb": 16.0
-        },
-        {
-          "model": "ST12000NM0008",
-          "count": 19907,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST4000DM000",
-          "count": 18293,
-          "size_tb": 4.0
-        },
-        {
-          "model": "ST8000NM0055",
-          "count": 14374,
-          "size_tb": 8.0
-        },
-        {
-          "model": "HGST HUH721212ALE604",
-          "count": 13157,
-          "size_tb": 12.0
-        },
-        {
-          "model": "HGST HMS5C4040BLE640",
-          "count": 12729,
-          "size_tb": 4.0
-        },
-        {
-          "model": "ST12000NM001G",
-          "count": 12534,
-          "size_tb": 12.0
-        },
-        {
-          "model": "HGST HUH721212ALN604",
-          "count": 10782,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST14000NM001G",
-          "count": 10737,
-          "size_tb": 14.0
-        }
-      ]
-    },
-    {
-      "date": "2023-01-01",
-      "label": "2023 Q1",
-      "summary": {
-        "drive_count": 235597,
-        "total_pb": 2705.01,
-        "avg_drive_tb": 11.48,
-        "failures": 3
-      },
-      "manufacturers": [
-        {
-          "name": "Seagate",
-          "drives": 111891,
-          "pb": 1192.96
-        },
-        {
-          "name": "Toshiba",
-          "drives": 54316,
-          "pb": 782.64
-        },
-        {
-          "name": "HGST",
-          "drives": 44312,
-          "pb": 394.62
-        },
-        {
-          "name": "Western Digital",
-          "drives": 22258,
-          "pb": 333.96
-        },
-        {
-          "name": "Other",
-          "drives": 2820,
-          "pb": 0.83
-        }
-      ],
-      "top_models": [
-        {
-          "model": "TOSHIBA MG07ACA14TA",
-          "count": 38179,
-          "size_tb": 14.0
-        },
-        {
-          "model": "ST16000NM001G",
-          "count": 20395,
-          "size_tb": 16.0
-        },
-        {
-          "model": "ST12000NM0008",
-          "count": 19821,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST4000DM000",
-          "count": 18238,
-          "size_tb": 4.0
-        },
-        {
-          "model": "ST8000NM0055",
-          "count": 14416,
-          "size_tb": 8.0
-        },
-        {
-          "model": "HGST HUH721212ALE604",
-          "count": 13165,
-          "size_tb": 12.0
-        },
-        {
-          "model": "HGST HMS5C4040BLE640",
-          "count": 12730,
-          "size_tb": 4.0
-        },
-        {
-          "model": "ST12000NM001G",
-          "count": 12624,
-          "size_tb": 12.0
-        },
-        {
-          "model": "WDC WUH721816ALE6L4",
-          "count": 10801,
-          "size_tb": 16.0
-        },
-        {
-          "model": "HGST HUH721212ALN604",
-          "count": 10768,
-          "size_tb": 12.0
-        }
-      ]
-    },
-    {
       "date": "2023-04-01",
       "label": "2023 Q2",
       "summary": {
-        "drive_count": 241681,
-        "total_pb": 2803.69,
-        "avg_drive_tb": 11.6,
-        "failures": 12
-      },
-      "manufacturers": [
-        {
-          "name": "Seagate",
-          "drives": 113175,
-          "pb": 1216.56
-        },
-        {
-          "name": "Toshiba",
-          "drives": 55789,
-          "pb": 806.08
-        },
-        {
-          "name": "HGST",
-          "drives": 44213,
-          "pb": 393.48
-        },
-        {
-          "name": "Western Digital",
-          "drives": 25571,
-          "pb": 386.71
-        },
-        {
-          "name": "Other",
-          "drives": 2933,
-          "pb": 0.86
-        }
-      ],
-      "top_models": [
-        {
-          "model": "TOSHIBA MG07ACA14TA",
-          "count": 38157,
-          "size_tb": 14.0
-        },
-        {
-          "model": "ST16000NM001G",
-          "count": 21920,
-          "size_tb": 16.0
-        },
-        {
-          "model": "ST12000NM0008",
-          "count": 19747,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST4000DM000",
-          "count": 18066,
-          "size_tb": 4.0
-        },
-        {
-          "model": "ST8000NM0055",
-          "count": 14331,
-          "size_tb": 8.0
-        },
-        {
-          "model": "WDC WUH721816ALE6L4",
-          "count": 14098,
-          "size_tb": 16.0
-        },
-        {
-          "model": "HGST HUH721212ALE604",
-          "count": 13151,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST12000NM001G",
-          "count": 12807,
-          "size_tb": 12.0
-        },
-        {
-          "model": "HGST HMS5C4040BLE640",
-          "count": 12727,
-          "size_tb": 4.0
-        },
-        {
-          "model": "ST14000NM001G",
-          "count": 10760,
-          "size_tb": 14.0
-        }
-      ]
-    },
-    {
-      "date": "2023-07-01",
-      "label": "2023 Q3",
-      "summary": {
         "drive_count": 245757,
-        "total_pb": 2882.8,
+        "total_pb": 2882.55,
         "avg_drive_tb": 11.73,
-        "failures": 14
+        "median_drive_tb": 12.0,
+        "failures": 1389,
+        "drive_days": 21835156
       },
       "manufacturers": [
         {
           "name": "Seagate",
           "drives": 118156,
-          "pb": 1300.37
+          "pb": 1300.11,
+          "drive_days": 10394502,
+          "failures": 922
         },
         {
           "name": "Toshiba",
           "drives": 55739,
-          "pb": 805.76
+          "pb": 805.76,
+          "drive_days": 5000743,
+          "failures": 185
         },
         {
           "name": "HGST",
           "drives": 43230,
-          "pb": 388.73
+          "pb": 388.73,
+          "drive_days": 3883695,
+          "failures": 244
         },
         {
           "name": "Western Digital",
           "drives": 25655,
-          "pb": 387.08
+          "pb": 387.08,
+          "drive_days": 2291683,
+          "failures": 34
         },
         {
           "name": "Other",
           "drives": 2977,
-          "pb": 0.87
+          "pb": 0.87,
+          "drive_days": 264533,
+          "failures": 4
         }
       ],
       "top_models": [
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 38100,
+          "count": 38101,
           "size_tb": 14.0
         },
         {
           "model": "ST16000NM001G",
-          "count": 27255,
+          "count": 27254,
           "size_tb": 16.0
         },
         {
           "model": "ST12000NM0008",
-          "count": 19672,
+          "count": 19677,
           "size_tb": 12.0
         },
         {
           "model": "ST4000DM000",
-          "count": 17899,
+          "count": 17890,
           "size_tb": 4.0
         },
         {
           "model": "ST8000NM0055",
-          "count": 14118,
+          "count": 14117,
           "size_tb": 8.0
         },
         {
@@ -3597,12 +3679,12 @@
         },
         {
           "model": "HGST HUH721212ALE604",
-          "count": 13205,
+          "count": 13203,
           "size_tb": 12.0
         },
         {
           "model": "ST12000NM001G",
-          "count": 13034,
+          "count": 13029,
           "size_tb": 12.0
         },
         {
@@ -3612,66 +3694,78 @@
         },
         {
           "model": "ST14000NM001G",
-          "count": 10791,
+          "count": 10790,
           "size_tb": 14.0
         }
       ]
     },
     {
-      "date": "2023-10-01",
-      "label": "2023 Q4",
+      "date": "2023-07-01",
+      "label": "2023 Q3",
       "summary": {
-        "drive_count": 265193,
-        "total_pb": 3257.91,
-        "avg_drive_tb": 12.29,
-        "failures": 7
+        "drive_count": 263992,
+        "total_pb": 3228.13,
+        "avg_drive_tb": 12.23,
+        "median_drive_tb": 14.0,
+        "failures": 982,
+        "drive_days": 23601986
       },
       "manufacturers": [
         {
           "name": "Seagate",
           "drives": 116267,
-          "pb": 1294.95
+          "pb": 1294.94,
+          "drive_days": 10807213,
+          "failures": 698
         },
         {
           "name": "Toshiba",
-          "drives": 74583,
-          "pb": 1107.91
+          "drives": 73384,
+          "pb": 1088.72,
+          "drive_days": 6137315,
+          "failures": 185
         },
         {
           "name": "HGST",
-          "drives": 40500,
-          "pb": 377.64
+          "drives": 40499,
+          "pb": 377.62,
+          "drive_days": 3880989,
+          "failures": 66
         },
         {
           "name": "Western Digital",
-          "drives": 30792,
-          "pb": 476.18
+          "drives": 30791,
+          "pb": 465.6,
+          "drive_days": 2500618,
+          "failures": 28
         },
         {
           "name": "Other",
           "drives": 3051,
-          "pb": 1.25
+          "pb": 1.25,
+          "drive_days": 275851,
+          "failures": 5
         }
       ],
       "top_models": [
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 38059,
+          "count": 38060,
           "size_tb": 14.0
         },
         {
           "model": "ST16000NM001G",
-          "count": 27459,
+          "count": 27458,
           "size_tb": 16.0
         },
         {
           "model": "TOSHIBA MG08ACA16TA",
-          "count": 24097,
+          "count": 22897,
           "size_tb": 16.0
         },
         {
           "model": "ST12000NM0008",
-          "count": 19536,
+          "count": 19537,
           "size_tb": 12.0
         },
         {
@@ -3681,7 +3775,7 @@
         },
         {
           "model": "ST4000DM000",
-          "count": 15976,
+          "count": 15977,
           "size_tb": 4.0
         },
         {
@@ -3691,12 +3785,12 @@
         },
         {
           "model": "HGST HUH721212ALE604",
-          "count": 13212,
+          "count": 13213,
           "size_tb": 12.0
         },
         {
           "model": "ST12000NM001G",
-          "count": 13131,
+          "count": 13132,
           "size_tb": 12.0
         },
         {
@@ -3707,39 +3801,51 @@
       ]
     },
     {
-      "date": "2024-01-01",
-      "label": "2024 Q1",
+      "date": "2023-10-01",
+      "label": "2023 Q4",
       "summary": {
-        "drive_count": 274660,
-        "total_pb": 3482.06,
+        "drive_count": 274667,
+        "total_pb": 3482.16,
         "avg_drive_tb": 12.68,
-        "failures": 3
+        "median_drive_tb": 14.0,
+        "failures": 1057,
+        "drive_days": 24790999
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 111578,
-          "pb": 1277.41
+          "drives": 111580,
+          "pb": 1277.43,
+          "drive_days": 10515640,
+          "failures": 569
         },
         {
           "name": "Toshiba",
           "drives": 84205,
-          "pb": 1262.13
+          "pb": 1262.13,
+          "drive_days": 7202561,
+          "failures": 256
         },
         {
           "name": "HGST",
-          "drives": 39813,
-          "pb": 374.84
+          "drives": 39815,
+          "pb": 374.86,
+          "drive_days": 3696266,
+          "failures": 192
         },
         {
           "name": "Western Digital",
-          "drives": 35977,
-          "pb": 566.19
+          "drives": 35980,
+          "pb": 566.25,
+          "drive_days": 3095182,
+          "failures": 34
         },
         {
           "name": "Other",
           "drives": 3087,
-          "pb": 1.49
+          "pb": 1.49,
+          "drive_days": 281350,
+          "failures": 6
         }
       ],
       "top_models": [
@@ -3755,7 +3861,7 @@
         },
         {
           "model": "ST16000NM001G",
-          "count": 27432,
+          "count": 27433,
           "size_tb": 16.0
         },
         {
@@ -3775,7 +3881,7 @@
         },
         {
           "model": "HGST HUH721212ALE604",
-          "count": 13187,
+          "count": 13188,
           "size_tb": 12.0
         },
         {
@@ -3796,39 +3902,51 @@
       ]
     },
     {
-      "date": "2024-04-01",
-      "label": "2024 Q2",
+      "date": "2024-01-01",
+      "label": "2024 Q1",
       "summary": {
-        "drive_count": 283855,
-        "total_pb": 3727.84,
+        "drive_count": 283851,
+        "total_pb": 3727.16,
         "avg_drive_tb": 13.13,
-        "failures": 10
+        "median_drive_tb": 14.0,
+        "failures": 978,
+        "drive_days": 25189213
       },
       "manufacturers": [
         {
           "name": "Seagate",
-          "drives": 108191,
-          "pb": 1292.19
+          "drives": 108189,
+          "pb": 1291.45,
+          "drive_days": 9984018,
+          "failures": 533
         },
         {
           "name": "Toshiba",
-          "drives": 88957,
-          "pb": 1339.69
+          "drives": 88954,
+          "pb": 1339.63,
+          "drive_days": 7866993,
+          "failures": 225
         },
         {
           "name": "Western Digital",
           "drives": 44338,
-          "pb": 722.08
+          "pb": 722.11,
+          "drive_days": 3453068,
+          "failures": 48
         },
         {
           "name": "HGST",
-          "drives": 39252,
-          "pb": 372.07
+          "drives": 39253,
+          "pb": 372.17,
+          "drive_days": 3602813,
+          "failures": 170
         },
         {
           "name": "Other",
           "drives": 3117,
-          "pb": 1.81
+          "pb": 1.81,
+          "drive_days": 282321,
+          "failures": 2
         }
       ],
       "top_models": [
@@ -3839,7 +3957,7 @@
         },
         {
           "model": "TOSHIBA MG07ACA14TA",
-          "count": 37964,
+          "count": 37961,
           "size_tb": 14.0
         },
         {
@@ -3854,7 +3972,7 @@
         },
         {
           "model": "ST12000NM0008",
-          "count": 19360,
+          "count": 19302,
           "size_tb": 12.0
         },
         {
@@ -3879,452 +3997,7 @@
         },
         {
           "model": "HGST HUH721212ALN604",
-          "count": 10536,
-          "size_tb": 12.0
-        }
-      ]
-    },
-    {
-      "date": "2024-07-01",
-      "label": "2024 Q3",
-      "summary": {
-        "drive_count": 289096,
-        "total_pb": 3918.93,
-        "avg_drive_tb": 13.56,
-        "failures": 17
-      },
-      "manufacturers": [
-        {
-          "name": "Seagate",
-          "drives": 107556,
-          "pb": 1331.44
-        },
-        {
-          "name": "Toshiba",
-          "drives": 88958,
-          "pb": 1340.22
-        },
-        {
-          "name": "Western Digital",
-          "drives": 51468,
-          "pb": 878.97
-        },
-        {
-          "name": "HGST",
-          "drives": 37980,
-          "pb": 366.4
-        },
-        {
-          "name": "Other",
-          "drives": 3134,
-          "pb": 1.89
-        }
-      ],
-      "top_models": [
-        {
-          "model": "TOSHIBA MG08ACA16TA",
-          "count": 38803,
-          "size_tb": 16.0
-        },
-        {
-          "model": "TOSHIBA MG07ACA14TA",
-          "count": 37891,
-          "size_tb": 14.0
-        },
-        {
-          "model": "ST16000NM001G",
-          "count": 33411,
-          "size_tb": 16.0
-        },
-        {
-          "model": "WDC WUH721816ALE6L4",
-          "count": 26404,
-          "size_tb": 16.0
-        },
-        {
-          "model": "ST12000NM0008",
-          "count": 19300,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST8000NM0055",
-          "count": 13727,
-          "size_tb": 8.0
-        },
-        {
-          "model": "ST12000NM001G",
-          "count": 13183,
-          "size_tb": 12.0
-        },
-        {
-          "model": "WDC WUH722222ALE6L4",
-          "count": 13140,
-          "size_tb": 22.0
-        },
-        {
-          "model": "HGST HUH721212ALE604",
-          "count": 13115,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST14000NM001G",
-          "count": 10670,
-          "size_tb": 14.0
-        }
-      ]
-    },
-    {
-      "date": "2024-10-01",
-      "label": "2024 Q4",
-      "summary": {
-        "drive_count": 292679,
-        "total_pb": 4114.11,
-        "avg_drive_tb": 14.06,
-        "failures": 7
-      },
-      "manufacturers": [
-        {
-          "name": "Seagate",
-          "drives": 104802,
-          "pb": 1320.71
-        },
-        {
-          "name": "Toshiba",
-          "drives": 93694,
-          "pb": 1431.14
-        },
-        {
-          "name": "Western Digital",
-          "drives": 57544,
-          "pb": 1012.42
-        },
-        {
-          "name": "HGST",
-          "drives": 33527,
-          "pb": 347.9
-        },
-        {
-          "name": "Other",
-          "drives": 3112,
-          "pb": 1.93
-        }
-      ],
-      "top_models": [
-        {
-          "model": "TOSHIBA MG08ACA16TA",
-          "count": 40083,
-          "size_tb": 16.0
-        },
-        {
-          "model": "TOSHIBA MG07ACA14TA",
-          "count": 37805,
-          "size_tb": 14.0
-        },
-        {
-          "model": "ST16000NM001G",
-          "count": 33465,
-          "size_tb": 16.0
-        },
-        {
-          "model": "WDC WUH721816ALE6L4",
-          "count": 26399,
-          "size_tb": 16.0
-        },
-        {
-          "model": "ST12000NM0008",
-          "count": 19224,
-          "size_tb": 12.0
-        },
-        {
-          "model": "WDC WUH722222ALE6L4",
-          "count": 19201,
-          "size_tb": 22.0
-        },
-        {
-          "model": "ST8000NM0055",
-          "count": 13596,
-          "size_tb": 8.0
-        },
-        {
-          "model": "HGST HUH721212ALE604",
-          "count": 13228,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST12000NM001G",
-          "count": 13189,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST14000NM001G",
-          "count": 10625,
-          "size_tb": 14.0
-        }
-      ]
-    },
-    {
-      "date": "2025-01-01",
-      "label": "2025 Q1",
-      "summary": {
-        "drive_count": 304957,
-        "total_pb": 4418.98,
-        "avg_drive_tb": 14.49,
-        "failures": 6
-      },
-      "manufacturers": [
-        {
-          "name": "Seagate",
-          "drives": 105834,
-          "pb": 1348.94
-        },
-        {
-          "name": "Toshiba",
-          "drives": 95959,
-          "pb": 1477.24
-        },
-        {
-          "name": "Western Digital",
-          "drives": 68377,
-          "pb": 1250.44
-        },
-        {
-          "name": "HGST",
-          "drives": 31654,
-          "pb": 340.19
-        },
-        {
-          "name": "Other",
-          "drives": 3133,
-          "pb": 2.17
-        }
-      ],
-      "top_models": [
-        {
-          "model": "TOSHIBA MG08ACA16TA",
-          "count": 40129,
-          "size_tb": 16.0
-        },
-        {
-          "model": "TOSHIBA MG07ACA14TA",
-          "count": 37703,
-          "size_tb": 14.0
-        },
-        {
-          "model": "ST16000NM001G",
-          "count": 33600,
-          "size_tb": 16.0
-        },
-        {
-          "model": "WDC WUH722222ALE6L4",
-          "count": 30001,
-          "size_tb": 22.0
-        },
-        {
-          "model": "WDC WUH721816ALE6L4",
-          "count": 26395,
-          "size_tb": 16.0
-        },
-        {
-          "model": "ST12000NM0008",
-          "count": 19033,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST8000NM0055",
-          "count": 13532,
-          "size_tb": 8.0
-        },
-        {
-          "model": "HGST HUH721212ALE604",
-          "count": 13312,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST12000NM001G",
-          "count": 13168,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST14000NM001G",
-          "count": 10589,
-          "size_tb": 14.0
-        }
-      ]
-    },
-    {
-      "date": "2025-04-01",
-      "label": "2025 Q2",
-      "summary": {
-        "drive_count": 312812,
-        "total_pb": 4664.49,
-        "avg_drive_tb": 14.91,
-        "failures": 17
-      },
-      "manufacturers": [
-        {
-          "name": "Seagate",
-          "drives": 108355,
-          "pb": 1409.45
-        },
-        {
-          "name": "Toshiba",
-          "drives": 100720,
-          "pb": 1573.58
-        },
-        {
-          "name": "Western Digital",
-          "drives": 73187,
-          "pb": 1356.47
-        },
-        {
-          "name": "HGST",
-          "drives": 27408,
-          "pb": 322.55
-        },
-        {
-          "name": "Other",
-          "drives": 3142,
-          "pb": 2.42
-        }
-      ],
-      "top_models": [
-        {
-          "model": "TOSHIBA MG08ACA16TA",
-          "count": 40175,
-          "size_tb": 16.0
-        },
-        {
-          "model": "TOSHIBA MG07ACA14TA",
-          "count": 37546,
-          "size_tb": 14.0
-        },
-        {
-          "model": "WDC WUH722222ALE6L4",
-          "count": 34802,
-          "size_tb": 22.0
-        },
-        {
-          "model": "ST16000NM001G",
-          "count": 33763,
-          "size_tb": 16.0
-        },
-        {
-          "model": "WDC WUH721816ALE6L4",
-          "count": 26392,
-          "size_tb": 16.0
-        },
-        {
-          "model": "ST12000NM0008",
-          "count": 18985,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST8000NM0055",
-          "count": 13424,
-          "size_tb": 8.0
-        },
-        {
-          "model": "HGST HUH721212ALE604",
-          "count": 13335,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST12000NM001G",
-          "count": 13185,
-          "size_tb": 12.0
-        },
-        {
-          "model": "TOSHIBA MG10ACA20TE",
-          "count": 10803,
-          "size_tb": 20.0
-        }
-      ]
-    },
-    {
-      "date": "2025-07-01",
-      "label": "2025 Q3",
-      "summary": {
-        "drive_count": 321792,
-        "total_pb": 4861.21,
-        "avg_drive_tb": 15.11,
-        "failures": 14
-      },
-      "manufacturers": [
-        {
-          "name": "Seagate",
-          "drives": 110782,
-          "pb": 1468.63
-        },
-        {
-          "name": "Toshiba",
-          "drives": 104272,
-          "pb": 1645.14
-        },
-        {
-          "name": "Western Digital",
-          "drives": 76216,
-          "pb": 1422.89
-        },
-        {
-          "name": "HGST",
-          "drives": 27327,
-          "pb": 321.6
-        },
-        {
-          "name": "Other",
-          "drives": 3195,
-          "pb": 2.96
-        }
-      ],
-      "top_models": [
-        {
-          "model": "TOSHIBA MG08ACA16TA",
-          "count": 40025,
-          "size_tb": 16.0
-        },
-        {
-          "model": "WDC WUH722222ALE6L4",
-          "count": 37826,
-          "size_tb": 22.0
-        },
-        {
-          "model": "TOSHIBA MG07ACA14TA",
-          "count": 37460,
-          "size_tb": 14.0
-        },
-        {
-          "model": "ST16000NM001G",
-          "count": 33910,
-          "size_tb": 16.0
-        },
-        {
-          "model": "WDC WUH721816ALE6L4",
-          "count": 26377,
-          "size_tb": 16.0
-        },
-        {
-          "model": "ST12000NM0008",
-          "count": 18871,
-          "size_tb": 12.0
-        },
-        {
-          "model": "TOSHIBA MG10ACA20TE",
-          "count": 14402,
-          "size_tb": 20.0
-        },
-        {
-          "model": "ST8000NM0055",
-          "count": 13349,
-          "size_tb": 8.0
-        },
-        {
-          "model": "HGST HUH721212ALE604",
-          "count": 13347,
-          "size_tb": 12.0
-        },
-        {
-          "model": "ST12000NM001G",
-          "count": 13246,
+          "count": 10538,
           "size_tb": 12.0
         }
       ]

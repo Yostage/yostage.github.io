@@ -3,6 +3,13 @@
 
 const DATA_URL = 'data/quarterly_stats.json';
 
+// White→Red colorscale for failure rates (low=white, high=red)
+const FAILURE_COLORSCALE = [
+    [0, '#ffffff'],    // white (good - low failures)
+    [0.5, '#fc8d59'],  // orange
+    [1, '#b30000']     // dark red (bad - high failures)
+];
+
 // Color palette for manufacturers
 const COLORS = {
     'Seagate': '#1f77b4',
@@ -52,6 +59,7 @@ function setupDatePicker(data) {
 
         if (startIdx <= endIdx) {
             filteredData = filterByDateRange(fullData, startIdx, endIdx);
+            updateSliderForFilteredData(filteredData);
             renderAllCharts(filteredData);
         }
     };
@@ -112,7 +120,7 @@ function renderFleetGrowth(data) {
     Plotly.newPlot('chart-fleet', [trace1, trace2], layout, { responsive: true });
 }
 
-function renderManufacturers(data) {
+function renderManufacturers(data, metric = 'drives') {
     const quarters = data.quarters;
     const labels = quarters.map(q => q.label);
     const manufacturers = ['Seagate', 'Toshiba', 'HGST', 'Western Digital', 'Other'];
@@ -120,7 +128,8 @@ function renderManufacturers(data) {
     const traces = manufacturers.map(mfr => {
         const values = quarters.map(q => {
             const m = q.manufacturers.find(m => m.name === mfr);
-            return m ? m.drives : 0;
+            if (!m) return 0;
+            return metric === 'pb' ? m.pb : m.drives;
         });
 
         return {
@@ -135,9 +144,12 @@ function renderManufacturers(data) {
         };
     });
 
+    const yAxisTitle = metric === 'pb' ? 'Petabytes' : 'Drive Count';
+    const tickFormat = metric === 'pb' ? ',.0f' : ',d';
+
     const layout = {
         xaxis: { title: 'Quarter' },
-        yaxis: { title: 'Drive Count', tickformat: ',d' },
+        yaxis: { title: yAxisTitle, tickformat: tickFormat },
         legend: { x: 1.02, y: 0.5 },
         hovermode: 'x unified',
         margin: { t: 40 }
@@ -146,35 +158,85 @@ function renderManufacturers(data) {
     Plotly.newPlot('chart-manufacturers', traces, layout, { responsive: true });
 }
 
-function renderDriveSize(data) {
+function renderDriveSize(data, byManufacturer = false) {
     const quarters = data.quarters;
     const labels = quarters.map(q => q.label);
-    const avgSize = quarters.map(q => q.summary.avg_drive_tb);
 
-    const trace = {
-        x: labels,
-        y: avgSize,
-        type: 'scatter',
-        mode: 'lines+markers',
-        line: { color: '#2ca02c', width: 3 },
-        marker: { size: 10 },
-        fill: 'tozeroy',
-        fillcolor: 'rgba(44, 160, 44, 0.2)'
-    };
+    let traces, layout;
 
-    const layout = {
-        xaxis: { title: 'Quarter' },
-        yaxis: { title: 'Average Drive Size (TB)', range: [0, Math.max(...avgSize) * 1.1] },
-        hovertemplate: '%{x}<br>%{y:.2f} TB<extra></extra>',
-        margin: { t: 40 }
-    };
+    if (byManufacturer) {
+        // Show breakdown by manufacturer (top 4 + Other)
+        const manufacturers = ['Seagate', 'Toshiba', 'Western Digital', 'HGST'];
 
-    Plotly.newPlot('chart-drive-size', [trace], layout, { responsive: true });
+        traces = manufacturers.map(mfr => {
+            const values = quarters.map(q => {
+                const m = q.manufacturers.find(m => m.name === mfr);
+                if (m && m.drives > 0) {
+                    return (m.pb * 1000) / m.drives; // PB to TB
+                }
+                return null;
+            });
+
+            return {
+                x: labels,
+                y: values,
+                name: mfr,
+                type: 'scatter',
+                mode: 'lines+markers',
+                line: { color: COLORS[mfr], width: 2 },
+                marker: { size: 6 },
+                connectgaps: true
+            };
+        });
+
+        // Add overall median as dashed line
+        traces.push({
+            x: labels,
+            y: quarters.map(q => q.summary.median_drive_tb || q.summary.avg_drive_tb),
+            name: 'Overall Median',
+            type: 'scatter',
+            mode: 'lines',
+            line: { color: '#666', width: 2, dash: 'dash' }
+        });
+
+        const allValues = traces.flatMap(t => t.y.filter(v => v !== null));
+        layout = {
+            xaxis: { title: 'Quarter' },
+            yaxis: { title: 'Avg Drive Size (TB)', range: [0, Math.max(...allValues) * 1.1] },
+            legend: { x: 1.02, y: 0.5 },
+            hovermode: 'x unified',
+            margin: { t: 40 }
+        };
+    } else {
+        // Show overall median (fallback to avg for old data)
+        const medianSize = quarters.map(q => q.summary.median_drive_tb || q.summary.avg_drive_tb);
+
+        traces = [{
+            x: labels,
+            y: medianSize,
+            type: 'scatter',
+            mode: 'lines+markers',
+            line: { color: '#2ca02c', width: 3 },
+            marker: { size: 10 },
+            fill: 'tozeroy',
+            fillcolor: 'rgba(44, 160, 44, 0.2)'
+        }];
+
+        layout = {
+            xaxis: { title: 'Quarter' },
+            yaxis: { title: 'Median Drive Size (TB)', range: [0, Math.max(...medianSize) * 1.1] },
+            hovertemplate: '%{x}<br>%{y:.2f} TB<extra></extra>',
+            margin: { t: 40 }
+        };
+    }
+
+    Plotly.newPlot('chart-drive-size', traces, layout, { responsive: true });
 }
 
-function renderTopModels(data) {
-    const latestQuarter = data.quarters[data.quarters.length - 1];
-    const models = latestQuarter.top_models;
+function renderTopModels(data, quarterIdx = null) {
+    if (quarterIdx === null) quarterIdx = data.quarters.length - 1;
+    const quarter = data.quarters[quarterIdx];
+    const models = quarter.top_models;
 
     const trace = {
         x: models.map(m => m.count),
@@ -190,7 +252,6 @@ function renderTopModels(data) {
     };
 
     const layout = {
-        title: `Top 10 Drive Models (${latestQuarter.label})`,
         xaxis: { title: 'Drive Count', tickformat: ',d' },
         yaxis: { autorange: 'reversed' },
         margin: { l: 200, t: 40 }
@@ -213,20 +274,16 @@ function renderReliabilityBubble(data) {
 
         quarters.forEach(q => {
             const m = q.manufacturers.find(m => m.name === mfr);
-            if (m && m.drives > 0) {
-                // Calculate annualized failure rate (AFR)
-                // failures per quarter * 4 / drive count * 100 = AFR%
-                const failures = q.summary.failures || 0;
-                const totalDrives = q.summary.drive_count;
-                const mfrShare = m.drives / totalDrives;
-                const estimatedFailures = failures * mfrShare;
-                const afr = (estimatedFailures * 4 / m.drives) * 100;
+            if (m && m.drives > 0 && m.drive_days > 0) {
+                // Calculate AFR from actual drive-days and failures
+                // AFR = (failures / drive_days) * 365 * 100
+                const afr = (m.failures / m.drive_days) * 365 * 100;
 
                 x.push(q.label);
                 y.push(mfr);
                 sizes.push(Math.sqrt(m.drives) / 10); // Scale for visibility
                 colors.push(Math.min(afr, 5)); // Cap at 5% for color scale
-                texts.push(`${m.drives.toLocaleString()} drives<br>AFR: ${afr.toFixed(2)}%`);
+                texts.push(`${m.drives.toLocaleString()} drives<br>${m.failures} failures<br>${afr.toFixed(2)}% AFR`);
             }
         });
 
@@ -237,8 +294,7 @@ function renderReliabilityBubble(data) {
             marker: {
                 size: sizes,
                 color: colors,
-                colorscale: 'RdYlGn',
-                reversescale: true,
+                colorscale: FAILURE_COLORSCALE,
                 cmin: 0,
                 cmax: 5,
                 showscale: mfr === 'Seagate', // Only show scale once
@@ -260,82 +316,58 @@ function renderReliabilityBubble(data) {
     Plotly.newPlot('chart-reliability-bubble', traces, layout, { responsive: true });
 }
 
-function renderReliabilityHeatmap(data) {
-    const quarters = data.quarters;
-    const manufacturers = ['Seagate', 'Toshiba', 'HGST', 'Western Digital', 'Other'];
-
-    const labels = quarters.map(q => q.label);
-
-    // Build z matrix (failure rates) and annotations (drive counts)
-    const z = [];
-    const annotations = [];
-
-    manufacturers.forEach((mfr, mfrIdx) => {
-        const row = [];
-
-        quarters.forEach((q, qIdx) => {
-            const m = q.manufacturers.find(m => m.name === mfr);
-
-            if (m && m.drives > 0) {
-                // Estimate AFR for this manufacturer
-                const failures = q.summary.failures || 0;
-                const totalDrives = q.summary.drive_count;
-                const mfrShare = m.drives / totalDrives;
-                const estimatedFailures = failures * mfrShare;
-                const afr = (estimatedFailures * 4 / m.drives) * 100;
-
-                row.push(afr);
-
-                // Add annotation with drive count
-                const countStr = m.drives >= 1000
-                    ? `${Math.round(m.drives / 1000)}K`
-                    : m.drives.toString();
-
-                annotations.push({
-                    x: labels[qIdx],
-                    y: mfr,
-                    text: countStr,
-                    showarrow: false,
-                    font: { size: 10, color: afr > 2.5 ? 'white' : 'black' }
-                });
-            } else {
-                row.push(null);
-            }
-        });
-
-        z.push(row);
-    });
-
-    const trace = {
-        x: labels,
-        y: manufacturers,
-        z: z,
-        type: 'heatmap',
-        colorscale: 'RdYlGn',
-        reversescale: true,
-        zmin: 0,
-        zmax: 5,
-        colorbar: { title: 'AFR %' },
-        hovertemplate: '%{y}<br>%{x}<br>AFR: %{z:.2f}%<extra></extra>'
-    };
-
-    const layout = {
-        xaxis: { title: 'Quarter', side: 'bottom' },
-        yaxis: { title: 'Manufacturer' },
-        annotations: annotations,
-        margin: { t: 40, l: 120 }
-    };
-
-    Plotly.newPlot('chart-reliability-heatmap', [trace], layout, { responsive: true });
-}
+// Current UI state
+let mfrMetric = 'drives';
+let modelsQuarterIdx = null;
+let driveSizeByMfr = false;
 
 function renderAllCharts(data) {
     renderFleetGrowth(data);
-    renderManufacturers(data);
-    renderDriveSize(data);
-    renderTopModels(data);
+    renderManufacturers(data, mfrMetric);
+    renderDriveSize(data, driveSizeByMfr);
+    renderTopModels(data, modelsQuarterIdx);
     renderReliabilityBubble(data);
-    renderReliabilityHeatmap(data);
+}
+
+function setupChartControls(data) {
+    // Manufacturer metric toggle
+    document.querySelectorAll('input[name="mfr-metric"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            mfrMetric = e.target.value;
+            renderManufacturers(filteredData, mfrMetric);
+        });
+    });
+
+    // Drive size by manufacturer toggle
+    document.getElementById('drive-size-by-mfr').addEventListener('change', (e) => {
+        driveSizeByMfr = e.target.checked;
+        renderDriveSize(filteredData, driveSizeByMfr);
+    });
+
+    // Top models quarter slider
+    const slider = document.getElementById('models-quarter-slider');
+    const label = document.getElementById('models-quarter-label');
+
+    slider.max = data.quarters.length - 1;
+    slider.value = data.quarters.length - 1;
+    modelsQuarterIdx = data.quarters.length - 1;
+    label.textContent = data.quarters[modelsQuarterIdx].label;
+
+    slider.addEventListener('input', (e) => {
+        modelsQuarterIdx = parseInt(e.target.value);
+        label.textContent = filteredData.quarters[modelsQuarterIdx].label;
+        renderTopModels(filteredData, modelsQuarterIdx);
+    });
+}
+
+function updateSliderForFilteredData(data) {
+    const slider = document.getElementById('models-quarter-slider');
+    const label = document.getElementById('models-quarter-label');
+
+    slider.max = data.quarters.length - 1;
+    modelsQuarterIdx = Math.min(modelsQuarterIdx, data.quarters.length - 1);
+    slider.value = modelsQuarterIdx;
+    label.textContent = data.quarters[modelsQuarterIdx].label;
 }
 
 // Main initialization
@@ -344,9 +376,12 @@ async function init() {
         fullData = await loadData();
         console.log(`Loaded ${fullData.quarters.length} quarters of data`);
 
+        setupChartControls(fullData);
+
         const { startIdx, endIdx } = setupDatePicker(fullData);
         filteredData = filterByDateRange(fullData, startIdx, endIdx);
 
+        updateSliderForFilteredData(filteredData);
         renderAllCharts(filteredData);
     } catch (error) {
         console.error('Failed to load data:', error);

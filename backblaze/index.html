@@ -28,30 +28,42 @@
 
         <section id="manufacturers">
             <h2>Manufacturer Share</h2>
+            <div class="chart-controls">
+                <label>
+                    <input type="radio" name="mfr-metric" value="drives" checked> Drive Count
+                </label>
+                <label>
+                    <input type="radio" name="mfr-metric" value="pb"> Petabytes
+                </label>
+            </div>
             <div id="chart-manufacturers" class="chart"></div>
         </section>
 
         <section id="drive-size">
-            <h2>Average Drive Size Trend</h2>
+            <h2>Median Drive Size Trend</h2>
+            <div class="chart-controls">
+                <label>
+                    <input type="checkbox" id="drive-size-by-mfr"> Show by manufacturer
+                </label>
+            </div>
             <div id="chart-drive-size" class="chart"></div>
         </section>
 
         <section id="top-models">
             <h2>Top Drive Models</h2>
+            <div class="chart-controls">
+                <label>Quarter: <span id="models-quarter-label"></span></label>
+                <input type="range" id="models-quarter-slider" min="0" max="0" value="0">
+            </div>
             <div id="chart-models" class="chart"></div>
         </section>
 
         <section id="reliability-bubble">
-            <h2>Reliability by Manufacturer (Bubble Chart)</h2>
-            <p class="chart-subtitle">Size = drive count, Color = annualized failure rate</p>
+            <h2>Annualized Failure Rate by Manufacturer</h2>
+            <p class="chart-subtitle">Size = drive count, Color = AFR % (calculated from drive-days)</p>
             <div id="chart-reliability-bubble" class="chart"></div>
         </section>
 
-        <section id="reliability-heatmap">
-            <h2>Reliability Heatmap</h2>
-            <p class="chart-subtitle">Color = failure rate, Annotations = drive count</p>
-            <div id="chart-reliability-heatmap" class="chart"></div>
-        </section>
     </main>
 
     <footer>
