@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backblaze Drive Stats Visualization</title>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Backblaze Hard Drive Statistics</h1>
+        <p>Quarterly snapshots from 2013-2025 | Data via <a href="https://www.backblaze.com/cloud-storage/resources/hard-drive-test-data">Backblaze Drive Stats</a></p>
+        <div id="date-range-picker">
+            <label>Date Range:
+                <select id="start-quarter"></select>
+                <span> to </span>
+                <select id="end-quarter"></select>
+            </label>
+        </div>
+    </header>
+
+    <main>
+        <section id="fleet-growth">
+            <h2>Fleet Growth Over Time</h2>
+            <div id="chart-fleet" class="chart"></div>
+        </section>
+
+        <section id="manufacturers">
+            <h2>Manufacturer Share</h2>
+            <div id="chart-manufacturers" class="chart"></div>
+        </section>
+
+        <section id="drive-size">
+            <h2>Average Drive Size Trend</h2>
+            <div id="chart-drive-size" class="chart"></div>
+        </section>
+
+        <section id="top-models">
+            <h2>Top Drive Models</h2>
+            <div id="chart-models" class="chart"></div>
+        </section>
+
+        <section id="reliability-bubble">
+            <h2>Reliability by Manufacturer (Bubble Chart)</h2>
+            <p class="chart-subtitle">Size = drive count, Color = annualized failure rate</p>
+            <div id="chart-reliability-bubble" class="chart"></div>
+        </section>
+
+        <section id="reliability-heatmap">
+            <h2>Reliability Heatmap</h2>
+            <p class="chart-subtitle">Color = failure rate, Annotations = drive count</p>
+            <div id="chart-reliability-heatmap" class="chart"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Data source: Backblaze Hard Drive Test Data (Apache Iceberg)</p>
+    </footer>
+
+    <script src="js/charts.js"></script>
+</body>
+</html>
