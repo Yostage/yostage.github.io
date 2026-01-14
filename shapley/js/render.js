@@ -93,11 +93,12 @@ class BoardRenderer {
         }
 
         // Draw "TD" label on base block (left-justified)
+        const labelFontSize = Math.max(10, Math.floor(cellSize * 0.53));
         for (const [pieceId, piece] of board.pieces) {
             if (piece.type === 'BASE') {
-                const leftX = 8;
+                const leftX = Math.floor(cellSize * 0.27);
                 const centerY = (board.height - 1) * cellSize;  // Row 0-1 from bottom
-                ctx.font = 'bold 16px sans-serif';
+                ctx.font = `bold ${labelFontSize}px sans-serif`;
                 ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
                 ctx.strokeStyle = '#000';
@@ -123,8 +124,9 @@ class BoardRenderer {
             ctx.setLineDash([]);
 
             // Height label
+            const heightFontSize = Math.max(9, Math.floor(cellSize * 0.4));
             ctx.fillStyle = '#ff6b6b';
-            ctx.font = '12px sans-serif';
+            ctx.font = `${heightFontSize}px sans-serif`;
             ctx.fillText(`h=${height}`, board.width * cellSize + 5, indicatorY + 4);
         }
     }
@@ -258,6 +260,8 @@ class ShapleyBoardRenderer {
         }
 
         // Draw contribution labels at piece centers
+        const labelFontSize = Math.max(10, Math.floor(cellSize * 0.53));
+        const contribFontSize = Math.max(8, Math.floor(cellSize * 0.37));
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         for (const [pieceId, center] of pieceCenters) {
@@ -270,16 +274,16 @@ class ShapleyBoardRenderer {
             if (piece && piece.type === 'BASE') {
                 const opacity = 0.15 + (contrib / maxContrib) * 0.85;
                 // Draw TD on the left
-                ctx.font = 'bold 16px sans-serif';
+                ctx.font = `bold ${labelFontSize}px sans-serif`;
                 ctx.textAlign = 'left';
                 ctx.strokeStyle = '#000';
                 ctx.lineWidth = 3;
-                ctx.strokeText('TD', 8, y);
+                ctx.strokeText('TD', Math.floor(cellSize * 0.27), y);
                 ctx.fillStyle = `rgba(255,255,255,${opacity})`;
-                ctx.fillText('TD', 8, y);
+                ctx.fillText('TD', Math.floor(cellSize * 0.27), y);
                 // Draw contribution in center if > 0
                 if (contrib > 0) {
-                    ctx.font = 'bold 11px sans-serif';
+                    ctx.font = `bold ${contribFontSize}px sans-serif`;
                     ctx.textAlign = 'center';
                     ctx.strokeStyle = '#000';
                     ctx.lineWidth = 3;
@@ -289,7 +293,7 @@ class ShapleyBoardRenderer {
                 }
             } else if (contrib > 0) {
                 const opacity = 0.15 + (contrib / maxContrib) * 0.85;
-                ctx.font = 'bold 11px sans-serif';
+                ctx.font = `bold ${contribFontSize}px sans-serif`;
                 ctx.strokeStyle = '#000';
                 ctx.lineWidth = 3;
                 ctx.strokeText(contrib.toFixed(1), x, y);

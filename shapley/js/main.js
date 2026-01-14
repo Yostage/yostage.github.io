@@ -104,7 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
         originalBoard = board.clone();
 
         // Update canvas sizes based on board dimensions
-        const cellSize = 30;
+        // Scale cell size to keep boards fitting on screen (target ~180px board width)
+        const cellSize = Math.max(18, Math.min(30, Math.floor(180 / width)));
         const canvasWidth = width * cellSize;
         const canvasHeight = 20 * cellSize;
         boardCanvas.width = canvasWidth;
@@ -115,6 +116,12 @@ document.addEventListener('DOMContentLoaded', () => {
         marginalCanvas.height = canvasHeight;
         criticalCanvas.width = canvasWidth;
         criticalCanvas.height = canvasHeight;
+
+        // Update renderer cell sizes
+        boardRenderer.cellSize = cellSize;
+        shapleyRenderer.cellSize = cellSize;
+        marginalRenderer.cellSize = cellSize;
+        criticalRenderer.cellSize = cellSize;
 
         // Calculate marginal contributions (static, once per board)
         marginalContributions = originalBoard.calculateMarginalContributions();

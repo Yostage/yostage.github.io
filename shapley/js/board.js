@@ -21,6 +21,26 @@ const PIECE_SHAPES = {
 
 const PIECE_TYPES = Object.keys(PIECE_SHAPES);
 
+// Rotate piece cells by 0, 90, 180, or 270 degrees clockwise
+function rotateCells(cells, rotation) {
+    if (rotation === 0) return cells;
+
+    // Apply rotation transformation
+    let rotated = cells.map(([x, y]) => {
+        switch (rotation) {
+            case 1: return [y, -x];      // 90° clockwise
+            case 2: return [-x, -y];     // 180°
+            case 3: return [-y, x];      // 270° clockwise
+            default: return [x, y];
+        }
+    });
+
+    // Normalize to positive coordinates (shift to 0,0 origin)
+    const minX = Math.min(...rotated.map(c => c[0]));
+    const minY = Math.min(...rotated.map(c => c[1]));
+    return rotated.map(([x, y]) => [x - minX, y - minY]);
+}
+
 class Board {
     constructor(width = 10, height = 20) {
         this.width = width;
@@ -71,9 +91,10 @@ class Board {
         return 0;
     }
 
-    canPlacePiece(type, baseX, baseY) {
+    canPlacePiece(type, baseX, baseY, rotation = 0) {
         const shape = PIECE_SHAPES[type];
-        for (const [dx, dy] of shape.cells) {
+        const cells = rotateCells(shape.cells, rotation);
+        for (const [dx, dy] of cells) {
             const x = baseX + dx;
             const y = baseY + dy;
             if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
@@ -86,16 +107,17 @@ class Board {
         return true;
     }
 
-    placePiece(type, baseX, baseY) {
-        if (!this.canPlacePiece(type, baseX, baseY)) {
+    placePiece(type, baseX, baseY, rotation = 0) {
+        if (!this.canPlacePiece(type, baseX, baseY, rotation)) {
             return null;
         }
 
         const shape = PIECE_SHAPES[type];
+        const rotatedCells = rotateCells(shape.cells, rotation);
         const pieceId = this.nextPieceId++;
         const cells = [];
 
-        for (const [dx, dy] of shape.cells) {
+        for (const [dx, dy] of rotatedCells) {
             const x = baseX + dx;
             const y = baseY + dy;
             this.grid[y][x] = { pieceId, color: shape.color };
@@ -225,11 +247,14 @@ class Board {
             // Pick a random piece type
             const type = PIECE_TYPES[Math.floor(rand() * PIECE_TYPES.length)];
 
+            // Pick a random rotation (0, 1, 2, or 3 = 0°, 90°, 180°, 270°)
+            const rotation = Math.floor(rand() * 4);
+
             // Try to place it at a random position, but only y >= 2
             const x = Math.floor(rand() * (board.width - 3));
             const y = 2 + Math.floor(rand() * (board.height - 4));
 
-            board.placePiece(type, x, y);
+            board.placePiece(type, x, y, rotation);
         }
 
         // Apply gravity to settle pieces (they'll rest on the base)
