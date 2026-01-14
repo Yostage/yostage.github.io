@@ -92,6 +92,23 @@ class BoardRenderer {
             }
         }
 
+        // Draw "TD" label on base block (left-justified)
+        for (const [pieceId, piece] of board.pieces) {
+            if (piece.type === 'BASE') {
+                const leftX = 8;
+                const centerY = (board.height - 1) * cellSize;  // Row 0-1 from bottom
+                ctx.font = 'bold 16px sans-serif';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 3;
+                ctx.strokeText('TD', leftX, centerY);
+                ctx.fillStyle = '#fff';
+                ctx.fillText('TD', leftX, centerY);
+                break;
+            }
+        }
+
         // Draw height indicator
         const height = board.getHeight();
         if (height > 0) {
@@ -241,17 +258,38 @@ class ShapleyBoardRenderer {
         }
 
         // Draw contribution labels at piece centers
-        ctx.font = 'bold 11px sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         for (const [pieceId, center] of pieceCenters) {
+            const piece = board.pieces.get(pieceId);
             const contrib = contributions.get(pieceId) || 0;
-            if (contrib > 0) {
-                const x = center.sumX / center.count;
-                const y = center.sumY / center.count;
-                const opacity = 0.15 + (contrib / maxContrib) * 0.85;
+            const x = center.sumX / center.count;
+            const y = center.sumY / center.count;
 
-                // Draw text with outline for readability
+            // Special label for base block (TD left-justified, contribution centered)
+            if (piece && piece.type === 'BASE') {
+                const opacity = 0.15 + (contrib / maxContrib) * 0.85;
+                // Draw TD on the left
+                ctx.font = 'bold 16px sans-serif';
+                ctx.textAlign = 'left';
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 3;
+                ctx.strokeText('TD', 8, y);
+                ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+                ctx.fillText('TD', 8, y);
+                // Draw contribution in center if > 0
+                if (contrib > 0) {
+                    ctx.font = 'bold 11px sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.strokeStyle = '#000';
+                    ctx.lineWidth = 3;
+                    ctx.strokeText(contrib.toFixed(1), x, y);
+                    ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+                    ctx.fillText(contrib.toFixed(1), x, y);
+                }
+            } else if (contrib > 0) {
+                const opacity = 0.15 + (contrib / maxContrib) * 0.85;
+                ctx.font = 'bold 11px sans-serif';
                 ctx.strokeStyle = '#000';
                 ctx.lineWidth = 3;
                 ctx.strokeText(contrib.toFixed(1), x, y);
