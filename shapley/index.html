@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shapley Value Tetris Visualization</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="controls">
+            <div class="control-group">
+                <label for="seed">Seed:</label>
+                <input type="number" id="seed" value="12345" min="0">
+            </div>
+            <div class="control-group">
+                <label for="iterations">Iterations:</label>
+                <input type="range" id="iterations" min="10" max="500" value="30">
+                <span id="iterations-value">30</span>
+            </div>
+            <div class="control-group">
+                <label for="speed">Delay (ms):</label>
+                <input type="range" id="speed" min="0" max="500" value="1">
+                <span id="speed-value">1</span>
+            </div>
+            <button id="generate-btn">Generate Board</button>
+            <button id="run-btn">Run Simulation</button>
+            <button id="step-btn">Step</button>
+        </header>
+
+        <main class="visualization">
+            <section class="left-panel">
+                <h2>Simulation</h2>
+                <div class="board-container">
+                    <canvas id="board-canvas" width="300" height="600"></canvas>
+                </div>
+                <div class="simulation-info">
+                    <p>Height: <span id="current-height">0</span></p>
+                    <p>Iteration: <span id="current-iteration">0</span> / <span id="total-iterations">0</span></p>
+                    <p>Current Piece: <span id="current-piece">-</span></p>
+                </div>
+            </section>
+
+            <section class="right-panel">
+                <h2>Shapley Values (Opacity = Contribution)</h2>
+                <div class="board-container">
+                    <canvas id="shapley-canvas" width="300" height="600"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/board.js"></script>
+    <script src="js/simulation.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

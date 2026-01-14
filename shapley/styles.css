@@ -1,0 +1,154 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #1a1a2e;
+    color: #eee;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 15px 20px;
+    background: #16213e;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-group label {
+    font-size: 14px;
+    color: #aaa;
+}
+
+.control-group input[type="number"] {
+    width: 100px;
+    padding: 8px 12px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #0f0f23;
+    color: #eee;
+    font-size: 14px;
+}
+
+.control-group input[type="range"] {
+    width: 150px;
+}
+
+#iterations-value,
+#speed-value {
+    min-width: 40px;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#generate-btn {
+    background: #4a5568;
+    color: #fff;
+}
+
+#generate-btn:hover {
+    background: #5a6578;
+}
+
+#run-btn {
+    background: #38a169;
+    color: #fff;
+}
+
+#run-btn:hover {
+    background: #48b179;
+}
+
+#step-btn {
+    background: #3182ce;
+    color: #fff;
+}
+
+#step-btn:hover {
+    background: #4192de;
+}
+
+/* Main visualization */
+.visualization {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.left-panel, .right-panel {
+    background: #16213e;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.left-panel {
+    flex: 0 0 auto;
+}
+
+.right-panel {
+    flex: 0 0 auto;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #ddd;
+}
+
+.board-container {
+    background: #0f0f23;
+    padding: 10px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+#board-canvas {
+    display: block;
+}
+
+.simulation-info {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+.simulation-info p {
+    margin: 5px 0;
+}
+
+.simulation-info span {
+    color: #fff;
+    font-weight: bold;
+}
+
+#shapley-canvas {
+    display: block;
+}
