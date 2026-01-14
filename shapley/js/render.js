@@ -14,7 +14,7 @@ class BoardRenderer {
         ctx.fillStyle = '#0f0f23';
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw grid lines
+        // Draw grid lines (background)
         ctx.strokeStyle = '#2a2a4a';
         ctx.lineWidth = 1;
         for (let x = 0; x <= board.width; x++) {
@@ -30,7 +30,14 @@ class BoardRenderer {
             ctx.stroke();
         }
 
-        // Draw cells (y=0 is bottom, so we flip for display)
+        // Helper to check if adjacent cell belongs to same piece
+        const isSamePiece = (x, y, pieceId) => {
+            if (x < 0 || x >= board.width || y < 0 || y >= board.height) return false;
+            const cell = board.grid[y][x];
+            return cell && cell.pieceId === pieceId;
+        };
+
+        // Draw cells as connected pieces (y=0 is bottom, so we flip for display)
         for (let y = 0; y < board.height; y++) {
             for (let x = 0; x < board.width; x++) {
                 const cell = board.grid[y][x];
@@ -38,9 +45,42 @@ class BoardRenderer {
                     const displayY = (board.height - 1 - y) * cellSize;
                     const displayX = x * cellSize;
 
-                    // Fill with piece color
+                    // Fill with piece color (full cell, no gap)
                     ctx.fillStyle = cell.color;
-                    ctx.fillRect(displayX + 1, displayY + 1, cellSize - 2, cellSize - 2);
+                    ctx.fillRect(displayX, displayY, cellSize, cellSize);
+
+                    // Draw borders only on edges not adjacent to same piece
+                    ctx.strokeStyle = '#0f0f23';
+                    ctx.lineWidth = 2;
+
+                    // Top edge (check y+1 in grid = above in display)
+                    if (!isSamePiece(x, y + 1, cell.pieceId)) {
+                        ctx.beginPath();
+                        ctx.moveTo(displayX, displayY);
+                        ctx.lineTo(displayX + cellSize, displayY);
+                        ctx.stroke();
+                    }
+                    // Bottom edge
+                    if (!isSamePiece(x, y - 1, cell.pieceId)) {
+                        ctx.beginPath();
+                        ctx.moveTo(displayX, displayY + cellSize);
+                        ctx.lineTo(displayX + cellSize, displayY + cellSize);
+                        ctx.stroke();
+                    }
+                    // Left edge
+                    if (!isSamePiece(x - 1, y, cell.pieceId)) {
+                        ctx.beginPath();
+                        ctx.moveTo(displayX, displayY);
+                        ctx.lineTo(displayX, displayY + cellSize);
+                        ctx.stroke();
+                    }
+                    // Right edge
+                    if (!isSamePiece(x + 1, y, cell.pieceId)) {
+                        ctx.beginPath();
+                        ctx.moveTo(displayX + cellSize, displayY);
+                        ctx.lineTo(displayX + cellSize, displayY + cellSize);
+                        ctx.stroke();
+                    }
 
                     // Highlight if this is the highlighted piece
                     if (cell.pieceId === this.highlightedPiece) {
@@ -48,15 +88,6 @@ class BoardRenderer {
                         ctx.lineWidth = 3;
                         ctx.strokeRect(displayX + 2, displayY + 2, cellSize - 4, cellSize - 4);
                     }
-
-                    // Add a subtle 3D effect
-                    ctx.fillStyle = 'rgba(255,255,255,0.2)';
-                    ctx.fillRect(displayX + 1, displayY + 1, cellSize - 2, 3);
-                    ctx.fillRect(displayX + 1, displayY + 1, 3, cellSize - 2);
-
-                    ctx.fillStyle = 'rgba(0,0,0,0.2)';
-                    ctx.fillRect(displayX + 1, displayY + cellSize - 4, cellSize - 2, 3);
-                    ctx.fillRect(displayX + cellSize - 4, displayY + 1, 3, cellSize - 2);
                 }
             }
         }
@@ -111,7 +142,7 @@ class ShapleyBoardRenderer {
         ctx.fillStyle = '#0f0f23';
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // Draw grid lines
+        // Draw grid lines (background)
         ctx.strokeStyle = '#2a2a4a';
         ctx.lineWidth = 1;
         for (let x = 0; x <= board.width; x++) {
@@ -127,6 +158,13 @@ class ShapleyBoardRenderer {
             ctx.stroke();
         }
 
+        // Helper to check if adjacent cell belongs to same piece
+        const isSamePiece = (x, y, pieceId) => {
+            if (x < 0 || x >= board.width || y < 0 || y >= board.height) return false;
+            const cell = board.grid[y][x];
+            return cell && cell.pieceId === pieceId;
+        };
+
         // Calculate max contribution for scaling opacity
         const pieceIds = board.getPieceIds();
         let maxContrib = 0;
@@ -136,6 +174,9 @@ class ShapleyBoardRenderer {
         }
         maxContrib = Math.max(maxContrib, 0.1); // Avoid division by zero
 
+        // Track piece centers for label rendering
+        const pieceCenters = new Map(); // pieceId -> { sumX, sumY, count }
+
         // Draw cells with opacity based on contribution
         for (let y = 0; y < board.height; y++) {
             for (let x = 0; x < board.width; x++) {
@@ -143,6 +184,15 @@ class ShapleyBoardRenderer {
                 if (cell) {
                     const displayY = (board.height - 1 - y) * cellSize;
                     const displayX = x * cellSize;
+
+                    // Track center for this piece
+                    if (!pieceCenters.has(cell.pieceId)) {
+                        pieceCenters.set(cell.pieceId, { sumX: 0, sumY: 0, count: 0 });
+                    }
+                    const center = pieceCenters.get(cell.pieceId);
+                    center.sumX += displayX + cellSize / 2;
+                    center.sumY += displayY + cellSize / 2;
+                    center.count++;
 
                     // Get contribution for this piece
                     const contrib = contributions.get(cell.pieceId) || 0;
@@ -152,25 +202,61 @@ class ShapleyBoardRenderer {
                     // Parse color and apply opacity
                     const rgb = this.hexToRgb(cell.color);
                     ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
-                    ctx.fillRect(displayX + 1, displayY + 1, cellSize - 2, cellSize - 2);
+                    ctx.fillRect(displayX, displayY, cellSize, cellSize);
 
-                    // Add 3D effect with adjusted opacity
-                    ctx.fillStyle = `rgba(255,255,255,${0.2 * opacity})`;
-                    ctx.fillRect(displayX + 1, displayY + 1, cellSize - 2, 3);
-                    ctx.fillRect(displayX + 1, displayY + 1, 3, cellSize - 2);
+                    // Draw borders only on edges not adjacent to same piece
+                    ctx.strokeStyle = '#0f0f23';
+                    ctx.lineWidth = 2;
 
-                    ctx.fillStyle = `rgba(0,0,0,${0.2 * opacity})`;
-                    ctx.fillRect(displayX + 1, displayY + cellSize - 4, cellSize - 2, 3);
-                    ctx.fillRect(displayX + cellSize - 4, displayY + 1, 3, cellSize - 2);
-
-                    // Show contribution value on hover-sized pieces
-                    if (contrib > 0) {
-                        ctx.fillStyle = `rgba(255,255,255,${opacity})`;
-                        ctx.font = '9px sans-serif';
-                        ctx.textAlign = 'center';
-                        ctx.fillText(contrib.toFixed(1), displayX + cellSize/2, displayY + cellSize/2 + 3);
+                    // Top edge
+                    if (!isSamePiece(x, y + 1, cell.pieceId)) {
+                        ctx.beginPath();
+                        ctx.moveTo(displayX, displayY);
+                        ctx.lineTo(displayX + cellSize, displayY);
+                        ctx.stroke();
+                    }
+                    // Bottom edge
+                    if (!isSamePiece(x, y - 1, cell.pieceId)) {
+                        ctx.beginPath();
+                        ctx.moveTo(displayX, displayY + cellSize);
+                        ctx.lineTo(displayX + cellSize, displayY + cellSize);
+                        ctx.stroke();
+                    }
+                    // Left edge
+                    if (!isSamePiece(x - 1, y, cell.pieceId)) {
+                        ctx.beginPath();
+                        ctx.moveTo(displayX, displayY);
+                        ctx.lineTo(displayX, displayY + cellSize);
+                        ctx.stroke();
+                    }
+                    // Right edge
+                    if (!isSamePiece(x + 1, y, cell.pieceId)) {
+                        ctx.beginPath();
+                        ctx.moveTo(displayX + cellSize, displayY);
+                        ctx.lineTo(displayX + cellSize, displayY + cellSize);
+                        ctx.stroke();
                     }
                 }
+            }
+        }
+
+        // Draw contribution labels at piece centers
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        for (const [pieceId, center] of pieceCenters) {
+            const contrib = contributions.get(pieceId) || 0;
+            if (contrib > 0) {
+                const x = center.sumX / center.count;
+                const y = center.sumY / center.count;
+                const opacity = 0.15 + (contrib / maxContrib) * 0.85;
+
+                // Draw text with outline for readability
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 3;
+                ctx.strokeText(contrib.toFixed(1), x, y);
+                ctx.fillStyle = `rgba(255,255,255,${opacity})`;
+                ctx.fillText(contrib.toFixed(1), x, y);
             }
         }
     }

@@ -194,11 +194,27 @@ class Board {
     }
 
     // Generate a mostly-filled board
-    static generate(seed, fillRatio = 0.7) {
+    static generate(seed, width = 10, fillRatio = 0.7) {
         const rand = mulberry32(seed);
-        const board = new Board();
+        const board = new Board(width, 20);
 
-        // Try to fill the board from bottom up
+        // Place a full-width yellow base block in bottom 2 rows
+        const basePieceId = board.nextPieceId++;
+        const baseColor = '#f0f000'; // Yellow like O piece
+        const baseCells = [];
+        for (let y = 0; y < 2; y++) {
+            for (let x = 0; x < width; x++) {
+                board.grid[y][x] = { pieceId: basePieceId, color: baseColor };
+                baseCells.push({ x, y });
+            }
+        }
+        board.pieces.set(basePieceId, {
+            type: 'BASE',
+            color: baseColor,
+            cells: baseCells
+        });
+
+        // Generate other pieces only above the base (y >= 2)
         let attempts = 0;
         const maxAttempts = 1000;
         const targetCells = Math.floor(board.width * board.height * fillRatio);
@@ -209,14 +225,14 @@ class Board {
             // Pick a random piece type
             const type = PIECE_TYPES[Math.floor(rand() * PIECE_TYPES.length)];
 
-            // Try to place it at a random position
+            // Try to place it at a random position, but only y >= 2
             const x = Math.floor(rand() * (board.width - 3));
-            const y = Math.floor(rand() * (board.height - 2));
+            const y = 2 + Math.floor(rand() * (board.height - 4));
 
             board.placePiece(type, x, y);
         }
 
-        // Apply gravity to settle pieces
+        // Apply gravity to settle pieces (they'll rest on the base)
         board.applyGravity();
 
         return board;
@@ -230,6 +246,68 @@ class Board {
             }
         }
         return count;
+    }
+
+    // Calculate marginal contribution of each piece if removed alone
+    calculateMarginalContributions() {
+        const contributions = new Map();
+        const heightBefore = this.getHeight();
+
+        for (const pieceId of this.getPieceIds()) {
+            const testBoard = this.clone();
+            testBoard.removePiece(pieceId);
+            testBoard.applyGravity();
+            const heightAfter = testBoard.getHeight();
+            contributions.set(pieceId, heightBefore - heightAfter);
+        }
+
+        return contributions;
+    }
+
+    // Calculate critical path - trace row by row from top to bottom
+    // Each row gives +1 credit to the piece occupying that position
+    calculateCriticalPath() {
+        const contributions = new Map();
+        for (const id of this.getPieceIds()) {
+            contributions.set(id, 0);
+        }
+
+        const height = this.getHeight();
+        if (height === 0) return contributions;
+
+        // Find starting position (leftmost cell at highest row)
+        const maxY = height - 1;
+        let currentX = 0;
+        for (let x = 0; x < this.width; x++) {
+            if (this.grid[maxY][x]) {
+                currentX = x;
+                break;
+            }
+        }
+
+        // Trace down row by row from top to bottom
+        for (let y = maxY; y >= 0; y--) {
+            let cell = this.grid[y][currentX];
+
+            // If no cell at currentX, find the leftmost cell in this row
+            if (!cell) {
+                for (let x = 0; x < this.width; x++) {
+                    if (this.grid[y][x]) {
+                        currentX = x;
+                        cell = this.grid[y][x];
+                        break;
+                    }
+                }
+            }
+
+            if (cell) {
+                // Credit this row to the piece
+                const current = contributions.get(cell.pieceId) || 0;
+                contributions.set(cell.pieceId, current + 1);
+            }
+        }
+
+        return contributions;
     }
 }
 

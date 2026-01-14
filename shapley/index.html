@@ -14,6 +14,11 @@
                 <input type="number" id="seed" value="12345" min="0">
             </div>
             <div class="control-group">
+                <label for="width">Width:</label>
+                <input type="range" id="width" min="4" max="10" value="6">
+                <span id="width-value">6</span>
+            </div>
+            <div class="control-group">
                 <label for="iterations">Iterations:</label>
                 <input type="range" id="iterations" min="10" max="500" value="30">
                 <span id="iterations-value">30</span>
@@ -23,28 +28,46 @@
                 <input type="range" id="speed" min="0" max="500" value="1">
                 <span id="speed-value">1</span>
             </div>
-            <button id="generate-btn">Generate Board</button>
+            <button id="reset-btn">Reset</button>
+            <button id="new-board-btn">New Board</button>
             <button id="run-btn">Run Simulation</button>
             <button id="step-btn">Step</button>
         </header>
 
         <main class="visualization">
-            <section class="left-panel">
+            <section class="panel">
                 <h2>Simulation</h2>
+                <p class="algo-desc">&nbsp;</p>
+                <p class="sum-display">Height: <span id="board-height">0</span> | Iter: <span id="current-iteration">0</span>/<span id="total-iterations">0</span></p>
                 <div class="board-container">
                     <canvas id="board-canvas" width="300" height="600"></canvas>
                 </div>
-                <div class="simulation-info">
-                    <p>Height: <span id="current-height">0</span></p>
-                    <p>Iteration: <span id="current-iteration">0</span> / <span id="total-iterations">0</span></p>
-                    <p>Current Piece: <span id="current-piece">-</span></p>
+            </section>
+
+            <section class="panel">
+                <h2 class="algo-title" title="Averages each piece's contribution across all possible removal orders. Gives fair credit but removing any single piece may not achieve the full attributed value. The sum always equals total height.">Shapley Values</h2>
+                <p class="algo-desc">Fair blame, individual removal varies</p>
+                <p class="sum-display">Σ = <span id="sum-shapley">0</span></p>
+                <div class="board-container">
+                    <canvas id="shapley-canvas" width="300" height="600"></canvas>
                 </div>
             </section>
 
-            <section class="right-panel">
-                <h2>Shapley Values (Opacity = Contribution)</h2>
+            <section class="panel">
+                <h2 class="algo-title" title="Each piece's height impact if removed alone from the full board. Removing any highlighted piece guarantees that exact height reduction. May miss pieces that only matter after others are removed.">Counterfactual</h2>
+                <p class="algo-desc">Guaranteed impact, may miss opportunities</p>
+                <p class="sum-display">Σ = <span id="sum-marginal">0</span></p>
                 <div class="board-container">
-                    <canvas id="shapley-canvas" width="300" height="600"></canvas>
+                    <canvas id="marginal-canvas" width="300" height="600"></canvas>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2 class="algo-title" title="The vertical chain of pieces from top to bottom that determines height. Every piece on this path matters, but improving one by itself does not guarantee any impact. The sum always equals total height.">Critical Path</h2>
+                <p class="algo-desc">Definitely relevant, fractional wins</p>
+                <p class="sum-display">Σ = <span id="sum-critical">0</span></p>
+                <div class="board-container">
+                    <canvas id="critical-canvas" width="300" height="600"></canvas>
                 </div>
             </section>
         </main>

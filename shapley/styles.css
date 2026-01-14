@@ -54,6 +54,7 @@ body {
     width: 150px;
 }
 
+#width-value,
 #iterations-value,
 #speed-value {
     min-width: 40px;
@@ -69,12 +70,14 @@ button {
     transition: background 0.2s;
 }
 
-#generate-btn {
+#reset-btn,
+#new-board-btn {
     background: #4a5568;
     color: #fff;
 }
 
-#generate-btn:hover {
+#reset-btn:hover,
+#new-board-btn:hover {
     background: #5a6578;
 }
 
@@ -103,17 +106,10 @@ button {
     flex-wrap: wrap;
 }
 
-.left-panel, .right-panel {
+.panel {
     background: #16213e;
     border-radius: 8px;
     padding: 20px;
-}
-
-.left-panel {
-    flex: 0 0 auto;
-}
-
-.right-panel {
     flex: 0 0 auto;
 }
 
@@ -130,25 +126,35 @@ h2 {
     display: inline-block;
 }
 
-#board-canvas {
+#board-canvas,
+#shapley-canvas,
+#marginal-canvas,
+#critical-canvas {
     display: block;
 }
 
-.simulation-info {
-    margin-top: 15px;
+.algo-title {
+    cursor: help;
+    border-bottom: 1px dashed #666;
+    display: inline-block;
+}
+
+.algo-desc {
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+    margin-bottom: 8px;
+}
+
+.sum-display {
     font-size: 14px;
     color: #aaa;
+    margin-bottom: 10px;
+    height: 20px;
+    line-height: 20px;
 }
 
-.simulation-info p {
-    margin: 5px 0;
-}
-
-.simulation-info span {
+.sum-display span {
     color: #fff;
     font-weight: bold;
-}
-
-#shapley-canvas {
-    display: block;
 }
