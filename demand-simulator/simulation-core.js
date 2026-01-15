@@ -79,55 +79,99 @@ export const runFullSimulation = (machines, curves, queueTimeout) => {
       }
     });
 
-    // Step 2 & 3 & 4: Priority-based processing
-    // Sort curves by priority (1 = highest priority first)
-    const sortedCurves = [...curves].sort((a, b) => a.priority - b.priority);
+    // Step 2 & 3 & 4: Priority-based processing with global FIFO within priority levels
+    // Group curves by priority
+    const priorityGroups = {};
+    curves.forEach(curve => {
+      const p = curve.priority;
+      if (!priorityGroups[p]) priorityGroups[p] = [];
+      priorityGroups[p].push(curve);
+    });
+
+    // Get sorted priority levels (1 = highest priority first)
+    const priorityLevels = Object.keys(priorityGroups).map(Number).sort((a, b) => a - b);
 
     let availableCapacity = machines;
     let actualUsage = 0;
 
+    // Track usage per curve for this minute
+    const curveUsageThisMinute = {};
+    curves.forEach(curve => { curveUsageThisMinute[curve.id] = 0; });
+
     // Process each priority level in order
-    sortedCurves.forEach(curve => {
-      let curveUsageThisMinute = 0;
+    priorityLevels.forEach(priority => {
+      const curvesAtPriority = priorityGroups[priority];
 
-      // Step 2a: Serve new demand from this curve
-      const curveDemand = demandByCurve[curve.id][minute];
-      const immediatelyServed = Math.min(curveDemand, availableCapacity);
-      availableCapacity -= immediatelyServed;
-      actualUsage += immediatelyServed;
-      curveUsageThisMinute += immediatelyServed;
+      // Step 2a: Queue all new demand for curves at this priority
+      curvesAtPriority.forEach(curve => {
+        const newDemand = demandByCurve[curve.id][minute];
+        if (newDemand > 0) {
+          queuesByCurve[curve.id].push({
+            arrivalTime: minute,
+            demand: newDemand,
+            curveId: curve.id,
+            priority: curve.priority
+          });
+        }
+      });
 
-      // Step 2b: Queue excess demand for this curve
-      const excessDemand = curveDemand - immediatelyServed;
-      if (excessDemand > 0) {
-        queuesByCurve[curve.id].push({
-          arrivalTime: minute,
-          demand: excessDemand,
-          curveId: curve.id,
-          priority: curve.priority
+      // Step 2b & 3: Process queued requests using global FIFO across all curves at this priority
+      // Merge all queues at this priority into a single list, sorted by arrival time
+      let combinedQueue = [];
+      curvesAtPriority.forEach(curve => {
+        queuesByCurve[curve.id].forEach(item => {
+          combinedQueue.push(item);
         });
+      });
+
+      // Sort by arrival time (FIFO) - oldest first
+      combinedQueue.sort((a, b) => a.arrivalTime - b.arrivalTime);
+
+      // Process items in FIFO order, with fair sharing for items at the same arrival time
+      let i = 0;
+      while (i < combinedQueue.length && availableCapacity > 0) {
+        // Find all items with the same arrival time (a cohort)
+        const currentArrival = combinedQueue[i].arrivalTime;
+        const cohort = [];
+        while (i < combinedQueue.length && combinedQueue[i].arrivalTime === currentArrival) {
+          cohort.push(combinedQueue[i]);
+          i++;
+        }
+
+        // Calculate total demand in this cohort
+        const cohortDemand = cohort.reduce((sum, item) => sum + item.demand, 0);
+
+        if (cohortDemand <= availableCapacity) {
+          // Serve all items in cohort fully
+          cohort.forEach(item => {
+            actualUsage += item.demand;
+            curveUsageThisMinute[item.curveId] += item.demand;
+            availableCapacity -= item.demand;
+            item.demand = 0;
+          });
+        } else {
+          // Not enough capacity - distribute proportionally among cohort
+          cohort.forEach(item => {
+            const share = item.demand / cohortDemand;
+            const served = availableCapacity * share;
+            actualUsage += served;
+            curveUsageThisMinute[item.curveId] += served;
+            item.demand -= served;
+          });
+          availableCapacity = 0;
+        }
       }
 
-      // Step 3: Process queued requests for this curve (FIFO within same priority)
-      // Sort queue by arrival time to maintain FIFO
-      queuesByCurve[curve.id].sort((a, b) => a.arrivalTime - b.arrivalTime);
+      // Update per-curve queues: remove fully served items, keep partially served ones
+      curvesAtPriority.forEach(curve => {
+        queuesByCurve[curve.id] = queuesByCurve[curve.id].filter(item => item.demand > 0);
+      });
+    });
 
-      const queue = queuesByCurve[curve.id];
-      for (let i = 0; i < queue.length && availableCapacity > 0; i++) {
-        const item = queue[i];
-        const servedFromQueue = Math.min(item.demand, availableCapacity);
-        actualUsage += servedFromQueue;
-        availableCapacity -= servedFromQueue;
-        curveUsageThisMinute += servedFromQueue;
-        item.demand -= servedFromQueue;
-      }
-
-      // Remove fully served items from queue
-      queuesByCurve[curve.id] = queuesByCurve[curve.id].filter(item => item.demand > 0);
-
-      // Track per-curve utilization
-      utilizationByCurve[curve.id] += curveUsageThisMinute;
-      usageValuesByCurve[curve.id].push({ minute, usage: curveUsageThisMinute });
+    // Record per-curve utilization for this minute
+    curves.forEach(curve => {
+      utilizationByCurve[curve.id] += curveUsageThisMinute[curve.id];
+      usageValuesByCurve[curve.id].push({ minute, usage: curveUsageThisMinute[curve.id] });
     });
 
     totalUtilization += actualUsage;

@@ -205,6 +205,55 @@ if (runTest('Test 7: Priority 1 gets capacity before Priority 2', () => {
   failed++;
 }
 
+// Test 8: Fair Sharing - Identical curves at same priority share equally
+if (runTest('Test 8: Identical curves at same priority share shedding equally', () => {
+  const curves = [
+    {
+      id: 'curve-1',
+      type: 'gaussian',
+      totalDemand: 50000,
+      peakHour: 15,
+      curveWidth: 3,
+      priority: 1,
+      color: '#818cf8'
+    },
+    {
+      id: 'curve-2',
+      type: 'gaussian',
+      totalDemand: 50000,
+      peakHour: 15,
+      curveWidth: 3,
+      priority: 1,
+      color: '#a78bfa'
+    }
+  ];
+
+  // Use limited capacity so there's shedding
+  const { metrics } = runFullSimulation(100, curves, 30);
+
+  // Both curves should have equal shedding (within 1%)
+  const shed1 = metrics.byCurve['curve-1'].shedDemand;
+  const shed2 = metrics.byCurve['curve-2'].shedDemand;
+  const shedRatio = shed1 / shed2;
+
+  if (shedRatio < 0.99 || shedRatio > 1.01) {
+    throw new Error(`Shedding not equal: curve1=${shed1}, curve2=${shed2}, ratio=${shedRatio.toFixed(3)}`);
+  }
+
+  // Both curves should have equal utilization (within 1%)
+  const util1 = metrics.byCurve['curve-1'].totalUtilization;
+  const util2 = metrics.byCurve['curve-2'].totalUtilization;
+  const utilRatio = util1 / util2;
+
+  if (utilRatio < 0.99 || utilRatio > 1.01) {
+    throw new Error(`Utilization not equal: curve1=${util1}, curve2=${util2}, ratio=${utilRatio.toFixed(3)}`);
+  }
+})) {
+  passed++;
+} else {
+  failed++;
+}
+
 // ========== SUMMARY ==========
 
 console.log('\n' + '='.repeat(40));
