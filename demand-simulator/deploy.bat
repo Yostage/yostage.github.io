@@ -1,0 +1,1 @@
+robocopy /mir D:\code\demand-simulator . *.html *.js /E /PURGE /XD .git .claude .sl
