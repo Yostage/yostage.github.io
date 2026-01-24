@@ -1,6 +1,0 @@
-{
-  "type": "module",
-  "name": "demand-capacity-simulator",
-  "version": "1.0.0",
-  "description": "Demand capacity simulator with queueing logic tests"
-}
