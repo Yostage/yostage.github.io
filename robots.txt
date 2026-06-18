@@ -1,0 +1,28 @@
+# yostage.github.io — please do not crawl, index, cache, or use for training.
+User-agent: *
+Disallow: /
+
+# AI / LLM crawlers (explicit, for ones that only honor named entries)
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: Amazonbot
+Disallow: /
